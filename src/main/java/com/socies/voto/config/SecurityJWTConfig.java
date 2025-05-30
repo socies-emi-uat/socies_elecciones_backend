@@ -40,9 +40,8 @@ public class SecurityJWTConfig {
                                 "/api/register", // metodo para registrarse
                                 "/api/data/**"
                         ).permitAll()
-                        .requestMatchers("/api/administrador/**").hasRole("ADMIN") // Solo ADMIN accede
-                        .requestMatchers("/api/operador/**").hasRole("OPERADOR")
-                        .requestMatchers("/api/encargado/**").hasRole("ENCARGADO")
+                        .requestMatchers("/api/administrador/**").hasRole("Administrador") // Solo ADMIN accede
+                        .requestMatchers("/api/votante/**").hasRole("Votante")
                         .anyRequest().authenticated()).
                 httpBasic(Customizer.withDefaults()).
                 sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
