@@ -20,9 +20,9 @@ public class UsuarioService {
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-    public List<UsuarioEjmploDTO> getAllUsers() {
+    public List<UsuarioDTO> getAllUsers() {
         return usuarioRepository.findAll().stream()
-            .map(UsuarioEjmploDTO::new)
+            .map(UsuarioDTO::new)
             .collect(Collectors.toList());
     }
 
