@@ -1,9 +1,12 @@
 package com.socies.voto.services;
 import com.socies.voto.dtos.usuario.*;
 import com.socies.voto.exceptions.ResourceNotFoundException;
+import com.socies.voto.exceptions.Rol.RolNotFoundException;
 import com.socies.voto.exceptions.Usuario.EmailAlreadyExistsException;
 import com.socies.voto.exceptions.Usuario.UsuarioNotFoundException;
+import com.socies.voto.models.Rol;
 import com.socies.voto.models.Usuario;
+import com.socies.voto.repositories.RolRepository;
 import com.socies.voto.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +20,9 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private RolRepository rolRepository;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
@@ -32,45 +38,20 @@ public class UsuarioService {
                 .orElseThrow(() -> new UsuarioNotFoundException("Usuario no encontrado con el id: " + usuario_id));
     }
 
-    public UsuarioDTO createUserEmpleado(UsuarioCreateDTO usuarioCreateVotanteDTO) {
+    public UsuarioDTO createUsuario(UsuarioCreateDTO usuarioCreateVotanteDTO) {
         // Verificar si el correo ya existe
 
         if (usuarioRepository.existsByCorreo(usuarioCreateVotanteDTO.getCorreo())) { // si devuelve true entonces el usuario e email ya
             throw new EmailAlreadyExistsException("El correo electrónico ya está registrado.");
         }
 
+        Rol rol_usuario = rolRepository.findById(usuarioCreateVotanteDTO.getRol_id()).orElseThrow(() -> new RolNotFoundException("Rol no encontrado."));
+
         // Crear un nuevo usuario
-        Usuario usuario = new Usuario(usuarioCreateVotanteDTO, encoder.encode(usuarioCreateVotanteDTO.getPassword()));
+        Usuario usuario = new Usuario(usuarioCreateVotanteDTO, encoder.encode(usuarioCreateVotanteDTO.getPassword()), rol_usuario);
         usuario = usuarioRepository.save(usuario);
 
         // Guardar en la base de datos
-        return new UsuarioDTO(usuario);
-    }
-    
-    public void deleteUser(Long id) {
-        if (!usuarioRepository.existsById(id)) {
-            throw new UsuarioNotFoundException("El usuario con ID " + id + " no existe.");
-        }
-        usuarioRepository.deleteById(id);
-    }
-
-    public UsuarioActivosDTO getUsuarioActivos(Long id) {
-        return usuarioRepository.findById(id).map(UsuarioActivosDTO::new).orElseThrow(() -> new ResourceNotFoundException("Recurso no encontrado"));
-    }
-
-    public UsuarioDTO updateUser(Long id, UsuarioUpdateDTO usuarioUpdateDTO) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new UsuarioNotFoundException("Usuario no encontrado con ID: " + id));
-
-        usuario.setNombre(usuarioUpdateDTO.getNombre());
-        usuario.setRol(usuarioUpdateDTO.getRol());
-        usuario.setApellidoPaterno(usuarioUpdateDTO.getApellido_paterno());
-        usuario.setApellidoMaterno(usuarioUpdateDTO.getApellido_materno());
-        usuario.setCorreo(usuarioUpdateDTO.getCorreo());
-        usuario.setCedulaIdentidad(usuarioUpdateDTO.getCarnet_identidad());
-
-        usuario = usuarioRepository.save(usuario);
-
         return new UsuarioDTO(usuario);
     }
 
@@ -88,6 +69,4 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
         return estado_nuevo;
     }
-
-    // public UsuarioDTO updateFoto(Long id, MultipartFile foto) {}
 }

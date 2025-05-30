@@ -1,6 +1,5 @@
 package com.socies.voto.controllers.administrador;
 
-import com.socies.voto.dtos.usuario.UsuarioActivosDTO;
 import com.socies.voto.dtos.usuario.UsuarioCreateDTO;
 import com.socies.voto.dtos.usuario.UsuarioDTO;
 import com.socies.voto.dtos.usuario.UsuarioUpdateDTO;
@@ -31,7 +30,7 @@ public class UsuarioController {
     // Crear un usuario
     @PostMapping
     public ResponseEntity<ResponseWrapper<UsuarioDTO>> createUser(@RequestBody UsuarioCreateDTO usuarioCreateDTO) {
-        UsuarioDTO usuario = usuarioService.createUserEmpleado(usuarioCreateDTO);
+        UsuarioDTO usuario = usuarioService.createUsuario(usuarioCreateDTO);
         ResponseWrapper<UsuarioDTO> response = new ResponseWrapper<>(true, "Usuario creado exitosamente.", usuario);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -44,12 +43,14 @@ public class UsuarioController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /*
     @PutMapping("/{id_usuario}")
     public ResponseEntity<ResponseWrapper<UsuarioDTO>> updateUser(@PathVariable Long id_usuario, @RequestBody UsuarioUpdateDTO usuarioUpdateDTO) {
         UsuarioDTO usuario = usuarioService.updateUser(id_usuario, usuarioUpdateDTO);
         ResponseWrapper<UsuarioDTO> response = new ResponseWrapper<>(true, "Usuario actualizado exitosamente.", usuario);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    */
 
     @PatchMapping("/{id_usuario}/estado")
     public ResponseEntity<ResponseWrapper<UsuarioDTO>> disableOrEnableUser(@PathVariable Long id_usuario) {

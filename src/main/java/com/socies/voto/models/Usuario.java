@@ -47,7 +47,7 @@ public class Usuario extends BaseEntity {
     @JoinColumn(name = "rol_id", referencedColumnName = "id", nullable = false)
     private Rol rol;
 
-    public Usuario(UsuarioCreateDTO usuarioCreateDTO, String passwordHashed) {
+    public Usuario(UsuarioCreateDTO usuarioCreateDTO, String passwordHashed, Rol rol) {
         this.nombre = usuarioCreateDTO.getNombre();
         this.apellidoPaterno = usuarioCreateDTO.getApellidoPaterno();
         this.apellidoMaterno = usuarioCreateDTO.getApellidoMaterno();
@@ -55,6 +55,7 @@ public class Usuario extends BaseEntity {
         this.fechaNacimiento = usuarioCreateDTO.getFechaNacimiento();
         this.correo = usuarioCreateDTO.getCorreo();
         this.contrasenaHash = passwordHashed;
+        this.rol = rol;
     }
 
 }
