@@ -20,4 +20,8 @@ public class Rol extends BaseEntity{
 
     @OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Usuario> usuarios;
+
+    public Rol(String tipo_rol) {
+        this.tipo_rol = tipo_rol;
+    }
 }

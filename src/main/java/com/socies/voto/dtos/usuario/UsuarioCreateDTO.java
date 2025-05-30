@@ -38,8 +38,7 @@ public class UsuarioCreateDTO {
     private String celular;
 
     @NonNull
-    private Rol rol;
+    private Long rol_id;
 
-    // Agrega aquí si quieres votoHabilitado, etc.
 
 }
