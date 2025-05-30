@@ -1,8 +1,5 @@
 package com.socies.voto.services;
-import com.socies.voto.dtos.usuario.UsuarioActivosDTO;
-import com.socies.voto.dtos.usuario.UsuarioCreateDTO;
-import com.socies.voto.dtos.usuario.UsuarioDTO;
-import com.socies.voto.dtos.usuario.UsuarioUpdateDTO;
+import com.socies.voto.dtos.usuario.*;
 import com.socies.voto.exceptions.ResourceNotFoundException;
 import com.socies.voto.exceptions.Usuario.EmailAlreadyExistsException;
 import com.socies.voto.exceptions.Usuario.UsuarioNotFoundException;
@@ -23,9 +20,9 @@ public class UsuarioService {
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-    public List<UsuarioDTO> getAllUsers() {
+    public List<UsuarioEjmploDTO> getAllUsers() {
         return usuarioRepository.findAll().stream()
-            .map(UsuarioDTO::new)
+            .map(UsuarioEjmploDTO::new)
             .collect(Collectors.toList());
     }
 

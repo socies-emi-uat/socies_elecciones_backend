@@ -1,0 +1,45 @@
+package com.socies.voto.dtos.usuario;
+
+import com.socies.voto.models.Rol;
+import com.socies.voto.models.Usuario;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class UsuarioEjmploDTO {
+
+    private Long id;
+    private String nombre;
+    private String apellidoPaterno;
+    private String apellidoMaterno;
+    private String cedulaIdentidad;
+    private String correo;
+    private boolean isDeleted;
+    private boolean estado;
+
+    // Constructor explícito (opcional)
+    public UsuarioEjmploDTO(Long id, String nombre, String apellidoPaterno, String apellidoMaterno,
+                            String cedulaIdentidad, String correo, Rol rol) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.cedulaIdentidad = cedulaIdentidad;
+        this.correo = correo;
+    }
+
+    // Constructor desde entidad Usuario
+    public UsuarioEjmploDTO(Usuario usuario) {
+        this.id = usuario.getId();
+        this.nombre = usuario.getNombre();
+        this.apellidoPaterno = usuario.getApellidoPaterno();
+        this.apellidoMaterno = usuario.getApellidoMaterno();
+        this.cedulaIdentidad = usuario.getCedulaIdentidad();
+        this.correo = usuario.getCorreo();
+        this.isDeleted = usuario.is_deleted();
+        this.estado = usuario.isEstado();
+    }
+}
