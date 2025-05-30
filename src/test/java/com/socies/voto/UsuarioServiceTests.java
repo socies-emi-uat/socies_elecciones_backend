@@ -4,6 +4,7 @@ import com.socies.voto.dtos.usuario.UsuarioCreateDTO;
 import com.socies.voto.dtos.usuario.UsuarioDTO;
 import com.socies.voto.models.Rol;
 import com.socies.voto.models.Usuario;
+import com.socies.voto.repositories.RolRepository;
 import com.socies.voto.repositories.UsuarioRepository;
 import com.socies.voto.services.UsuarioService;
 import org.junit.jupiter.api.Test;
@@ -12,9 +13,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,6 +29,13 @@ public class UsuarioServiceTests {
 
     @Mock
     private UsuarioRepository usuarioRepository;
+
+    @Mock
+    private RolRepository rolRepository;
+
+    @Mock
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
 
     @Test
     void testGetListUsuarios() {
@@ -65,5 +75,43 @@ public class UsuarioServiceTests {
 
         // Verificar que findAll() se llamó una vez
         Mockito.verify(usuarioRepository, Mockito.times(1)).findAll();
+    }
+
+    @Test
+    void testCreateUsuarioSuccess() {
+        // DTO de prueba
+        UsuarioCreateDTO createDTO = new UsuarioCreateDTO(
+                "John", "Doe", "Smith",
+                "password123", "123456", LocalDateTime.of(1990, 1, 1, 0, 0),
+                "john.doe@example.com", "789456", "123456789", 1L
+        );
+
+        Rol rol = new Rol();
+        rol.setId(1L);
+        rol.setTipo_rol("USER");
+
+        // Mock de que no existe el correo
+        Mockito.when(usuarioRepository.existsByCorreo(createDTO.getCorreo())).thenReturn(false);
+        // Mock de que el rol existe
+        Mockito.when(rolRepository.findById(1L)).thenReturn(Optional.of(rol));
+        // Mock de codificación de contraseña
+        Mockito.when(encoder.encode(createDTO.getPassword())).thenReturn("encodedPassword");
+        // Mock de guardado del usuario
+        Usuario usuario = new Usuario(createDTO, "encodedPassword", rol);
+        Mockito.when(usuarioRepository.save(Mockito.any(Usuario.class))).thenReturn(usuario);
+
+        // Ejecutar el servicio
+        UsuarioDTO result = usuarioService.createUsuario(createDTO);
+
+        // Verificar resultados
+        assertNotNull(result);
+        assertEquals("John", result.getNombre());
+        assertEquals("john.doe@example.com", result.getCorreo());
+
+        // Verificar llamadas
+        Mockito.verify(usuarioRepository).existsByCorreo(createDTO.getCorreo());
+        Mockito.verify(rolRepository).findById(1L);
+        Mockito.verify(encoder).encode("password123");
+        Mockito.verify(usuarioRepository).save(Mockito.any(Usuario.class));
     }
 }
