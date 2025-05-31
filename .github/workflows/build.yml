@@ -10,6 +10,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    environment: POSTGRES_USER
 
     steps:
       - name: Checkout del código
