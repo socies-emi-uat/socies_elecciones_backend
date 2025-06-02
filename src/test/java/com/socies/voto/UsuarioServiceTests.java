@@ -71,7 +71,7 @@ public class UsuarioServiceTests {
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals("John", result.get(0).getNombre());
-        assertEquals("Jane2", result.get(1).getNombre());
+        assertEquals("Jane", result.get(1).getNombre());
 
         // Verificar que findAll() se llamó una vez
         Mockito.verify(usuarioRepository, Mockito.times(1)).findAll();
