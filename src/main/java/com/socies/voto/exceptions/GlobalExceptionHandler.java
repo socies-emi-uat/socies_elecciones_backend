@@ -4,6 +4,8 @@ package com.socies.voto.exceptions;
 import com.socies.voto.dtos.AuthDTO.LoginAuthResponseDTO;
 import com.socies.voto.dtos.usuario.UsuarioDTO;
 import com.socies.voto.exceptions.Auth.AuthFailedException;
+import com.socies.voto.exceptions.Cargo.CargoAlreadyExistsException;
+import com.socies.voto.exceptions.Cargo.CargoNotFoundException;
 import com.socies.voto.exceptions.Usuario.EmailAlreadyExistsException;
 import com.socies.voto.exceptions.Usuario.UsuarioInvalidOldPasswordFoundException;
 import com.socies.voto.exceptions.Usuario.UsuarioNotFoundException;
@@ -48,6 +50,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ResponseWrapper<Void>> handleResourceNotFoundException(ResourceNotFoundException ex) {
         ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CargoNotFoundException.class)
+    public ResponseEntity<ResponseWrapper<Void>> handleCargoNotFound(CargoNotFoundException ex) {
+        ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CargoAlreadyExistsException.class)
+    public ResponseEntity<ResponseWrapper<Void>> handleCargoAlreadyExists(CargoAlreadyExistsException ex) {
+        ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
     // Otros controladores de excepciones pueden ir aquí
 }
