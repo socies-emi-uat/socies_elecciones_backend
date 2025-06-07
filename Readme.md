@@ -1,51 +1,63 @@
-# 🗳️ SOCIES - Sistema de Elecciones Electrónicas Seguras (Backend)
+<h1 align="center">🗳️ SOCIES - Sistema de Elecciones Electrónicas Seguras (Backend)</h1>
 
-## 1. 📄 Descripción del proyecto
+<p align="center">
+  <b>Un backend robusto, seguro y respaldado por blockchain para procesos electorales digitales.</b><br>
+  Desarrollado en Spring Boot + PostgreSQL + JWT + Hashing para una integridad total.
+</p>
 
-Este proyecto es el **backend oficial del sistema web SOCIES**, una plataforma electoral digital respaldada mediante tecnología **blockchain**. Se encarga de administrar y asegurar los procesos clave como autenticación, gestión de usuarios, registro de candidaturas, votaciones y verificación de resultados.
-
-El backend se ha desarrollado utilizando **Spring Boot + PostgreSQL**, exponiendo una **API REST segura**. Todos los votos emitidos están protegidos criptográficamente y respaldados con una **huella digital (hash) tipo blockchain**, lo que hace que el sistema sea **extremadamente difícil de corromper o manipular**.
-
-### 🎯 Objetivo principal
-
-- Garantizar procesos electorales confiables, seguros y auditables.
-- Proporcionar integridad mediante hashing y validación de transacciones (tipo blockchain).
-- Exponer servicios RESTful seguros para ser consumidos por una interfaz web frontend.
+<p align="center">
+  <img src="https://img.shields.io/badge/Java-17-blue?style=flat-square" />
+  <img src="https://img.shields.io/badge/SpringBoot-3.0-success?style=flat-square" />
+  <img src="https://img.shields.io/badge/PostgreSQL-14-blue?style=flat-square" />
+  <img src="https://img.shields.io/badge/Security-Blockchain-green?style=flat-square" />
+  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" />
+</p>
 
 ---
 
-## 2. ⚙️ Configuración inicial
+## 1.📄 Descripción del proyecto
 
-### ✅ Requisitos previos
+SOCIES es el sistema de backend para una plataforma de elecciones electrónicas con enfoque en **seguridad, transparencia e integridad**. Implementa autenticación JWT, hashing tipo blockchain y control de usuarios, candidatos y votos.
+
+🛡️ **Resistencia a la corrupción**: Cada voto se convierte en una transacción firmada digitalmente (SHA-256).  
+🔗 **Blockchain-local**: Se almacena una cadena de hashes para verificar la integridad de la votación.  
+🌐 **API REST**: Expuesta para consumo desde un frontend moderno.
+
+---
+
+## 2.⚙️ Configuración inicial
+
+### ✅ Requisitos
 
 - Java 17+
 - Gradle (wrapper incluido)
 - PostgreSQL 14+
 - Docker (opcional)
-- Postman o Swagger (para pruebas de API)
 - Git
+- Postman o Swagger
 
-### 📥 Clonar el repositorio
+### 📥 Clonar el proyecto
 
 ```bash
-git clone https://github.com/tu-usuario/socies_elecciones_backend.git
-cd socies_elecciones_backend
+git clone https://github.com/socies-emi-uat/socies_elecciones_backend.git
+cd socies_elecciones_backend  (rama develop en produccion)
 ```
 
 ---
 
-## 3. 🚀 Cómo ejecutar el proyecto
+## 🚀 Ejecución
 
-### ▶️ Compilar y correr con Gradle
+### ▶️ Levantar con Gradle
 
-> Para Windows:
 ```bash
+./gradlew bootRun
+# o en Windows
 gradlew.bat bootRun
-gradlew.bat Test (opcional para testeo)
-gradlew.bat Clean (opcional para Limpieza de Cache)
 ```
 
-### 🔧 Configuración de entorno (`application.properties`)
+### 3. 🔧 Configuración
+
+Edita `src/main/resources/application.properties`:
 
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/eleccionesDB
@@ -54,7 +66,7 @@ spring.datasource.password=tu_contraseña
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 
-# Clave secreta para JWT
+# JWT Secret
 jwt.secret=4a436dd4a40284253c8686459bf654c9a7d7781847d112b0b0e14ded33fa10dd
 ```
 
@@ -89,10 +101,7 @@ jwt.secret=4a436dd4a40284253c8686459bf654c9a7d7781847d112b0b0e14ded33fa10dd
 - `GET /votos/usuario/{id}`
 - `GET /votos/proceso/{id}`
 
-> Cada voto será convertido a una **transacción digital con SHA-256**, y respaldado en una cadena de bloques local (blockchain-like) para preservar su integridad.
-
 ---
-
 ## 5. ✨ Otras mejoras
 
 ### 🏷️ Badges
@@ -111,6 +120,7 @@ jwt.secret=4a436dd4a40284253c8686459bf654c9a7d7781847d112b0b0e14ded33fa10dd
 
 ---
 
-## 👥 Equipo de desarrollo
+## 👥 Equipo
+Este sistema está siendo construido por un equipo de desarrolladores como parte de un proyecto académico de la "Escuela Militar de Ingenieria - Unidad Academica del Tropico" con propósito social, donde la **transparencia y resistencia a la manipulación de elecciones** es prioridad.
 
-Este sistema está siendo construido por un equipo de "poner numero" desarrolladores como parte de un proyecto académico de la "Escuela Militar de Ingenieria - Unidad Academica del Tropico" con propósito social, donde la **transparencia y resistencia a la manipulación de elecciones** es prioridad.
+<p align="center"><i>Contribuye, mejora y apoya la democracia digital 🇧🇴</i></p>
