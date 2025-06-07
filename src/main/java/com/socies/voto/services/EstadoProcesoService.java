@@ -6,28 +6,43 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.socies.voto.dtos.EstadoProceso.EstadoProcesoCreateDTO;
 import com.socies.voto.dtos.EstadoProceso.EstadoProcesoDTO;
+import com.socies.voto.exceptions.EstadoProceso.EstadoProcesoAlreadyExistsException;
+import com.socies.voto.exceptions.EstadoProceso.EstadoProcesoNotFoundException;
+import com.socies.voto.models.EstadoProceso;
 import com.socies.voto.repositories.EstadoProcesoRepository;
 
 @Service
 public class EstadoProcesoService {
+    
     @Autowired
-    EstadoProcesoRepository estadoProcesoRepository;
+    private EstadoProcesoRepository estadoProcesoRepository;
+
     public List<EstadoProcesoDTO> obtenerTodosLosEstadosProceso() {
-        return estadoProcesoRepository.findAll().stream().map(EstadoProcesoDTO::new).collect(Collectors.toList());
+        return estadoProcesoRepository.findAll()
+                .stream()
+                .map(EstadoProcesoDTO::new)
+                .collect(Collectors.toList());
     }
+
     public EstadoProcesoDTO obtenerEstadoProcesoPorId(Long id) {
         return estadoProcesoRepository.findById(id)
                 .map(EstadoProcesoDTO::new)
-                .orElseThrow(() -> new RuntimeException("El estado de proceso no fue encontrado"));
+                .orElseThrow(() -> new EstadoProcesoNotFoundException("El estado de proceso no fue encontrado"));
     }
-    public EstadoProcesoDTO crearEstadoProceso(com.socies.voto.dtos.EstadoProceso.EstadoProcesoCreateDTO estadoProcesoCreateDTO) {
+
+    public EstadoProcesoDTO crearEstadoProceso(EstadoProcesoCreateDTO estadoProcesoCreateDTO) {
         // Verificar si ya existe por nombre
         estadoProcesoRepository.findByEstadoProceso(estadoProcesoCreateDTO.getEstadoProceso())
-                .ifPresent(e -> { throw new RuntimeException("El estado de proceso ya existe"); });
+                .ifPresent(e -> { 
+                    throw new EstadoProcesoAlreadyExistsException("El estado de proceso ya existe"); 
+                });
+
         // Crear y guardar nuevo estado de proceso
-        com.socies.voto.models.EstadoProceso nuevoEstadoProceso = new com.socies.voto.models.EstadoProceso(estadoProcesoCreateDTO.getEstadoProceso());
-        com.socies.voto.models.EstadoProceso guardado = estadoProcesoRepository.save(nuevoEstadoProceso);
+        EstadoProceso nuevoEstadoProceso = new EstadoProceso(estadoProcesoCreateDTO.getEstadoProceso());
+        EstadoProceso guardado = estadoProcesoRepository.save(nuevoEstadoProceso);
+        
         // Devolver DTO del estado de proceso recién creado
         return new EstadoProcesoDTO(guardado.getId(), guardado.getEstado_proceso());
     }
