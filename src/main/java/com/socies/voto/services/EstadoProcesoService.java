@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.socies.voto.dtos.EstadoProceso.EstadoProcesoCreateDTO;
 import com.socies.voto.dtos.EstadoProceso.EstadoProcesoDTO;
+import com.socies.voto.dtos.EstadoProceso.EstadoProcesoUpdateDTO;
 import com.socies.voto.exceptions.EstadoProceso.EstadoProcesoAlreadyExistsException;
 import com.socies.voto.exceptions.EstadoProceso.EstadoProcesoNotFoundException;
 import com.socies.voto.models.EstadoProceso;
@@ -40,5 +41,21 @@ public class EstadoProcesoService {
         
         // Devolver DTO del estado de proceso recién creado
         return new EstadoProcesoDTO(guardado.getId(), guardado.getEstadoProceso());
+    }
+    public EstadoProcesoDTO actualizarEstadoProceso(Long id, EstadoProcesoUpdateDTO updateDTO) {
+        EstadoProceso estado = estadoProcesoRepository.findById(id)
+            .orElseThrow(() -> new EstadoProcesoNotFoundException("Estado de proceso no encontrado"));
+        
+        // Verificar si el nuevo nombre ya existe (excepto para el mismo registro)
+        estadoProcesoRepository.findByEstadoProceso(updateDTO.getEstadoProceso())
+            .filter(e -> !e.getId().equals(id))
+            .ifPresent(e -> {
+                throw new EstadoProcesoAlreadyExistsException("El nombre del estado ya está en uso");
+            });
+        
+        estado.setEstadoProceso(updateDTO.getEstadoProceso());
+        EstadoProceso actualizado = estadoProcesoRepository.save(estado);
+        
+        return new EstadoProcesoDTO(actualizado);
     }
 }

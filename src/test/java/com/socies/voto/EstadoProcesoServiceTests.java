@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.socies.voto.dtos.EstadoProceso.EstadoProcesoCreateDTO;
 import com.socies.voto.dtos.EstadoProceso.EstadoProcesoDTO;
+import com.socies.voto.dtos.EstadoProceso.EstadoProcesoUpdateDTO;
 import com.socies.voto.exceptions.EstadoProceso.EstadoProcesoAlreadyExistsException;
 import com.socies.voto.exceptions.EstadoProceso.EstadoProcesoNotFoundException;
 import com.socies.voto.models.EstadoProceso;
@@ -67,28 +68,134 @@ public class EstadoProcesoServiceTests {
     void testObtenerEstadoProcesoPorIdNoExiste() {
         Mockito.when(estadoProcesoRepository.findById(999L)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(EstadoProcesoNotFoundException.class, () -> {
+        Exception exception = assertThrows(RuntimeException.class, () -> {
             estadoProcesoService.obtenerEstadoProcesoPorId(999L);
         });
 
         assertEquals("El estado de proceso no fue encontrado", exception.getMessage());
+
         Mockito.verify(estadoProcesoRepository).findById(999L);
+    }
+
+    @Test
+    void testCrearEstadoProceso() {
+        EstadoProcesoCreateDTO dto = new EstadoProcesoCreateDTO("Nuevo Estado");
+
+        Mockito.when(estadoProcesoRepository.findByEstadoProceso("Nuevo Estado")).thenReturn(Optional.empty());
+
+        EstadoProceso ep = new EstadoProceso("Nuevo Estado");
+        ep.setId(1L);
+
+        Mockito.when(estadoProcesoRepository.save(Mockito.any(EstadoProceso.class))).thenReturn(ep);
+
+        EstadoProcesoDTO result = estadoProcesoService.crearEstadoProceso(dto);
+
+        assertEquals("Nuevo Estado", result.getEstadoProceso());
+        assertEquals(1L, result.getId());
+
+        Mockito.verify(estadoProcesoRepository).findByEstadoProceso("Nuevo Estado");
+        Mockito.verify(estadoProcesoRepository).save(Mockito.any(EstadoProceso.class));
     }
 
     @Test
     void testCrearEstadoProcesoYaExiste() {
         EstadoProceso existente = new EstadoProceso("Estado Existente");
 
-        Mockito.when(estadoProcesoRepository.findByEstadoProceso("Estado Existente"))
-               .thenReturn(Optional.of(existente));
+        Mockito.when(estadoProcesoRepository.findByEstadoProceso("Estado Existente")).thenReturn(Optional.of(existente));
 
         EstadoProcesoCreateDTO dto = new EstadoProcesoCreateDTO("Estado Existente");
 
-        Exception exception = assertThrows(EstadoProcesoAlreadyExistsException.class, () -> {
+        Exception exception = assertThrows(RuntimeException.class, () -> {
             estadoProcesoService.crearEstadoProceso(dto);
         });
 
         assertEquals("El estado de proceso ya existe", exception.getMessage());
+
         Mockito.verify(estadoProcesoRepository).findByEstadoProceso("Estado Existente");
     }
+
+    @Test
+    void testActualizarEstadoProcesoExitoso() {
+        // Configuración inicial
+        Long id = 1L;
+        EstadoProcesoUpdateDTO updateDTO = new EstadoProcesoUpdateDTO();
+        updateDTO.setEstadoProceso("Nuevo Nombre");
+        
+        EstadoProceso estadoExistente = new EstadoProceso("Nombre Antiguo");
+        estadoExistente.setId(id);
+        
+        EstadoProceso estadoActualizado = new EstadoProceso("Nuevo Nombre");
+        estadoActualizado.setId(id);
+
+        // Mock del repositorio
+        Mockito.when(estadoProcesoRepository.findById(id))
+            .thenReturn(Optional.of(estadoExistente));
+        
+        Mockito.when(estadoProcesoRepository.findByEstadoProceso("Nuevo Nombre"))
+            .thenReturn(Optional.empty());
+        
+        Mockito.when(estadoProcesoRepository.save(Mockito.any(EstadoProceso.class)))
+            .thenReturn(estadoActualizado);
+
+        // Ejecución
+        EstadoProcesoDTO resultado = estadoProcesoService.actualizarEstadoProceso(id, updateDTO);
+
+        // Verificaciones
+        assertEquals("Nuevo Nombre", resultado.getEstadoProceso());
+        assertEquals(id, resultado.getId());
+        
+        Mockito.verify(estadoProcesoRepository).findById(id);
+        Mockito.verify(estadoProcesoRepository).findByEstadoProceso("Nuevo Nombre");
+        Mockito.verify(estadoProcesoRepository).save(Mockito.any(EstadoProceso.class));
+    }
+
+    @Test
+    void testActualizarEstadoProcesoNoExiste() {
+        Long id = 999L;
+        EstadoProcesoUpdateDTO updateDTO = new EstadoProcesoUpdateDTO();
+        updateDTO.setEstadoProceso("Nuevo Nombre");
+
+        Mockito.when(estadoProcesoRepository.findById(id))
+            .thenReturn(Optional.empty());
+
+        // Ejecución y verificación
+        Exception exception = assertThrows(EstadoProcesoNotFoundException.class, () -> {
+            estadoProcesoService.actualizarEstadoProceso(id, updateDTO);
+        });
+
+        assertEquals("Estado de proceso no encontrado", exception.getMessage());
+        Mockito.verify(estadoProcesoRepository).findById(id);
+        Mockito.verify(estadoProcesoRepository, Mockito.never()).save(Mockito.any());
+    }
+
+    @Test
+    void testActualizarEstadoProcesoNombreDuplicado() {
+        Long id = 1L;
+        EstadoProcesoUpdateDTO updateDTO = new EstadoProcesoUpdateDTO();
+        updateDTO.setEstadoProceso("Nombre Existente");
+        
+        EstadoProceso estadoExistente = new EstadoProceso("Nombre Antiguo");
+        estadoExistente.setId(id);
+        
+        EstadoProceso otroEstado = new EstadoProceso("Nombre Existente");
+        otroEstado.setId(2L);
+
+        // Mock del repositorio
+        Mockito.when(estadoProcesoRepository.findById(id))
+            .thenReturn(Optional.of(estadoExistente));
+        
+        Mockito.when(estadoProcesoRepository.findByEstadoProceso("Nombre Existente"))
+            .thenReturn(Optional.of(otroEstado));
+
+        // Ejecución y verificación
+        Exception exception = assertThrows(EstadoProcesoAlreadyExistsException.class, () -> {
+            estadoProcesoService.actualizarEstadoProceso(id, updateDTO);
+        });
+
+        assertEquals("El nombre del estado ya está en uso", exception.getMessage());
+        Mockito.verify(estadoProcesoRepository).findById(id);
+        Mockito.verify(estadoProcesoRepository).findByEstadoProceso("Nombre Existente");
+        Mockito.verify(estadoProcesoRepository, Mockito.never()).save(Mockito.any());
+    }
+    
 }

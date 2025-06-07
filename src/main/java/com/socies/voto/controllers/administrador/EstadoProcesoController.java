@@ -8,12 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.socies.voto.dtos.EstadoProceso.EstadoProcesoCreateDTO;
 import com.socies.voto.dtos.EstadoProceso.EstadoProcesoDTO;
+import com.socies.voto.dtos.EstadoProceso.EstadoProcesoUpdateDTO;
 import com.socies.voto.services.EstadoProcesoService;
 import com.socies.voto.utils.ResponseWrapper;
 
@@ -49,6 +51,22 @@ public class EstadoProcesoController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    // Eliminar un estado de proceso por ID
+    @PutMapping("/{id_estado}")
+    public ResponseEntity<ResponseWrapper<EstadoProcesoDTO>> actualizarEstadoProceso(
+            @PathVariable Long id_estado,
+            @RequestBody EstadoProcesoUpdateDTO updateDTO) {
+        
+        EstadoProcesoDTO estadoActualizado = estadoProcesoService.actualizarEstadoProceso(id_estado, updateDTO);
+        
+        ResponseWrapper<EstadoProcesoDTO> response = new ResponseWrapper<>(
+            true, 
+            "Estado de proceso actualizado exitosamente.", 
+            estadoActualizado
+        );
+        
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
     // Obtener un estado de proceso por ID
     @GetMapping("/{id_estado}")
     public ResponseEntity<ResponseWrapper<EstadoProcesoDTO>> getEstadoProcesoById(
@@ -61,4 +79,6 @@ public class EstadoProcesoController {
         );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    
+    
 }
