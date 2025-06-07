@@ -13,11 +13,11 @@ import lombok.Setter;
 public class EstadoProceso extends BaseEntity{
 
     @Column(nullable = false, length = 20)
-    String estado_proceso;
+    String estadoProceso;
 
 
     public EstadoProceso(String estado	) {
-        this.estado_proceso = estado;
+        this.estadoProceso = estado;
     }
 
 }

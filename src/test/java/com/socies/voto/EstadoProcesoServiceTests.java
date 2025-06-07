@@ -42,8 +42,8 @@ public class EstadoProcesoServiceTests {
         List<EstadoProcesoDTO> resultado = estadoProcesoService.obtenerTodosLosEstadosProceso();
 
         assertEquals(2, resultado.size());
-        assertEquals("Activo", resultado.get(0).getEstado_proceso());
-        assertEquals("Finalizado", resultado.get(1).getEstado_proceso());
+        assertEquals("Activo", resultado.get(0).getEstadoProceso());
+        assertEquals("Finalizado", resultado.get(1).getEstadoProceso());
 
         Mockito.verify(estadoProcesoRepository).findAll();
     }
@@ -57,7 +57,7 @@ public class EstadoProcesoServiceTests {
 
         EstadoProcesoDTO dto = estadoProcesoService.obtenerEstadoProcesoPorId(1L);
 
-        assertEquals("En espera", dto.getEstado_proceso());
+        assertEquals("En espera", dto.getEstadoProceso());
         assertEquals(1L, dto.getId());
 
         Mockito.verify(estadoProcesoRepository).findById(1L);

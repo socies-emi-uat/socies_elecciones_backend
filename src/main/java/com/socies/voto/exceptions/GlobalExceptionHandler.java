@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
         ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
-        @ExceptionHandler(EstadoProcesoNotFoundException.class)
+    @ExceptionHandler(EstadoProcesoNotFoundException.class)
     public ResponseEntity<ResponseWrapper<Void>> handleEstadoProcesoNotFound(EstadoProcesoNotFoundException ex) {
         ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
