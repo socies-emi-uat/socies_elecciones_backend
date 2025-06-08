@@ -42,7 +42,10 @@ SOCIES es el sistema de backend para una plataforma de elecciones electrónicas 
 git clone https://github.com/socies-emi-uat/socies_elecciones_backend.git
 cd socies_elecciones_backend  (rama develop en produccion)
 ```
+### Configuración importante
 
+1. Copie `.env.example` a `.env`.
+2. Rellene las variables con los valores reales.
 ---
 
 ## 🚀 Ejecución
