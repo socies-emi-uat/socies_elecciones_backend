@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RolDTO {
-    private Long id;
-    private String nombre;
+  private Long id;
+  private String nombre;
 
-    public RolDTO(Rol rol) {
-        this.id = rol.getId();
-        this.nombre = rol.getTipo_rol();
-    }
+  public RolDTO(Rol rol) {
+    this.id = rol.getId();
+    this.nombre = rol.getTipo_rol();
+  }
 }

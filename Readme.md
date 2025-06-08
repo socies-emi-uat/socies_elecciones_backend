@@ -19,8 +19,8 @@
 
 SOCIES es el sistema de backend para una plataforma de elecciones electrónicas con enfoque en **seguridad, transparencia e integridad**. Implementa autenticación JWT, hashing tipo blockchain y control de usuarios, candidatos y votos.
 
-🛡️ **Resistencia a la corrupción**: Cada voto se convierte en una transacción firmada digitalmente (SHA-256).  
-🔗 **Blockchain-local**: Se almacena una cadena de hashes para verificar la integridad de la votación.  
+🛡️ **Resistencia a la corrupción**: Cada voto se convierte en una transacción firmada digitalmente (SHA-256).
+🔗 **Blockchain-local**: Se almacena una cadena de hashes para verificar la integridad de la votación.
 🌐 **API REST**: Expuesta para consumo desde un frontend moderno.
 
 ---

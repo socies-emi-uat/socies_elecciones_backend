@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UsuarioUpdateDTO {
-    private String nombre;
-    private String apellido_paterno;
-    private String apellido_materno;
-    private String correo;
-    private String carnet_identidad;
-    private Rol rol;
+  private String nombre;
+  private String apellido_paterno;
+  private String apellido_materno;
+  private String correo;
+  private String carnet_identidad;
+  private Rol rol;
 }

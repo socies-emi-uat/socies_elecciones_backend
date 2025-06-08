@@ -1,15 +1,13 @@
 package com.socies.voto.repositories;
 
 import com.socies.voto.models.Usuario;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
-
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-    boolean existsByCorreo(String correo);
+  boolean existsByCorreo(String correo);
 
-    Optional<Usuario> getUsuarioByCorreo(String correo);
-    Optional<Usuario> getUsuarioByCedulaIdentidad(String cedulaIdentidad);
+  Optional<Usuario> getUsuarioByCorreo(String correo);
 
+  Optional<Usuario> getUsuarioByCedulaIdentidad(String cedulaIdentidad);
 }
-
