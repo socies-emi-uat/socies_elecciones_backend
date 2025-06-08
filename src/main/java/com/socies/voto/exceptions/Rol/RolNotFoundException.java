@@ -1,6 +1,6 @@
 package com.socies.voto.exceptions.Rol;
 
-public class RolNotFoundException extends RuntimeException{
+public class RolNotFoundException extends RuntimeException {
     public RolNotFoundException() {
         super("Rol no encontrado");
     }

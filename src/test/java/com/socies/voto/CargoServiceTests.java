@@ -1,5 +1,7 @@
 package com.socies.voto;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.socies.voto.dtos.Cargo.CargoCreateDTO;
 import com.socies.voto.dtos.Cargo.CargoDTO;
 import com.socies.voto.exceptions.Cargo.CargoAlreadyExistsException;
@@ -7,6 +9,8 @@ import com.socies.voto.exceptions.Cargo.CargoNotFoundException;
 import com.socies.voto.models.Cargo;
 import com.socies.voto.repositories.CargoRepository;
 import com.socies.voto.services.CargoService;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,19 +18,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
 public class CargoServiceTests {
 
-    @InjectMocks
-    private CargoService cargoService;
+    @InjectMocks private CargoService cargoService;
 
-    @Mock
-    private CargoRepository cargoRepository;
+    @Mock private CargoRepository cargoRepository;
 
     @Test
     void testObtenerTodosLosCargos() {

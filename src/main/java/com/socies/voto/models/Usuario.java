@@ -2,13 +2,10 @@ package com.socies.voto.models;
 
 import com.socies.voto.dtos.usuario.UsuarioCreateDTO;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -57,5 +54,4 @@ public class Usuario extends BaseEntity {
         this.contrasenaHash = passwordHashed;
         this.rol = rol;
     }
-
 }

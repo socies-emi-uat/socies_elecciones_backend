@@ -22,8 +22,14 @@ public class UsuarioDTO {
     private String rolNombre;
 
     // Constructor explícito (opcional)
-    public UsuarioDTO(Long id, String nombre, String apellidoPaterno, String apellidoMaterno,
-                      String cedulaIdentidad, String correo, Rol rol) {
+    public UsuarioDTO(
+            Long id,
+            String nombre,
+            String apellidoPaterno,
+            String apellidoMaterno,
+            String cedulaIdentidad,
+            String correo,
+            Rol rol) {
         this.id = id;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;

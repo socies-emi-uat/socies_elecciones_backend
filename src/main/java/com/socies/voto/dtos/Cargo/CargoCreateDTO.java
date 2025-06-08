@@ -1,6 +1,5 @@
 package com.socies.voto.dtos.Cargo;
 
-import com.socies.voto.models.Cargo;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -9,10 +8,8 @@ import lombok.Setter;
 @Getter
 public class CargoCreateDTO {
 
-    @NonNull
-    String nombre_cargo;
+    @NonNull String nombre_cargo;
     String descripcion;
-
 
     public CargoCreateDTO(Long id, String nombreCargo, String descripcion) {
         this.nombre_cargo = nombreCargo;

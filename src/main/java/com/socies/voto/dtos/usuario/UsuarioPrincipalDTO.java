@@ -1,12 +1,11 @@
 package com.socies.voto.dtos.usuario;
 
 import com.socies.voto.models.Usuario;
+import java.util.Collection;
+import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.List;
 
 public class UsuarioPrincipalDTO implements UserDetails {
 
@@ -31,7 +30,11 @@ public class UsuarioPrincipalDTO implements UserDetails {
     }
 
     public String getNombre() {
-        return usuario.getNombre() + " " + usuario.getApellidoPaterno() + " " + usuario.getApellidoMaterno();
+        return usuario.getNombre()
+                + " "
+                + usuario.getApellidoPaterno()
+                + " "
+                + usuario.getApellidoMaterno();
     }
 
     public String getRol() {

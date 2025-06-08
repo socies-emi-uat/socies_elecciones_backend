@@ -1,6 +1,6 @@
 package com.socies.voto.exceptions.Usuario;
 
-public class UsuarioInvalidOldPasswordFoundException extends RuntimeException{
+public class UsuarioInvalidOldPasswordFoundException extends RuntimeException {
     public UsuarioInvalidOldPasswordFoundException() {
         super("Usuario no encontrado");
     }
