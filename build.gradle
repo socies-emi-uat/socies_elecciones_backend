@@ -62,17 +62,18 @@ tasks.named('test') {
 
 spotless {
     java {
-        googleJavaFormat('1.27.0') // versión moderna y estable
+        googleJavaFormat('1.17.0').aosp()
         target 'src/**/*.java'
-        indentWithSpaces(4)
+
+
         trimTrailingWhitespace()
         endWithNewline()
     }
 
     format 'misc', {
         target '*.gradle', '*.md', '.gitignore'
+        leadingTabsToSpaces(4)
         trimTrailingWhitespace()
-        indentWithSpaces(4)
         endWithNewline()
     }
 }

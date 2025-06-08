@@ -14,17 +14,17 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Rol extends BaseEntity {
 
-  @Column(nullable = false)
-  private String tipo_rol;
+    @Column(nullable = false)
+    private String tipo_rol;
 
-  @OneToMany(
-      mappedBy = "rol",
-      cascade = CascadeType.ALL,
-      orphanRemoval = true,
-      fetch = FetchType.LAZY)
-  private List<Usuario> usuarios;
+    @OneToMany(
+            mappedBy = "rol",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private List<Usuario> usuarios;
 
-  public Rol(String tipo_rol) {
-    this.tipo_rol = tipo_rol;
-  }
+    public Rol(String tipo_rol) {
+        this.tipo_rol = tipo_rol;
+    }
 }

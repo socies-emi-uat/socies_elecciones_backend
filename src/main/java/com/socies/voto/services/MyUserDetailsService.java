@@ -11,19 +11,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
-  @Autowired private UsuarioRepository usuarioRepository;
+    @Autowired private UsuarioRepository usuarioRepository;
 
-  @Override
-  public UsuarioPrincipalDTO loadUserByUsername(String username) throws UsernameNotFoundException {
-    Usuario usuario =
-        usuarioRepository
-            .getUsuarioByCorreo(username)
-            .orElseThrow(() -> new UsernameNotFoundException("El usuario no existe."));
-    if (usuario == null) {
-      System.out.println("User Not Found");
-      throw new UsernameNotFoundException("Usuario no encontrado.");
+    @Override
+    public UsuarioPrincipalDTO loadUserByUsername(String username)
+            throws UsernameNotFoundException {
+        Usuario usuario =
+                usuarioRepository
+                        .getUsuarioByCorreo(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("El usuario no existe."));
+        if (usuario == null) {
+            System.out.println("User Not Found");
+            throw new UsernameNotFoundException("Usuario no encontrado.");
+        }
+
+        return new UsuarioPrincipalDTO(usuario);
     }
-
-    return new UsuarioPrincipalDTO(usuario);
-  }
 }

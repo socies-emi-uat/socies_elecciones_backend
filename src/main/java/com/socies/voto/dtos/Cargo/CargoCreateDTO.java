@@ -8,11 +8,11 @@ import lombok.Setter;
 @Getter
 public class CargoCreateDTO {
 
-  @NonNull String nombre_cargo;
-  String descripcion;
+    @NonNull String nombre_cargo;
+    String descripcion;
 
-  public CargoCreateDTO(Long id, String nombreCargo, String descripcion) {
-    this.nombre_cargo = nombreCargo;
-    this.descripcion = descripcion;
-  }
+    public CargoCreateDTO(Long id, String nombreCargo, String descripcion) {
+        this.nombre_cargo = nombreCargo;
+        this.descripcion = descripcion;
+    }
 }

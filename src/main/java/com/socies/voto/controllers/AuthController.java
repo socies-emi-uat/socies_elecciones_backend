@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class AuthController {
 
-  @Autowired AuthService authService;
+    @Autowired AuthService authService;
 
-  @PostMapping("/login")
-  public ResponseEntity<ResponseWrapper<LoginAuthResponseDTO>> login(
-      @RequestBody LoginAuthDTO loginAuthDTO) {
-    LoginAuthResponseDTO loginAuthResponseDTO = authService.verify(loginAuthDTO);
-    ResponseWrapper<LoginAuthResponseDTO> response =
-        new ResponseWrapper<>(true, "Inicio de sesion correcto.", loginAuthResponseDTO);
-    return new ResponseEntity<>(response, HttpStatus.OK);
-  }
+    @PostMapping("/login")
+    public ResponseEntity<ResponseWrapper<LoginAuthResponseDTO>> login(
+            @RequestBody LoginAuthDTO loginAuthDTO) {
+        LoginAuthResponseDTO loginAuthResponseDTO = authService.verify(loginAuthDTO);
+        ResponseWrapper<LoginAuthResponseDTO> response =
+                new ResponseWrapper<>(true, "Inicio de sesion correcto.", loginAuthResponseDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

@@ -12,14 +12,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Cargo extends BaseEntity {
 
-  @Column(nullable = false, length = 20)
-  String nombre;
+    @Column(nullable = false, length = 20)
+    String nombre;
 
-  String descripcion;
+    String descripcion;
 
-  public Cargo(String nombre_cargo, String descripcion) {
+    public Cargo(String nombre_cargo, String descripcion) {
 
-    this.nombre = nombre_cargo;
-    this.descripcion = descripcion;
-  }
+        this.nombre = nombre_cargo;
+        this.descripcion = descripcion;
+    }
 }

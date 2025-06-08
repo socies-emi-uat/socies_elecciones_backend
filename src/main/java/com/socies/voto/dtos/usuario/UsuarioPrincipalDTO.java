@@ -9,67 +9,67 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class UsuarioPrincipalDTO implements UserDetails {
 
-  private final Usuario usuario;
+    private final Usuario usuario;
 
-  public UsuarioPrincipalDTO(Usuario usuario) {
-    this.usuario = usuario;
-  }
+    public UsuarioPrincipalDTO(Usuario usuario) {
+        this.usuario = usuario;
+    }
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    // Asegúrate de que coincida con el nombre real del campo en Rol
-    return List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getTipo_rol()));
-  }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Asegúrate de que coincida con el nombre real del campo en Rol
+        return List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getTipo_rol()));
+    }
 
-  public Long getId() {
-    return usuario.getId();
-  }
+    public Long getId() {
+        return usuario.getId();
+    }
 
-  public String getCorreo() {
-    return usuario.getCorreo();
-  }
+    public String getCorreo() {
+        return usuario.getCorreo();
+    }
 
-  public String getNombre() {
-    return usuario.getNombre()
-        + " "
-        + usuario.getApellidoPaterno()
-        + " "
-        + usuario.getApellidoMaterno();
-  }
+    public String getNombre() {
+        return usuario.getNombre()
+                + " "
+                + usuario.getApellidoPaterno()
+                + " "
+                + usuario.getApellidoMaterno();
+    }
 
-  public String getRol() {
-    return usuario.getRol().getTipo_rol();
-  }
+    public String getRol() {
+        return usuario.getRol().getTipo_rol();
+    }
 
-  @Override
-  public String getPassword() {
-    return usuario.getContrasenaHash();
-  }
+    @Override
+    public String getPassword() {
+        return usuario.getContrasenaHash();
+    }
 
-  @Override
-  public String getUsername() {
-    // Puedes decidir si usar cedulaIdentidad o correo como nombre de usuario
-    return usuario.getCedulaIdentidad();
-  }
+    @Override
+    public String getUsername() {
+        // Puedes decidir si usar cedulaIdentidad o correo como nombre de usuario
+        return usuario.getCedulaIdentidad();
+    }
 
-  @Override
-  public boolean isAccountNonExpired() {
-    return true; // Podrías adaptarlo a lógica real
-  }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // Podrías adaptarlo a lógica real
+    }
 
-  @Override
-  public boolean isAccountNonLocked() {
-    return true; // Podrías adaptarlo a lógica real
-  }
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // Podrías adaptarlo a lógica real
+    }
 
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return true; // Podrías adaptarlo a lógica real
-  }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // Podrías adaptarlo a lógica real
+    }
 
-  @Override
-  public boolean isEnabled() {
-    // Ejemplo usando el campo estado para habilitar la cuenta
-    return usuario.isEstado();
-  }
+    @Override
+    public boolean isEnabled() {
+        // Ejemplo usando el campo estado para habilitar la cuenta
+        return usuario.isEstado();
+    }
 }

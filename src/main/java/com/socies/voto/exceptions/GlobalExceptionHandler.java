@@ -19,70 +19,70 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-  // usuario no encontrado
-  @ExceptionHandler(UsuarioNotFoundException.class)
-  public ResponseEntity<ResponseWrapper<UsuarioDTO>> handleUsuarioNotFoundException(
-      UsuarioNotFoundException ex) {
-    // Devolvemos un mensaje con el código 404 (Not Found)
-    ResponseWrapper<UsuarioDTO> response = new ResponseWrapper<>(false, ex.getMessage(), null);
-    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-  }
+    // usuario no encontrado
+    @ExceptionHandler(UsuarioNotFoundException.class)
+    public ResponseEntity<ResponseWrapper<UsuarioDTO>> handleUsuarioNotFoundException(
+            UsuarioNotFoundException ex) {
+        // Devolvemos un mensaje con el código 404 (Not Found)
+        ResponseWrapper<UsuarioDTO> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 
-  // email ya existe
-  @ExceptionHandler(EmailAlreadyExistsException.class)
-  public ResponseEntity<ResponseWrapper<UsuarioDTO>> handleEmailAlreadyExistsException(
-      EmailAlreadyExistsException ex) {
-    ResponseWrapper<UsuarioDTO> response = new ResponseWrapper<>(false, ex.getMessage(), null);
-    return new ResponseEntity<>(response, HttpStatus.CONFLICT);
-  }
+    // email ya existe
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ResponseWrapper<UsuarioDTO>> handleEmailAlreadyExistsException(
+            EmailAlreadyExistsException ex) {
+        ResponseWrapper<UsuarioDTO> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
 
-  @ExceptionHandler(AuthFailedException.class)
-  public ResponseEntity<ResponseWrapper<LoginAuthResponseDTO>> handleAuthFailedException(
-      AuthFailedException ex) {
-    ResponseWrapper<LoginAuthResponseDTO> response =
-        new ResponseWrapper<>(false, ex.getMessage(), null);
-    return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-  }
+    @ExceptionHandler(AuthFailedException.class)
+    public ResponseEntity<ResponseWrapper<LoginAuthResponseDTO>> handleAuthFailedException(
+            AuthFailedException ex) {
+        ResponseWrapper<LoginAuthResponseDTO> response =
+                new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
 
-  @ExceptionHandler(UsuarioInvalidOldPasswordFoundException.class)
-  public ResponseEntity<ResponseWrapper<UsuarioDTO>> handleUsuarioNotFoundException(
-      UsuarioInvalidOldPasswordFoundException ex) {
-    ResponseWrapper<UsuarioDTO> response = new ResponseWrapper<>(false, ex.getMessage(), null);
-    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-  }
+    @ExceptionHandler(UsuarioInvalidOldPasswordFoundException.class)
+    public ResponseEntity<ResponseWrapper<UsuarioDTO>> handleUsuarioNotFoundException(
+            UsuarioInvalidOldPasswordFoundException ex) {
+        ResponseWrapper<UsuarioDTO> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
-  @ExceptionHandler(ResourceNotFoundException.class)
-  public ResponseEntity<ResponseWrapper<Void>> handleResourceNotFoundException(
-      ResourceNotFoundException ex) {
-    ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
-    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-  }
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ResponseWrapper<Void>> handleResourceNotFoundException(
+            ResourceNotFoundException ex) {
+        ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 
-  @ExceptionHandler(CargoNotFoundException.class)
-  public ResponseEntity<ResponseWrapper<Void>> handleCargoNotFound(CargoNotFoundException ex) {
-    ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
-    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-  }
+    @ExceptionHandler(CargoNotFoundException.class)
+    public ResponseEntity<ResponseWrapper<Void>> handleCargoNotFound(CargoNotFoundException ex) {
+        ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 
-  @ExceptionHandler(CargoAlreadyExistsException.class)
-  public ResponseEntity<ResponseWrapper<Void>> handleCargoAlreadyExists(
-      CargoAlreadyExistsException ex) {
-    ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
-    return new ResponseEntity<>(response, HttpStatus.CONFLICT);
-  }
+    @ExceptionHandler(CargoAlreadyExistsException.class)
+    public ResponseEntity<ResponseWrapper<Void>> handleCargoAlreadyExists(
+            CargoAlreadyExistsException ex) {
+        ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
 
-  @ExceptionHandler(EstadoProcesoNotFoundException.class)
-  public ResponseEntity<ResponseWrapper<Void>> handleEstadoProcesoNotFound(
-      EstadoProcesoNotFoundException ex) {
-    ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
-    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-  }
+    @ExceptionHandler(EstadoProcesoNotFoundException.class)
+    public ResponseEntity<ResponseWrapper<Void>> handleEstadoProcesoNotFound(
+            EstadoProcesoNotFoundException ex) {
+        ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 
-  @ExceptionHandler(EstadoProcesoAlreadyExistsException.class)
-  public ResponseEntity<ResponseWrapper<Void>> handleEstadoProcesoAlreadyExists(
-      EstadoProcesoAlreadyExistsException ex) {
-    ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
-    return new ResponseEntity<>(response, HttpStatus.CONFLICT);
-  }
-  // Otros controladores de excepciones pueden ir aquí
+    @ExceptionHandler(EstadoProcesoAlreadyExistsException.class)
+    public ResponseEntity<ResponseWrapper<Void>> handleEstadoProcesoAlreadyExists(
+            EstadoProcesoAlreadyExistsException ex) {
+        ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+    // Otros controladores de excepciones pueden ir aquí
 }

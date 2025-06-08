@@ -5,5 +5,5 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EstadoProcesoRepository extends JpaRepository<EstadoProceso, Long> {
-  Optional<EstadoProceso> findByEstadoProceso(String estadoProceso);
+    Optional<EstadoProceso> findByEstadoProceso(String estadoProceso);
 }

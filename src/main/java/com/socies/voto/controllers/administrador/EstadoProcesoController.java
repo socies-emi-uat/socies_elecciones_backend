@@ -19,34 +19,34 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/administrador/estados-proceso")
 public class EstadoProcesoController {
 
-  @Autowired private EstadoProcesoService estadoProcesoService;
+    @Autowired private EstadoProcesoService estadoProcesoService;
 
-  // Obtener todos los estados de proceso
-  @GetMapping
-  public ResponseEntity<ResponseWrapper<List<EstadoProcesoDTO>>> getAllEstadosProceso() {
-    List<EstadoProcesoDTO> estados = estadoProcesoService.obtenerTodosLosEstadosProceso();
-    ResponseWrapper<List<EstadoProcesoDTO>> response =
-        new ResponseWrapper<>(true, "Estados de proceso obtenidos correctamente.", estados);
-    return new ResponseEntity<>(response, HttpStatus.OK);
-  }
+    // Obtener todos los estados de proceso
+    @GetMapping
+    public ResponseEntity<ResponseWrapper<List<EstadoProcesoDTO>>> getAllEstadosProceso() {
+        List<EstadoProcesoDTO> estados = estadoProcesoService.obtenerTodosLosEstadosProceso();
+        ResponseWrapper<List<EstadoProcesoDTO>> response =
+                new ResponseWrapper<>(true, "Estados de proceso obtenidos correctamente.", estados);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-  // Crear un nuevo estado de proceso
-  @PostMapping
-  public ResponseEntity<ResponseWrapper<EstadoProcesoDTO>> createEstadoProceso(
-      @RequestBody EstadoProcesoCreateDTO estadoProcesoCreateDTO) {
-    EstadoProcesoDTO estado = estadoProcesoService.crearEstadoProceso(estadoProcesoCreateDTO);
-    ResponseWrapper<EstadoProcesoDTO> response =
-        new ResponseWrapper<>(true, "Estado de proceso creado exitosamente.", estado);
-    return new ResponseEntity<>(response, HttpStatus.CREATED);
-  }
+    // Crear un nuevo estado de proceso
+    @PostMapping
+    public ResponseEntity<ResponseWrapper<EstadoProcesoDTO>> createEstadoProceso(
+            @RequestBody EstadoProcesoCreateDTO estadoProcesoCreateDTO) {
+        EstadoProcesoDTO estado = estadoProcesoService.crearEstadoProceso(estadoProcesoCreateDTO);
+        ResponseWrapper<EstadoProcesoDTO> response =
+                new ResponseWrapper<>(true, "Estado de proceso creado exitosamente.", estado);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
 
-  // Obtener un estado de proceso por ID
-  @GetMapping("/{id_estado}")
-  public ResponseEntity<ResponseWrapper<EstadoProcesoDTO>> getEstadoProcesoById(
-      @PathVariable Long id_estado) {
-    EstadoProcesoDTO estado = estadoProcesoService.obtenerEstadoProcesoPorId(id_estado);
-    ResponseWrapper<EstadoProcesoDTO> response =
-        new ResponseWrapper<>(true, "Estado de proceso encontrado.", estado);
-    return new ResponseEntity<>(response, HttpStatus.OK);
-  }
+    // Obtener un estado de proceso por ID
+    @GetMapping("/{id_estado}")
+    public ResponseEntity<ResponseWrapper<EstadoProcesoDTO>> getEstadoProcesoById(
+            @PathVariable Long id_estado) {
+        EstadoProcesoDTO estado = estadoProcesoService.obtenerEstadoProcesoPorId(id_estado);
+        ResponseWrapper<EstadoProcesoDTO> response =
+                new ResponseWrapper<>(true, "Estado de proceso encontrado.", estado);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

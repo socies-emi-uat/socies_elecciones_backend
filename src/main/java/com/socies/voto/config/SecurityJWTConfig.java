@@ -24,60 +24,60 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityJWTConfig {
 
-  @Autowired private UserDetailsService userDetailsService;
+    @Autowired private UserDetailsService userDetailsService;
 
-  @Autowired private JWTFilter jwtFilter;
+    @Autowired private JWTFilter jwtFilter;
 
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    return http.csrf(customizer -> customizer.disable())
-        .authorizeHttpRequests(
-            request ->
-                request
-                    .requestMatchers(
-                        "/api/login", // metodo para iniciar sesion
-                        "/api/register", // metodo para registrarse
-                        "/api/data/**")
-                    .permitAll()
-                    .requestMatchers("/api/administrador/**")
-                    .hasRole("Administrador") // Solo ADMIN accede
-                    .requestMatchers("/api/votante/**")
-                    .hasRole("Votante")
-                    .anyRequest()
-                    .authenticated())
-        .httpBasic(Customizer.withDefaults())
-        .sessionManagement(
-            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-        .cors(c -> c.configurationSource(corsConfigurationSource()))
-        .build();
-  }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf(customizer -> customizer.disable())
+                .authorizeHttpRequests(
+                        request ->
+                                request.requestMatchers(
+                                                "/api/login", // metodo para iniciar sesion
+                                                "/api/register", // metodo para registrarse
+                                                "/api/data/**")
+                                        .permitAll()
+                                        .requestMatchers("/api/administrador/**")
+                                        .hasRole("Administrador") // Solo ADMIN accede
+                                        .requestMatchers("/api/votante/**")
+                                        .hasRole("Votante")
+                                        .anyRequest()
+                                        .authenticated())
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement(
+                        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .cors(c -> c.configurationSource(corsConfigurationSource()))
+                .build();
+    }
 
-  @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Arrays.asList("*"));
-    configuration.setAllowedMethods(
-        Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-    configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
-    configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
-  }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(
+                Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(
+                Arrays.asList("authorization", "content-type", "x-auth-token"));
+        configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
-  @Bean
-  public AuthenticationProvider authenticationProvider() {
-    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-    provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
-    provider.setUserDetailsService(userDetailsService);
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+        provider.setUserDetailsService(userDetailsService);
 
-    return provider;
-  }
+        return provider;
+    }
 
-  @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
-      throws Exception {
-    return config.getAuthenticationManager();
-  }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
+            throws Exception {
+        return config.getAuthenticationManager();
+    }
 }
