@@ -7,6 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ActivosApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ActivosApplication.class, args);
+            SpringApplication.run(ActivosApplication.class, args);
     }
 }
