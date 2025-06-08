@@ -1,6 +1,6 @@
 package com.socies.voto.exceptions.Cargo;
 
-public class CargoNotFoundException extends RuntimeException{
+public class CargoNotFoundException extends RuntimeException {
     public CargoNotFoundException() {
         super("Cargo no encontrado");
     }

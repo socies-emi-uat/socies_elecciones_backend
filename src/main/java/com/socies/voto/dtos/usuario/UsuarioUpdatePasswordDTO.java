@@ -11,5 +11,4 @@ public class UsuarioUpdatePasswordDTO {
 
     private String oldPassword;
     private String newPassword;
-
 }

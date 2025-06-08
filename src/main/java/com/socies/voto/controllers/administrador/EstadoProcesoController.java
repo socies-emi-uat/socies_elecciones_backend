@@ -1,7 +1,10 @@
 package com.socies.voto.controllers.administrador;
 
+import com.socies.voto.dtos.EstadoProceso.EstadoProcesoCreateDTO;
+import com.socies.voto.dtos.EstadoProceso.EstadoProcesoDTO;
+import com.socies.voto.services.EstadoProcesoService;
+import com.socies.voto.utils.ResponseWrapper;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,27 +15,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.socies.voto.dtos.EstadoProceso.EstadoProcesoCreateDTO;
-import com.socies.voto.dtos.EstadoProceso.EstadoProcesoDTO;
-import com.socies.voto.services.EstadoProcesoService;
-import com.socies.voto.utils.ResponseWrapper;
-
 @RestController
 @RequestMapping("/api/administrador/estados-proceso")
 public class EstadoProcesoController {
 
-    @Autowired
-    private EstadoProcesoService estadoProcesoService;
+    @Autowired private EstadoProcesoService estadoProcesoService;
 
     // Obtener todos los estados de proceso
     @GetMapping
     public ResponseEntity<ResponseWrapper<List<EstadoProcesoDTO>>> getAllEstadosProceso() {
         List<EstadoProcesoDTO> estados = estadoProcesoService.obtenerTodosLosEstadosProceso();
-        ResponseWrapper<List<EstadoProcesoDTO>> response = new ResponseWrapper<>(
-            true, 
-            "Estados de proceso obtenidos correctamente.", 
-            estados
-        );
+        ResponseWrapper<List<EstadoProcesoDTO>> response =
+                new ResponseWrapper<>(true, "Estados de proceso obtenidos correctamente.", estados);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -41,11 +35,8 @@ public class EstadoProcesoController {
     public ResponseEntity<ResponseWrapper<EstadoProcesoDTO>> createEstadoProceso(
             @RequestBody EstadoProcesoCreateDTO estadoProcesoCreateDTO) {
         EstadoProcesoDTO estado = estadoProcesoService.crearEstadoProceso(estadoProcesoCreateDTO);
-        ResponseWrapper<EstadoProcesoDTO> response = new ResponseWrapper<>(
-            true, 
-            "Estado de proceso creado exitosamente.", 
-            estado
-        );
+        ResponseWrapper<EstadoProcesoDTO> response =
+                new ResponseWrapper<>(true, "Estado de proceso creado exitosamente.", estado);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -54,11 +45,8 @@ public class EstadoProcesoController {
     public ResponseEntity<ResponseWrapper<EstadoProcesoDTO>> getEstadoProcesoById(
             @PathVariable Long id_estado) {
         EstadoProcesoDTO estado = estadoProcesoService.obtenerEstadoProcesoPorId(id_estado);
-        ResponseWrapper<EstadoProcesoDTO> response = new ResponseWrapper<>(
-            true, 
-            "Estado de proceso encontrado.", 
-            estado
-        );
+        ResponseWrapper<EstadoProcesoDTO> response =
+                new ResponseWrapper<>(true, "Estado de proceso encontrado.", estado);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

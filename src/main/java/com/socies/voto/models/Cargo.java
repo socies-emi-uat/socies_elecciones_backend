@@ -2,7 +2,6 @@ package com.socies.voto.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Cargo extends BaseEntity{
+public class Cargo extends BaseEntity {
 
     @Column(nullable = false, length = 20)
     String nombre;

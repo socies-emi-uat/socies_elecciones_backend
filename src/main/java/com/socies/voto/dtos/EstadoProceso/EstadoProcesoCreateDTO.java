@@ -8,8 +8,7 @@ import lombok.Setter;
 @Getter
 public class EstadoProcesoCreateDTO {
 
-    @NonNull
-    private String estadoProceso;
+    @NonNull private String estadoProceso;
 
     public EstadoProcesoCreateDTO(String estadoProceso) {
         this.estadoProceso = estadoProceso;

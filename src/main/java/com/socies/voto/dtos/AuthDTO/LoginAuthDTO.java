@@ -6,9 +6,7 @@ import lombok.NonNull;
 @Data
 public class LoginAuthDTO {
 
-    @NonNull
-    String email;
+    @NonNull String email;
 
-    @NonNull
-    String password;
+    @NonNull String password;
 }
