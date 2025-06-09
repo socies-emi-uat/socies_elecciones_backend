@@ -8,6 +8,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EstadoProcesoUpdateDTO {
-    @NonNull
-    private String estadoProceso;
+    @NonNull private String estadoProceso;
 }
