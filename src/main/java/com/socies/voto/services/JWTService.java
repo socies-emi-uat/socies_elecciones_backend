@@ -5,23 +5,19 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Service;
-
-import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import javax.crypto.SecretKey;
+import org.springframework.stereotype.Service;
 
 @Service
 public class JWTService {
 
-
     private String secretkey = "4a436dd4a40284253c8686459bf654c9a7d7781847d112b0b0e14ded33fa10dd";
 
-    public JWTService() {
-
-    }
+    public JWTService() {}
 
     public String generateToken(Long id, String username) {
         Map<String, Object> claims = new HashMap<>();
@@ -35,13 +31,13 @@ public class JWTService {
                 .and()
                 .signWith(getKey())
                 .compact();
-
     }
 
     private SecretKey getKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretkey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
     public String extractUserName(String token) {
         // extract the username from jwt token
         return extractClaim(token, Claims::getSubject);
@@ -52,18 +48,13 @@ public class JWTService {
         return extractClaim(token, claims -> claims.get("id", Long.class));
     }
 
-
     private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
         final Claims claims = extractAllClaims(token);
         return claimResolver.apply(claims);
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(getKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        return Jwts.parser().verifyWith(getKey()).build().parseSignedClaims(token).getPayload();
     }
 
     public boolean validateToken(String token, UsuarioPrincipalDTO userDetails) {

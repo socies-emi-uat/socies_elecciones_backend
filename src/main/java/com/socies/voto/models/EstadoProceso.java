@@ -10,14 +10,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class EstadoProceso extends BaseEntity{
+public class EstadoProceso extends BaseEntity {
 
     @Column(name = "estado_proceso",nullable = false, length = 20)
     String estadoProceso;
 
-
-    public EstadoProceso(String estado	) {
+    public EstadoProceso(String estado) {
         this.estadoProceso = estado;
     }
-
 }

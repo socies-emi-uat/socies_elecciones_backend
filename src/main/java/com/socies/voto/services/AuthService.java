@@ -13,23 +13,29 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-    @Autowired
-    private JWTService jwtService;
+    @Autowired private JWTService jwtService;
 
-    @Autowired
-    AuthenticationManager authManager;
+    @Autowired AuthenticationManager authManager;
 
     public LoginAuthResponseDTO verify(LoginAuthDTO loginAuthDTO) {
         Authentication authentication;
         try {
-            authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(loginAuthDTO.getEmail(), loginAuthDTO.getPassword()));
+            authentication =
+                    authManager.authenticate(
+                            new UsernamePasswordAuthenticationToken(
+                                    loginAuthDTO.getEmail(), loginAuthDTO.getPassword()));
         } catch (BadCredentialsException es) {
             throw new AuthFailedException("Usuario o contraseña incorrecta");
         }
 
         if (authentication.isAuthenticated()) {
             UsuarioPrincipalDTO usuario = (UsuarioPrincipalDTO) authentication.getPrincipal();
-            return new LoginAuthResponseDTO(usuario.getId(), usuario.getNombre(), usuario.getRol(), usuario.getCorreo(), jwtService.generateToken(usuario.getId(), usuario.getCorreo()));
+            return new LoginAuthResponseDTO(
+                    usuario.getId(),
+                    usuario.getNombre(),
+                    usuario.getRol(),
+                    usuario.getCorreo(),
+                    jwtService.generateToken(usuario.getId(), usuario.getCorreo()));
         } else {
             throw new AuthFailedException("Invalid email or password");
         }

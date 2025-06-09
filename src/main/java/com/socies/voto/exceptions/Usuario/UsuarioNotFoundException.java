@@ -1,6 +1,6 @@
 package com.socies.voto.exceptions.Usuario;
 
-public class UsuarioNotFoundException extends RuntimeException{
+public class UsuarioNotFoundException extends RuntimeException {
     public UsuarioNotFoundException() {
         super("Usuario no encontrado");
     }

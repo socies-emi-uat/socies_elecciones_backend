@@ -16,32 +16,44 @@ import com.socies.voto.repositories.EstadoProcesoRepository;
 
 @Service
 public class EstadoProcesoService {
-    
-    @Autowired
-    public EstadoProcesoRepository estadoProcesoRepository;
+
+    @Autowired public EstadoProcesoRepository estadoProcesoRepository;
 
     public List<EstadoProcesoDTO> obtenerTodosLosEstadosProceso() {
-        return estadoProcesoRepository.findAll().stream().map(EstadoProcesoDTO::new).collect(Collectors.toList());
+        return estadoProcesoRepository.findAll().stream()
+                .map(EstadoProcesoDTO::new)
+                .collect(Collectors.toList());
     }
 
     public EstadoProcesoDTO obtenerEstadoProcesoPorId(Long id) {
-        return estadoProcesoRepository.findById(id).map(EstadoProcesoDTO::new).orElseThrow(() -> new EstadoProcesoNotFoundException("El estado de proceso no fue encontrado"));
+        return estadoProcesoRepository
+                .findById(id)
+                .map(EstadoProcesoDTO::new)
+                .orElseThrow(
+                        () ->
+                                new EstadoProcesoNotFoundException(
+                                        "El estado de proceso no fue encontrado"));
     }
 
     public EstadoProcesoDTO crearEstadoProceso(EstadoProcesoCreateDTO estadoProcesoCreateDTO) {
         // Verificar si ya existe por nombre
-        estadoProcesoRepository.findByEstadoProceso(estadoProcesoCreateDTO.getEstadoProceso())
-            .ifPresent(e -> { 
-                throw new EstadoProcesoAlreadyExistsException("El estado de proceso ya existe"); 
-            });
+        estadoProcesoRepository
+                .findByEstadoProceso(estadoProcesoCreateDTO.getEstadoProceso())
+                .ifPresent(
+                        e -> {
+                            throw new EstadoProcesoAlreadyExistsException(
+                                    "El estado de proceso ya existe");
+                        });
 
         // Crear y guardar nuevo estado de proceso
-        EstadoProceso nuevoEstadoProceso = new EstadoProceso(estadoProcesoCreateDTO.getEstadoProceso());
+        EstadoProceso nuevoEstadoProceso =
+                new EstadoProceso(estadoProcesoCreateDTO.getEstadoProceso());
         EstadoProceso guardado = estadoProcesoRepository.save(nuevoEstadoProceso);
-        
+
         // Devolver DTO del estado de proceso recién creado
         return new EstadoProcesoDTO(guardado.getId(), guardado.getEstadoProceso());
     }
+
     public EstadoProcesoDTO actualizarEstadoProceso(Long id, EstadoProcesoUpdateDTO updateDTO) {
         EstadoProceso estado = estadoProcesoRepository.findById(id)
             .orElseThrow(() -> new EstadoProcesoNotFoundException("Estado de proceso no encontrado"));
@@ -59,3 +71,5 @@ public class EstadoProcesoService {
         return new EstadoProcesoDTO(actualizado);
     }
 }
+
+

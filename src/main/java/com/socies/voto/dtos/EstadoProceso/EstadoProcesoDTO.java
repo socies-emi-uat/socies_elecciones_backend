@@ -1,7 +1,6 @@
 package com.socies.voto.dtos.EstadoProceso;
 
 import com.socies.voto.models.EstadoProceso;
-
 import lombok.Getter;
 import lombok.Setter;
 

@@ -51,7 +51,7 @@ public class EstadoProcesoController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    // Eliminar un estado de proceso por ID
+    // actualizar un estado de proceso por ID
     @PutMapping("/{id_estado}")
     public ResponseEntity<ResponseWrapper<EstadoProcesoDTO>> actualizarEstadoProceso(
             @PathVariable Long id_estado,

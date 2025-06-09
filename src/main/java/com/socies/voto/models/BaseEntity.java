@@ -1,11 +1,10 @@
 package com.socies.voto.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
 
 @MappedSuperclass
 @Getter
@@ -29,6 +28,7 @@ public abstract class BaseEntity implements Serializable {
         createdAt = now;
         updatedAt = now;
     }
+
     @PreUpdate
     public void preUpdate() {
         updatedAt = LocalDateTime.now();
