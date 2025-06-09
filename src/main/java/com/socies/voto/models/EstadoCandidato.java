@@ -1,4 +1,3 @@
-
 package com.socies.voto.models;
 
 import jakarta.persistence.Column;
@@ -13,20 +12,18 @@ import lombok.Setter;
 @NoArgsConstructor
 public class EstadoCandidato extends BaseEntity {
 
-    @Column( nullable = false, length = 20)
-    private String estado_candidato;
+    @Column(nullable = false, length = 20)
+    private String estadoCandidato;
 
-/*    @OneToMany(
-            mappedBy = "estadoCandidato",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
-    private List<Candidato> candidatos;
- */
+    /*    @OneToMany(
+               mappedBy = "estadoCandidato",
+               cascade = CascadeType.ALL,
+               orphanRemoval = true,
+               fetch = FetchType.LAZY
+       )
+       private List<Candidato> candidatos;
+    */
     public EstadoCandidato(String estadoCandidato) {
-        this.estado_candidato = estadoCandidato;
+        this.estadoCandidato = estadoCandidato;
     }
-
-
 }

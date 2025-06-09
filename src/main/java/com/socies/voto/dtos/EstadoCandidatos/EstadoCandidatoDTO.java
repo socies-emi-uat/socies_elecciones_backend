@@ -1,4 +1,5 @@
 package com.socies.voto.dtos.EstadoCandidatos;
+
 import com.socies.voto.models.EstadoCandidato;
 
 import lombok.Getter;
@@ -13,7 +14,7 @@ public class EstadoCandidatoDTO {
 
     public EstadoCandidatoDTO(EstadoCandidato estadoCandidato) {
         this.id = estadoCandidato.getId();
-        this.estado_candidato = estadoCandidato.getEstado_candidato();
+        this.estado_candidato = estadoCandidato.getEstadoCandidato();
     }
 
     public EstadoCandidatoDTO(Long id, String estado_candidato) {

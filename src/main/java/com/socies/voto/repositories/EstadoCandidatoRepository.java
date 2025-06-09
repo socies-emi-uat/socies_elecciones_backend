@@ -9,6 +9,5 @@ import com.socies.voto.models.EstadoCandidato;
 
 @Repository
 public interface EstadoCandidatoRepository extends JpaRepository<EstadoCandidato, Long> {
-Optional<EstadoCandidato> findByNombre_estado(String nombre_estado);
-
+    Optional<EstadoCandidato> findByEstadoCandidato(String estadoCandidato);
 }

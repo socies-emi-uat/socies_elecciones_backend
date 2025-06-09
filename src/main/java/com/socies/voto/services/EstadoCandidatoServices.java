@@ -16,52 +16,62 @@ import com.socies.voto.repositories.EstadoCandidatoRepository;
 @Service
 public class EstadoCandidatoServices {
 
-    @Autowired
-    public EstadoCandidatoRepository estadoCandidatoRepository;
+    @Autowired public EstadoCandidatoRepository estadoCandidatoRepository;
 
     public List<EstadoCandidatoDTO> getAllEstadoCandidatos() {
         return estadoCandidatoRepository.findAll().stream()
                 .map(EstadoCandidatoDTO::new)
                 .collect(Collectors.toList());
     }
+
     public EstadoCandidatoDTO getEstadoCandidatoById(Long id) {
         return estadoCandidatoRepository
                 .findById(id)
                 .map(EstadoCandidatoDTO::new)
                 .orElseThrow(
-                        () -> new EstadoCandidatoNotFoundException("El estado de candidato no fue encontrado"));
+                        () ->
+                                new EstadoCandidatoNotFoundException(
+                                        "El estado de candidato no fue encontrado"));
     }
 
-    public EstadoCandidatoDTO createEstadoCandidato(EstadoCandidatoCreateDTO estadoCandidatoCreateDTO) {
+    public EstadoCandidatoDTO createEstadoCandidato(
+            EstadoCandidatoCreateDTO estadoCandidatoCreateDTO) {
         // Verificar si ya existe por nombre
         estadoCandidatoRepository
-                .findByNombre_estado(estadoCandidatoCreateDTO.getEstado_candidato())
+                .findByEstadoCandidato(estadoCandidatoCreateDTO.getEstado_candidato())
                 .ifPresent(
                         e -> {
-                            throw new EstadoCandidatoAlreadyExistsException("El estado de candidato ya existe");
+                            throw new EstadoCandidatoAlreadyExistsException(
+                                    "El estado de candidato ya existe");
                         });
         // Crear y guardar nuevo estado de candidato
-        EstadoCandidato nuevoEstadoCandidato = new EstadoCandidato(estadoCandidatoCreateDTO.getEstado_candidato());
+        EstadoCandidato nuevoEstadoCandidato =
+                new EstadoCandidato(estadoCandidatoCreateDTO.getEstado_candidato());
         EstadoCandidato guardado = estadoCandidatoRepository.save(nuevoEstadoCandidato);
         // Devolver DTO del estado de candidato recién creado
-        return new EstadoCandidatoDTO(guardado.getId(), guardado.getEstado_candidato());
+        return new EstadoCandidatoDTO(guardado.getId(), guardado.getEstadoCandidato());
     }
+
     public EstadoCandidatoDTO updateEstadoCandidato(Long id, EstadoCandidatoCreateDTO updateDTO) {
-        EstadoCandidato estado = estadoCandidatoRepository
-                .findById(id)
-                .orElseThrow(
-                        () -> new EstadoCandidatoNotFoundException("Estado de candidato no encontrado"));
+        EstadoCandidato estado =
+                estadoCandidatoRepository
+                        .findById(id)
+                        .orElseThrow(
+                                () ->
+                                        new EstadoCandidatoNotFoundException(
+                                                "Estado de candidato no encontrado"));
         // Verificar si el nuevo nombre ya existe (excepto para el mismo registro)
         estadoCandidatoRepository
-                .findByNombre_estado(updateDTO.getEstado_candidato())
+                .findByEstadoCandidato(updateDTO.getEstado_candidato())
                 .filter(e -> !e.getId().equals(id))
                 .ifPresent(
                         e -> {
-                            throw new EstadoCandidatoAlreadyExistsException("El nombre del estado ya está en uso");
+                            throw new EstadoCandidatoAlreadyExistsException(
+                                    "El nombre del estado ya está en uso");
                         });
-        estado.setEstado_candidato(updateDTO.getEstado_candidato());
+        estado.setEstadoCandidato(updateDTO.getEstado_candidato());
         EstadoCandidato actualizado = estadoCandidatoRepository.save(estado);
-        return new EstadoCandidatoDTO(actualizado.getId(), actualizado.getEstado_candidato());
+        return new EstadoCandidatoDTO(actualizado.getId(), actualizado.getEstadoCandidato());
     }
 
     public void deleteEstadoCandidato(Long id) {
