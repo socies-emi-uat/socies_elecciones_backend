@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class EstadoProceso extends BaseEntity {
 
-    @Column(nullable = false, length = 20)
+    @Column(name = "estado_proceso", nullable = false, length = 20)
     String estadoProceso;
 
     public EstadoProceso(String estado) {
