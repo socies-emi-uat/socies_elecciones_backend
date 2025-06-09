@@ -2,10 +2,10 @@ package com.socies.voto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -21,6 +21,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.socies.voto.dtos.EstadoCandidatos.EstadoCandidatoCreateDTO;
 import com.socies.voto.dtos.EstadoCandidatos.EstadoCandidatoDTO;
+import com.socies.voto.exceptions.EstadoCandidato.EstadoCandidatoAlreadyExistsException;
+import com.socies.voto.exceptions.EstadoCandidato.EstadoCandidatoNotFoundException;
 import com.socies.voto.models.EstadoCandidato;
 import com.socies.voto.repositories.EstadoCandidatoRepository;
 import com.socies.voto.services.EstadoCandidatoServices;
@@ -51,32 +53,11 @@ public class EstadoCandidatoServiceTests {
         assertEquals(2, result.size());
         assertEquals("Activo", result.get(0).getEstado_candidato());
         assertEquals("Inactivo", result.get(1).getEstado_candidato());
-        verify(estadoCandidatoRepository, times(1)).findAll();
+        verify(estadoCandidatoRepository).findAll();
     }
 
     @Test
-    void testCreateEstadoCandidato() {
-        // Arrange
-        EstadoCandidatoCreateDTO createDTO = new EstadoCandidatoCreateDTO(null);
-        createDTO.setEstado_candidato("Nuevo Estado");
-        
-        EstadoCandidato savedEstado = new EstadoCandidato("Nuevo Estado");
-        savedEstado.setId(1L);
-        
-        when(estadoCandidatoRepository.save(any(EstadoCandidato.class))).thenReturn(savedEstado);
-
-        // Act
-        EstadoCandidatoDTO result = estadoCandidatoService.createEstadoCandidato(createDTO);
-
-        // Assert
-        assertNotNull(result);
-        assertEquals(1L, result.getId());
-        assertEquals("Nuevo Estado", result.getEstado_candidato());
-        verify(estadoCandidatoRepository, times(1)).save(any(EstadoCandidato.class));
-    }
-
-    @Test
-    void testGetEstadoCandidatoById_Exists() {
+    void testGetEstadoCandidatoById_Success() {
         // Arrange
         EstadoCandidato estado = new EstadoCandidato("Activo");
         estado.setId(1L);
@@ -90,32 +71,72 @@ public class EstadoCandidatoServiceTests {
         assertNotNull(result);
         assertEquals(1L, result.getId());
         assertEquals("Activo", result.getEstado_candidato());
-        verify(estadoCandidatoRepository, times(1)).findById(1L);
+        verify(estadoCandidatoRepository).findById(1L);
     }
 
     @Test
-    void testGetEstadoCandidatoById_NotExists() {
+    void testGetEstadoCandidatoById_NotFound() {
         // Arrange
         when(estadoCandidatoRepository.findById(999L)).thenReturn(Optional.empty());
 
-        // Act
-        EstadoCandidatoDTO result = estadoCandidatoService.getEstadoCandidatoById(999L);
-
-        // Assert
-        assertNull(result);
-        verify(estadoCandidatoRepository, times(1)).findById(999L);
+        // Act & Assert
+        assertThrows(EstadoCandidatoNotFoundException.class, () -> {
+            estadoCandidatoService.getEstadoCandidatoById(999L);
+        });
+        verify(estadoCandidatoRepository).findById(999L);
     }
 
     @Test
-    void testUpdateEstadoCandidato_Exists() {
+    void testCreateEstadoCandidato_Success() {
+        // Arrange
+        EstadoCandidatoCreateDTO createDTO = new EstadoCandidatoCreateDTO(null);
+        createDTO.setEstado_candidato("Nuevo Estado");
+        
+        EstadoCandidato savedEstado = new EstadoCandidato("Nuevo Estado");
+        savedEstado.setId(1L);
+        
+        when(estadoCandidatoRepository.findByNombre_estado("Nuevo Estado")).thenReturn(Optional.empty());
+        when(estadoCandidatoRepository.save(any(EstadoCandidato.class))).thenReturn(savedEstado);
+
+        // Act
+        EstadoCandidatoDTO result = estadoCandidatoService.createEstadoCandidato(createDTO);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1L, result.getId());
+        assertEquals("Nuevo Estado", result.getEstado_candidato());
+        verify(estadoCandidatoRepository).findByNombre_estado("Nuevo Estado");
+        verify(estadoCandidatoRepository).save(any(EstadoCandidato.class));
+    }
+
+    @Test
+    void testCreateEstadoCandidato_AlreadyExists() {
+        // Arrange
+        EstadoCandidatoCreateDTO createDTO = new EstadoCandidatoCreateDTO(null);
+        createDTO.setEstado_candidato("Existente");
+        
+        EstadoCandidato existing = new EstadoCandidato("Existente");
+        when(estadoCandidatoRepository.findByNombre_estado("Existente")).thenReturn(Optional.of(existing));
+
+        // Act & Assert
+        assertThrows(EstadoCandidatoAlreadyExistsException.class, () -> {
+            estadoCandidatoService.createEstadoCandidato(createDTO);
+        });
+        verify(estadoCandidatoRepository).findByNombre_estado("Existente");
+        verify(estadoCandidatoRepository, never()).save(any(EstadoCandidato.class));
+    }
+
+    @Test
+    void testUpdateEstadoCandidato_Success() {
         // Arrange
         EstadoCandidatoCreateDTO updateDTO = new EstadoCandidatoCreateDTO(null);
         updateDTO.setEstado_candidato("Actualizado");
         
-        EstadoCandidato existingEstado = new EstadoCandidato("Original");
-        existingEstado.setId(1L);
+        EstadoCandidato existing = new EstadoCandidato("Original");
+        existing.setId(1L);
         
-        when(estadoCandidatoRepository.findById(1L)).thenReturn(Optional.of(existingEstado));
+        when(estadoCandidatoRepository.findById(1L)).thenReturn(Optional.of(existing));
+        when(estadoCandidatoRepository.findByNombre_estado("Actualizado")).thenReturn(Optional.empty());
         when(estadoCandidatoRepository.save(any(EstadoCandidato.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
@@ -125,35 +146,60 @@ public class EstadoCandidatoServiceTests {
         assertNotNull(result);
         assertEquals(1L, result.getId());
         assertEquals("Actualizado", result.getEstado_candidato());
-        verify(estadoCandidatoRepository, times(1)).findById(1L);
-        verify(estadoCandidatoRepository, times(1)).save(any(EstadoCandidato.class));
+        verify(estadoCandidatoRepository).findById(1L);
+        verify(estadoCandidatoRepository).findByNombre_estado("Actualizado");
+        verify(estadoCandidatoRepository).save(any(EstadoCandidato.class));
     }
 
     @Test
-    void testUpdateEstadoCandidato_NotExists() {
+    void testUpdateEstadoCandidato_NotFound() {
         // Arrange
         EstadoCandidatoCreateDTO updateDTO = new EstadoCandidatoCreateDTO(null);
         updateDTO.setEstado_candidato("Actualizado");
         
         when(estadoCandidatoRepository.findById(999L)).thenReturn(Optional.empty());
 
-        // Act
-        EstadoCandidatoDTO result = estadoCandidatoService.updateEstadoCandidato(999L, updateDTO);
+        // Act & Assert
+        assertThrows(EstadoCandidatoNotFoundException.class, () -> {
+            estadoCandidatoService.updateEstadoCandidato(999L, updateDTO);
+        });
+        verify(estadoCandidatoRepository).findById(999L);
+        verify(estadoCandidatoRepository, never()).save(any(EstadoCandidato.class));
+    }
 
-        // Assert
-        assertNull(result);
-        verify(estadoCandidatoRepository, times(1)).findById(999L);
+    @Test
+    void testUpdateEstadoCandidato_NameConflict() {
+        // Arrange
+        EstadoCandidatoCreateDTO updateDTO = new EstadoCandidatoCreateDTO(null);
+        updateDTO.setEstado_candidato("En Uso");
+        
+        EstadoCandidato existing = new EstadoCandidato("Original");
+        existing.setId(1L);
+        
+        EstadoCandidato conflict = new EstadoCandidato("En Uso");
+        conflict.setId(2L);
+        
+        when(estadoCandidatoRepository.findById(1L)).thenReturn(Optional.of(existing));
+        when(estadoCandidatoRepository.findByNombre_estado("En Uso")).thenReturn(Optional.of(conflict));
+
+        // Act & Assert
+        assertThrows(EstadoCandidatoAlreadyExistsException.class, () -> {
+            estadoCandidatoService.updateEstadoCandidato(1L, updateDTO);
+        });
+        verify(estadoCandidatoRepository).findById(1L);
+        verify(estadoCandidatoRepository).findByNombre_estado("En Uso");
         verify(estadoCandidatoRepository, never()).save(any(EstadoCandidato.class));
     }
 
     @Test
     void testDeleteEstadoCandidato() {
-        // Arrange - no setup needed for simple delete
-        
+        // Arrange
+        doNothing().when(estadoCandidatoRepository).deleteById(1L);
+
         // Act
         estadoCandidatoService.deleteEstadoCandidato(1L);
-        
+
         // Assert
-        verify(estadoCandidatoRepository, times(1)).deleteById(1L);
+        verify(estadoCandidatoRepository).deleteById(1L);
     }
 }

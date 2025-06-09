@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.socies.voto.dtos.EstadoCandidatos.EstadoCandidatoCreateDTO;
 import com.socies.voto.dtos.EstadoCandidatos.EstadoCandidatoDTO;
+import com.socies.voto.exceptions.EstadoCandidato.EstadoCandidatoAlreadyExistsException;
+import com.socies.voto.exceptions.EstadoCandidato.EstadoCandidatoNotFoundException;
 import com.socies.voto.models.EstadoCandidato;
 import com.socies.voto.repositories.EstadoCandidatoRepository;
 
@@ -15,39 +17,51 @@ import com.socies.voto.repositories.EstadoCandidatoRepository;
 public class EstadoCandidatoServices {
 
     @Autowired
-    private EstadoCandidatoRepository estadoCandidatoRepository;
+    public EstadoCandidatoRepository estadoCandidatoRepository;
 
     public List<EstadoCandidatoDTO> getAllEstadoCandidatos() {
         return estadoCandidatoRepository.findAll().stream()
-                .map(estadoCandidato -> new EstadoCandidatoDTO(estadoCandidato.getId(), estadoCandidato.getEstado_candidato()))
+                .map(EstadoCandidatoDTO::new)
                 .collect(Collectors.toList());
-
+    }
+    public EstadoCandidatoDTO getEstadoCandidatoById(Long id) {
+        return estadoCandidatoRepository
+                .findById(id)
+                .map(EstadoCandidatoDTO::new)
+                .orElseThrow(
+                        () -> new EstadoCandidatoNotFoundException("El estado de candidato no fue encontrado"));
     }
 
     public EstadoCandidatoDTO createEstadoCandidato(EstadoCandidatoCreateDTO estadoCandidatoCreateDTO) {
-        EstadoCandidato estadoCandidato = new EstadoCandidato(estadoCandidatoCreateDTO.getEstado_candidato());
-        estadoCandidato = estadoCandidatoRepository.save(estadoCandidato);
-        return new EstadoCandidatoDTO(estadoCandidato.getId(), estadoCandidato.getEstado_candidato());
+        // Verificar si ya existe por nombre
+        estadoCandidatoRepository
+                .findByNombre_estado(estadoCandidatoCreateDTO.getEstado_candidato())
+                .ifPresent(
+                        e -> {
+                            throw new EstadoCandidatoAlreadyExistsException("El estado de candidato ya existe");
+                        });
+        // Crear y guardar nuevo estado de candidato
+        EstadoCandidato nuevoEstadoCandidato = new EstadoCandidato(estadoCandidatoCreateDTO.getEstado_candidato());
+        EstadoCandidato guardado = estadoCandidatoRepository.save(nuevoEstadoCandidato);
+        // Devolver DTO del estado de candidato recién creado
+        return new EstadoCandidatoDTO(guardado.getId(), guardado.getEstado_candidato());
     }
-
-    public EstadoCandidatoDTO getEstadoCandidatoById(Long id) {
-        EstadoCandidato estadoCandidato = estadoCandidatoRepository.findById(id).orElse(null);
-        if (estadoCandidato != null) {
-            return new EstadoCandidatoDTO(estadoCandidato.getId(), estadoCandidato.getEstado_candidato());
-        } else {
-            return null;
-        }
-    }
-
-    public EstadoCandidatoDTO updateEstadoCandidato(Long id, EstadoCandidatoCreateDTO estadoCandidatoCreateDTO) {
-        EstadoCandidato estadoCandidato = estadoCandidatoRepository.findById(id).orElse(null);
-        if (estadoCandidato != null) {
-            estadoCandidato.setEstado_candidato(estadoCandidatoCreateDTO.getEstado_candidato());
-            estadoCandidato = estadoCandidatoRepository.save(estadoCandidato);
-            return new EstadoCandidatoDTO(estadoCandidato.getId(), estadoCandidato.getEstado_candidato());
-        } else {
-            return null;
-        }
+    public EstadoCandidatoDTO updateEstadoCandidato(Long id, EstadoCandidatoCreateDTO updateDTO) {
+        EstadoCandidato estado = estadoCandidatoRepository
+                .findById(id)
+                .orElseThrow(
+                        () -> new EstadoCandidatoNotFoundException("Estado de candidato no encontrado"));
+        // Verificar si el nuevo nombre ya existe (excepto para el mismo registro)
+        estadoCandidatoRepository
+                .findByNombre_estado(updateDTO.getEstado_candidato())
+                .filter(e -> !e.getId().equals(id))
+                .ifPresent(
+                        e -> {
+                            throw new EstadoCandidatoAlreadyExistsException("El nombre del estado ya está en uso");
+                        });
+        estado.setEstado_candidato(updateDTO.getEstado_candidato());
+        EstadoCandidato actualizado = estadoCandidatoRepository.save(estado);
+        return new EstadoCandidatoDTO(actualizado.getId(), actualizado.getEstado_candidato());
     }
 
     public void deleteEstadoCandidato(Long id) {

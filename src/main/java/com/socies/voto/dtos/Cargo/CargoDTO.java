@@ -1,6 +1,6 @@
 package com.socies.voto.dtos.Cargo;
-
 import com.socies.voto.models.Cargo;
+
 import lombok.Getter;
 import lombok.Setter;
 

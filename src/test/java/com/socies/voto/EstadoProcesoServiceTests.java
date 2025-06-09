@@ -3,6 +3,16 @@ package com.socies.voto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import com.socies.voto.dtos.EstadoProceso.EstadoProcesoCreateDTO;
 import com.socies.voto.dtos.EstadoProceso.EstadoProcesoDTO;
 import com.socies.voto.dtos.EstadoProceso.EstadoProcesoUpdateDTO;
@@ -11,14 +21,6 @@ import com.socies.voto.exceptions.EstadoProceso.EstadoProcesoNotFoundException;
 import com.socies.voto.models.EstadoProceso;
 import com.socies.voto.repositories.EstadoProcesoRepository;
 import com.socies.voto.services.EstadoProcesoService;
-import java.util.List;
-import java.util.Optional;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class EstadoProcesoServiceTests {
