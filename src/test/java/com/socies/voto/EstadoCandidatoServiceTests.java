@@ -9,16 +9,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import com.socies.voto.dtos.EstadoCandidatos.EstadoCandidatoCreateDTO;
 import com.socies.voto.dtos.EstadoCandidatos.EstadoCandidatoDTO;
 import com.socies.voto.exceptions.EstadoCandidato.EstadoCandidatoAlreadyExistsException;
@@ -26,6 +16,14 @@ import com.socies.voto.exceptions.EstadoCandidato.EstadoCandidatoNotFoundExcepti
 import com.socies.voto.models.EstadoCandidato;
 import com.socies.voto.repositories.EstadoCandidatoRepository;
 import com.socies.voto.services.EstadoCandidatoServices;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class EstadoCandidatoServiceTests {

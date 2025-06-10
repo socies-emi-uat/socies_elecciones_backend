@@ -1,17 +1,15 @@
 package com.socies.voto.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.socies.voto.dtos.EstadoCandidatos.EstadoCandidatoCreateDTO;
 import com.socies.voto.dtos.EstadoCandidatos.EstadoCandidatoDTO;
 import com.socies.voto.exceptions.EstadoCandidato.EstadoCandidatoAlreadyExistsException;
 import com.socies.voto.exceptions.EstadoCandidato.EstadoCandidatoNotFoundException;
 import com.socies.voto.models.EstadoCandidato;
 import com.socies.voto.repositories.EstadoCandidatoRepository;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class EstadoCandidatoServices {
