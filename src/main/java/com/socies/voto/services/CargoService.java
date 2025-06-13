@@ -50,4 +50,51 @@ public class CargoService {
     public void eliminarCargo(Long id) {
         cargoRepository.deleteById(id);
     }
+
+    public CargoDTO actualizarCargo(Long id, CargoCreateDTO dto) {
+        Cargo cargo =
+                cargoRepository
+                        .findById(id)
+                        .orElseThrow(
+                                () ->
+                                        new CargoNotFoundException(
+                                                "Cargo no encontrado para actualizar"));
+
+        // Verificar si el nuevo nombre ya existe (y no es el mismo cargo)
+        cargoRepository
+                .findByNombre(dto.getNombre_cargo())
+                .ifPresent(
+                        c -> {
+                            if (!c.getId().equals(id)) {
+                                throw new CargoAlreadyExistsException(
+                                        "Ya existe otro cargo con ese nombre");
+                            }
+                        });
+
+        cargo.setNombre(dto.getNombre_cargo());
+        cargo.setDescripcion(dto.getDescripcion());
+
+        Cargo actualizado = cargoRepository.save(cargo);
+        return new CargoDTO(actualizado);
+    }
+
+    public List<CargoDTO> buscarCargosFiltrados(String nombre, String descripcion) {
+        if (nombre != null && descripcion != null) {
+            return cargoRepository
+                    .findByNombreContainingIgnoreCaseOrDescripcionContainingIgnoreCase(
+                            nombre, descripcion)
+                    .stream()
+                    .map(CargoDTO::new)
+                    .collect(Collectors.toList());
+        } else if (nombre != null) {
+            return cargoRepository.findByNombreContainingIgnoreCase(nombre).stream()
+                    .map(CargoDTO::new)
+                    .collect(Collectors.toList());
+        } else if (descripcion != null) {
+            return cargoRepository.findByDescripcionContainingIgnoreCase(descripcion).stream()
+                    .map(CargoDTO::new)
+                    .collect(Collectors.toList());
+        }
+        return obtenerTodosLosCargos(); // Si no hay filtros
+    }
 }
