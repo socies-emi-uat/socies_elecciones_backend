@@ -1,10 +1,7 @@
 package com.socies.voto.controllers.administrador;
 
-import com.socies.voto.dtos.Cargo.CargoCreateDTO;
-import com.socies.voto.dtos.Cargo.CargoDTO;
-import com.socies.voto.services.CargoService;
-import jakarta.validation.Valid;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,11 +14,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.socies.voto.dtos.Cargo.CargoCreateDTO;
+import com.socies.voto.dtos.Cargo.CargoDTO;
+import com.socies.voto.services.CargoService;
+
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/cargos")
 public class CargoController {
-
-    @Autowired private CargoService cargoService;
+    
+    @Autowired
+    private CargoService cargoService;
 
     @GetMapping
     public ResponseEntity<List<CargoDTO>> listarCargos() {
@@ -41,7 +45,8 @@ public class CargoController {
     // Faltaría implementar en el Service
     @PutMapping("/{id}")
     public ResponseEntity<CargoDTO> actualizarCargo(
-            @PathVariable Long id, @Valid @RequestBody CargoCreateDTO dto) {
+            @PathVariable Long id, 
+            @Valid @RequestBody CargoCreateDTO dto) {
         return ResponseEntity.ok(cargoService.actualizarCargo(id, dto));
     }
 
