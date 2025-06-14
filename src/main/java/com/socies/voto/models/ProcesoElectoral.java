@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -37,4 +38,11 @@ public class ProcesoElectoral extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "estado_proceso_id", referencedColumnName = "id", nullable = false)
     private EstadoProceso estadoProceso;
+
+    @OneToMany(
+            mappedBy = "procesoElectoral",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private List<Candidatura> candidaturas;
 }

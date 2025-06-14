@@ -21,7 +21,7 @@ public class EstadoCandidato extends BaseEntity {
     }
 
     @OneToMany(
-            mappedBy = "estado_candidato",
+            mappedBy = "estadoCandidato",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
