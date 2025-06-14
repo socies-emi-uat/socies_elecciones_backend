@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-public class Voto extends BaseEntity{
+public class Voto extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     String hashVotacion;
 
@@ -23,7 +23,6 @@ public class Voto extends BaseEntity{
         this.candidatura = voto.getCandidatura();
         this.metodoVoto = voto.getMetodoVoto();
         this.ubicacionVoto = voto.getUbicacionVoto();
-
     }
 
     @ManyToOne

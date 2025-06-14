@@ -1,11 +1,10 @@
 package com.socies.voto.models;
 
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Getter
@@ -14,6 +13,7 @@ import java.util.List;
 public class Candidatura extends BaseEntity {
     @Column(name = "nombre_candidatura", nullable = false, length = 20)
     private String nombreCandidatura;
+
     private String lema;
 
     @ManyToOne
@@ -41,6 +41,10 @@ public class Candidatura extends BaseEntity {
         this.procesoElectoral = candidatura.getProcesoElectoral();
     }
 
-    @OneToMany(mappedBy = "candidatura", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(
+            mappedBy = "candidatura",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
     private List<Voto> votos;
 }

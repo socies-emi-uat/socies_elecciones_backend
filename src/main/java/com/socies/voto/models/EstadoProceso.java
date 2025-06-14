@@ -1,11 +1,10 @@
 package com.socies.voto.models;
 
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Getter
@@ -26,5 +25,4 @@ public class EstadoProceso extends BaseEntity {
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     private List<ProcesoElectoral> procesoElectorals;
-
 }

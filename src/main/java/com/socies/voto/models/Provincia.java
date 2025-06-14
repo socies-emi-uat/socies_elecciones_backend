@@ -1,11 +1,10 @@
 package com.socies.voto.models;
 
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Setter
@@ -22,10 +21,10 @@ public class Provincia extends BaseEntity {
     @JoinColumn(name = "departamento_id", referencedColumnName = "id", nullable = false)
     private Departamento departamento;
 
-    @OneToMany(mappedBy = "provincia",
+    @OneToMany(
+            mappedBy = "provincia",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
-
     List<Municipio> municipios;
 }

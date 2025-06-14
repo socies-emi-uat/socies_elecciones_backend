@@ -1,14 +1,11 @@
 package com.socies.voto.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
 
 @Entity
 @NoArgsConstructor
@@ -46,6 +43,10 @@ public class ProcesoElectoral extends BaseEntity {
             fetch = FetchType.LAZY)
     private List<Candidatura> candidaturas;
 
-    @OneToMany(mappedBy = "procesoElectoral", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(
+            mappedBy = "procesoElectoral",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
     private List<Voto> votos;
 }

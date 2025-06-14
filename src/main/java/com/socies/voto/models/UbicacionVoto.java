@@ -1,17 +1,16 @@
 package com.socies.voto.models;
 
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class UbicacionVoto extends BaseEntity{
+public class UbicacionVoto extends BaseEntity {
 
     @Column(name = "nombre_ubicacion", nullable = false)
     String nombreUbicacion;
@@ -19,14 +18,18 @@ public class UbicacionVoto extends BaseEntity{
     @Column(name = "descripcion_ubicacion", nullable = false)
     String descripcionUbicacion;
 
-
     float latitude = 0f;
     float longitude = 0f;
 
     @Column(nullable = false)
     String direccion;
 
-    public UbicacionVoto(String nombreUbicacion, String descripcionUbicacion, float latitude, float longitude, String direccion) {
+    public UbicacionVoto(
+            String nombreUbicacion,
+            String descripcionUbicacion,
+            float latitude,
+            float longitude,
+            String direccion) {
         this.nombreUbicacion = nombreUbicacion;
         this.descripcionUbicacion = descripcionUbicacion;
         this.latitude = latitude;
@@ -44,6 +47,10 @@ public class UbicacionVoto extends BaseEntity{
     @JoinColumn(name = "municipio_id", referencedColumnName = "id", nullable = false)
     private Municipio municipio;
 
-    @OneToMany(mappedBy = "ubicacionVoto", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(
+            mappedBy = "ubicacionVoto",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
     private List<Voto> votos;
 }

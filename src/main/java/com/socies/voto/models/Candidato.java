@@ -1,18 +1,17 @@
 package com.socies.voto.models;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Setter
 @Getter
 @NoArgsConstructor
-public class Candidato extends BaseEntity{
+public class Candidato extends BaseEntity {
 
     @Column(name = "nombre_candidato", nullable = false, length = 30, unique = true)
     private String nombreCandidato;
@@ -61,6 +60,5 @@ public class Candidato extends BaseEntity{
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
-
     private List<Candidatura> candidaturas;
 }
