@@ -1,7 +1,7 @@
 ---
 name: Tareas de integracion
 about: Integracion de de CRUD, VALIDACIONES
-title: ''
+title: Integrar [objetivo] [limites]
 labels: enhancement
 assignees: CamikCM, krypton612
 
