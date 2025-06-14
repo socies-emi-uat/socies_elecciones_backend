@@ -3,18 +3,13 @@ package com.socies.voto.controllers.administrador;
 import com.socies.voto.dtos.EstadoCandidatura.EstadoCandidaturaCreateDTO;
 import com.socies.voto.dtos.EstadoCandidatura.EstadoCandidaturaDTO;
 import com.socies.voto.dtos.EstadoCandidatura.EstadoCandidaturaUpdateDTO;
-import com.socies.voto.dtos.EstadoProceso.EstadoProcesoCreateDTO;
-import com.socies.voto.dtos.EstadoProceso.EstadoProcesoDTO;
-import com.socies.voto.dtos.EstadoProceso.EstadoProcesoUpdateDTO;
 import com.socies.voto.services.EstadoCandidaturaService;
-import com.socies.voto.services.EstadoProcesoService;
 import com.socies.voto.utils.ResponseWrapper;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/administrador/estados-candidaturas")
@@ -27,7 +22,8 @@ public class EstadoCandidaturaController {
     public ResponseEntity<ResponseWrapper<List<EstadoCandidaturaDTO>>> getAllEstadosProceso() {
         List<EstadoCandidaturaDTO> estados = estadoCandidaturaService.findAll();
         ResponseWrapper<List<EstadoCandidaturaDTO>> response =
-                new ResponseWrapper<>(true, "Estados de candidaturas obtenidos correctamente.", estados);
+                new ResponseWrapper<>(
+                        true, "Estados de candidaturas obtenidos correctamente.", estados);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

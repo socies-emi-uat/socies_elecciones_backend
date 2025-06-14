@@ -24,7 +24,6 @@ public class EstadoCandidatura extends BaseEntity {
         this.estadoCandidatura = estado;
     }
 
-
     @OneToMany(
             mappedBy = "estadoCandidatura",
             cascade = CascadeType.ALL,

@@ -1,5 +1,8 @@
 package com.socies.voto;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import com.socies.voto.dtos.EstadoCandidatura.EstadoCandidaturaCreateDTO;
 import com.socies.voto.dtos.EstadoCandidatura.EstadoCandidaturaDTO;
 import com.socies.voto.dtos.EstadoCandidatura.EstadoCandidaturaUpdateDTO;
@@ -8,22 +11,16 @@ import com.socies.voto.exceptions.ResourceNotFoundException;
 import com.socies.voto.models.EstadoCandidatura;
 import com.socies.voto.repositories.EstadoCandidaturaRepository;
 import com.socies.voto.services.EstadoCandidaturaService;
+import java.util.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 class EstadoCandidaturaServiceTests {
 
-    @Mock
-    private EstadoCandidaturaRepository estadoCandidaturaRepository;
+    @Mock private EstadoCandidaturaRepository estadoCandidaturaRepository;
 
-    @InjectMocks
-    private EstadoCandidaturaService estadoCandidaturaService;
+    @InjectMocks private EstadoCandidaturaService estadoCandidaturaService;
 
     @BeforeEach
     void setUp() {
@@ -62,7 +59,8 @@ class EstadoCandidaturaServiceTests {
     @Test
     void create_validInput_savesAndReturnsDTO() {
         EstadoCandidaturaCreateDTO createDTO = new EstadoCandidaturaCreateDTO("Nuevo Estado");
-        when(estadoCandidaturaRepository.findByEstadoCandidatura("Nuevo Estado")).thenReturn(Optional.empty());
+        when(estadoCandidaturaRepository.findByEstadoCandidatura("Nuevo Estado"))
+                .thenReturn(Optional.empty());
 
         EstadoCandidatura saved = new EstadoCandidatura(1L, "Nuevo Estado");
         when(estadoCandidaturaRepository.save(any())).thenReturn(saved);
@@ -78,7 +76,9 @@ class EstadoCandidaturaServiceTests {
         when(estadoCandidaturaRepository.findByEstadoCandidatura("Duplicado"))
                 .thenReturn(Optional.of(new EstadoCandidatura()));
 
-        assertThrows(ResourceAlreadyExistsException.class, () -> estadoCandidaturaService.create(createDTO));
+        assertThrows(
+                ResourceAlreadyExistsException.class,
+                () -> estadoCandidaturaService.create(createDTO));
     }
 
     @Test
@@ -87,7 +87,8 @@ class EstadoCandidaturaServiceTests {
         EstadoCandidaturaUpdateDTO updateDTO = new EstadoCandidaturaUpdateDTO("Modificado");
 
         when(estadoCandidaturaRepository.findById(1L)).thenReturn(Optional.of(existing));
-        when(estadoCandidaturaRepository.findByEstadoCandidatura("Modificado")).thenReturn(Optional.empty());
+        when(estadoCandidaturaRepository.findByEstadoCandidatura("Modificado"))
+                .thenReturn(Optional.empty());
         when(estadoCandidaturaRepository.save(any())).thenAnswer(i -> i.getArgument(0));
 
         EstadoCandidaturaDTO result = estadoCandidaturaService.update(1L, updateDTO);
@@ -101,7 +102,9 @@ class EstadoCandidaturaServiceTests {
 
         EstadoCandidaturaUpdateDTO updateDTO = new EstadoCandidaturaUpdateDTO("Nuevo");
 
-        assertThrows(ResourceNotFoundException.class, () -> estadoCandidaturaService.update(99L, updateDTO));
+        assertThrows(
+                ResourceNotFoundException.class,
+                () -> estadoCandidaturaService.update(99L, updateDTO));
     }
 
     @Test
@@ -111,9 +114,11 @@ class EstadoCandidaturaServiceTests {
         EstadoCandidaturaUpdateDTO updateDTO = new EstadoCandidaturaUpdateDTO("Duplicado");
 
         when(estadoCandidaturaRepository.findById(1L)).thenReturn(Optional.of(current));
-        when(estadoCandidaturaRepository.findByEstadoCandidatura("Duplicado")).thenReturn(Optional.of(other));
+        when(estadoCandidaturaRepository.findByEstadoCandidatura("Duplicado"))
+                .thenReturn(Optional.of(other));
 
-        assertThrows(ResourceAlreadyExistsException.class, () -> estadoCandidaturaService.update(1L, updateDTO));
+        assertThrows(
+                ResourceAlreadyExistsException.class,
+                () -> estadoCandidaturaService.update(1L, updateDTO));
     }
 }
-
