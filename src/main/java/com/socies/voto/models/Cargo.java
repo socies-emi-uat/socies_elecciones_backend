@@ -1,7 +1,7 @@
 package com.socies.voto.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Cargo extends BaseEntity {
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 20, unique = true)
     String nombre;
 
     String descripcion;
@@ -22,4 +22,11 @@ public class Cargo extends BaseEntity {
         this.nombre = nombre_cargo;
         this.descripcion = descripcion;
     }
+
+    @OneToMany(
+            mappedBy = "cargo",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private List<Candidato> candidatos;
 }
