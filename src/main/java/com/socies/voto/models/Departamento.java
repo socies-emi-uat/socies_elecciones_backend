@@ -1,9 +1,6 @@
 package com.socies.voto.models;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +12,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class Departamento extends BaseEntity{
+
+    @Column(nullable = false, unique = true)
     private String nombre;
 
     public Departamento(Departamento departamento) {

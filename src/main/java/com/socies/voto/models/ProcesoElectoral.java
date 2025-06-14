@@ -45,4 +45,7 @@ public class ProcesoElectoral extends BaseEntity {
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     private List<Candidatura> candidaturas;
+
+    @OneToMany(mappedBy = "procesoElectoral", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Voto> votos;
 }

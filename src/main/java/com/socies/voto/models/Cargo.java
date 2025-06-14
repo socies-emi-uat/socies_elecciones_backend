@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Cargo extends BaseEntity {
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 20, unique = true)
     String nombre;
 
     String descripcion;

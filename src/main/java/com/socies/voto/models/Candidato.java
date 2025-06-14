@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Candidato extends BaseEntity{
 
-    @Column(name = "nombre_candidato", nullable = false, length = 30)
+    @Column(name = "nombre_candidato", nullable = false, length = 30, unique = true)
     private String nombreCandidato;
 
     @Column(name = "apellido_paterno", nullable = false, length = 20)
@@ -23,7 +23,7 @@ public class Candidato extends BaseEntity{
     @Column(name = "apellido_materno", nullable = false, length = 20)
     private String apellidoMaterno;
 
-    @Column(name = "cedula_identidad", nullable = false, length = 12)
+    @Column(name = "cedula_identidad", nullable = false, length = 12, unique = true)
     private String cedulaIdentidad;
 
     @Column(nullable = false)

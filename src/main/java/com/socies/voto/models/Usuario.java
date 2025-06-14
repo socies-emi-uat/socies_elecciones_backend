@@ -3,6 +3,8 @@ package com.socies.voto.models;
 import com.socies.voto.dtos.usuario.UsuarioCreateDTO;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -54,4 +56,7 @@ public class Usuario extends BaseEntity {
         this.contrasenaHash = passwordHashed;
         this.rol = rol;
     }
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Voto> votos;
 }

@@ -1,12 +1,11 @@
 package com.socies.voto.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -41,4 +40,7 @@ public class Candidatura extends BaseEntity {
         this.estadoCandidatura = candidatura.getEstadoCandidatura();
         this.procesoElectoral = candidatura.getProcesoElectoral();
     }
+
+    @OneToMany(mappedBy = "candidatura", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Voto> votos;
 }
