@@ -30,6 +30,7 @@ public class ProcesoElectoral extends BaseEntity {
         this.descripcionProceso = procesoElectoral.getDescripcionProceso();
         this.fechaInicio = procesoElectoral.getFechaInicio();
         this.fechaFin = procesoElectoral.getFechaFin();
+        this.estadoProceso = procesoElectoral.getEstadoProceso();
     }
 
     @ManyToOne
