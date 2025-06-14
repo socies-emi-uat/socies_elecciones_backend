@@ -3,7 +3,7 @@ name: Integracion de modelos
 about: Para agregar modelos
 title: Añadir modelo []
 labels: enhancement
-assignees: krypton612, CamikCM
+assignees: CamikCM, krypton612
 
 ---
 
