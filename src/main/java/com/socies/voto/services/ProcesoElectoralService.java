@@ -8,7 +8,6 @@ import com.socies.voto.exceptions.ProcesoElectoral.ProcesoElectoralNotFoundExcep
 import com.socies.voto.models.ProcesoElectoral;
 import com.socies.voto.repositories.ProcesoElectoralRepository;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,19 +27,24 @@ public class ProcesoElectoralService {
         return procesoElectoralRepository
                 .findById(id)
                 .map(ProcesoElectoralDTO::new)
-                .orElseThrow(() -> new ProcesoElectoralNotFoundException("Proceso electoral no encotrado"));
+                .orElseThrow(
+                        () ->
+                                new ProcesoElectoralNotFoundException(
+                                        "Proceso electoral no encotrado"));
     }
 
     public ProcesoElectoralDTO create(ProcesoElectoralCreateDTO procesoElectoralCreateDTO) {
 
-        procesoElectoralRepository.findByNombreProceso(
-                procesoElectoralCreateDTO.getNombreProceso()
-        ).ifPresent(c -> {
-            throw new ProcesoElectoralAlreadyExistsException("Proceso electoral ya existe");
-        });
+        procesoElectoralRepository
+                .findByNombreProceso(procesoElectoralCreateDTO.getNombreProceso())
+                .ifPresent(
+                        c -> {
+                            throw new ProcesoElectoralAlreadyExistsException(
+                                    "Proceso electoral ya existe");
+                        });
 
         ProcesoElectoral procesoElectoral = new ProcesoElectoral();
-        
+
         procesoElectoral.setEstadoProceso(procesoElectoralCreateDTO.getEstadoProceso());
         procesoElectoral.setNombreProceso(procesoElectoralCreateDTO.getNombreProceso());
         procesoElectoral.setDescripcionProceso(procesoElectoralCreateDTO.getDescripcionProceso());
@@ -53,8 +57,13 @@ public class ProcesoElectoralService {
     }
 
     public ProcesoElectoralDTO actualizar(ProcesoElectoralUpdateDTO dto, Long id) {
-        ProcesoElectoral procesoElectoral = procesoElectoralRepository.findById(id)
-                .orElseThrow(() -> new ProcesoElectoralNotFoundException("El proceso electoral no existe."));
+        ProcesoElectoral procesoElectoral =
+                procesoElectoralRepository
+                        .findById(id)
+                        .orElseThrow(
+                                () ->
+                                        new ProcesoElectoralNotFoundException(
+                                                "El proceso electoral no existe."));
 
         if (dto.getEstadoProceso() != null) {
             procesoElectoral.setEstadoProceso(dto.getEstadoProceso());

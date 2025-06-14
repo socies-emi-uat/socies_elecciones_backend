@@ -1,5 +1,8 @@
 package com.socies.voto;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import com.socies.voto.dtos.ProceoElectoral.ProcesoElectoralCreateDTO;
 import com.socies.voto.dtos.ProceoElectoral.ProcesoElectoralDTO;
 import com.socies.voto.dtos.ProceoElectoral.ProcesoElectoralUpdateDTO;
@@ -8,24 +11,18 @@ import com.socies.voto.exceptions.ProcesoElectoral.ProcesoElectoralNotFoundExcep
 import com.socies.voto.models.EstadoProceso;
 import com.socies.voto.models.ProcesoElectoral;
 import com.socies.voto.repositories.ProcesoElectoralRepository;
-
 import com.socies.voto.services.ProcesoElectoralService;
+import java.time.LocalDateTime;
+import java.util.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import java.time.LocalDateTime;
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class ProcesoElectoralServiceTest {
 
-    @InjectMocks
-    private ProcesoElectoralService service;
+    @InjectMocks private ProcesoElectoralService service;
 
-    @Mock
-    private ProcesoElectoralRepository repository;
+    @Mock private ProcesoElectoralRepository repository;
 
     @BeforeEach
     void setup() {
@@ -137,4 +134,3 @@ class ProcesoElectoralServiceTest {
         assertEquals("Nueva descripcion", updated.getDescripcionProceso());
     }
 }
-

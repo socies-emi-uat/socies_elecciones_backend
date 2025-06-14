@@ -3,11 +3,10 @@ package com.socies.voto.dtos.ProceoElectoral;
 import com.socies.voto.models.EstadoProceso;
 import com.socies.voto.models.ProcesoElectoral;
 import jakarta.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
