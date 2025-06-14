@@ -1,8 +1,6 @@
 package com.socies.voto.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,4 +33,8 @@ public class ProcesoElectoral extends BaseEntity {
         this.fechaInicio = procesoElectoral.getFechaInicio();
         this.fechaFin = procesoElectoral.getFechaFin();
     }
+
+    @ManyToOne
+    @JoinColumn(name = "estado_proceso_id", referencedColumnName = "id", nullable = false)
+    private EstadoProceso estado_proceso_id;
 }

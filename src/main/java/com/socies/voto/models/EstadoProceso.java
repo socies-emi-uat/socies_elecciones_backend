@@ -1,10 +1,11 @@
 package com.socies.voto.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,4 +19,12 @@ public class EstadoProceso extends BaseEntity {
     public EstadoProceso(String estado) {
         this.estadoProceso = estado;
     }
+
+    @OneToMany(
+            mappedBy = "estado_proceso",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private List<ProcesoElectoral> procesoElectorals;
+
 }
