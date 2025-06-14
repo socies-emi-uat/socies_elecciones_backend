@@ -36,5 +36,5 @@ public class ProcesoElectoral extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "estado_proceso_id", referencedColumnName = "id", nullable = false)
-    private EstadoProceso estado_proceso_id;
+    private EstadoProceso estadoProceso;
 }

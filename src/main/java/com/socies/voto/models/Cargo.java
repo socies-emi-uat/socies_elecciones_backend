@@ -1,10 +1,11 @@
 package com.socies.voto.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,4 +23,11 @@ public class Cargo extends BaseEntity {
         this.nombre = nombre_cargo;
         this.descripcion = descripcion;
     }
+
+    @OneToMany(
+            mappedBy = "cargo",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private List<Candidato> candidatos;
 }
