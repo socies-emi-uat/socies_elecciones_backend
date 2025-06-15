@@ -1,5 +1,8 @@
 package com.socies.voto;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import com.socies.voto.dtos.Provincia.ProvinciaCreateDTO;
 import com.socies.voto.dtos.Provincia.ProvinciaDTO;
 import com.socies.voto.dtos.Provincia.ProvinciaUpdateDTO;
@@ -8,21 +11,16 @@ import com.socies.voto.models.Departamento;
 import com.socies.voto.models.Provincia;
 import com.socies.voto.repositories.ProvinciaRepository;
 import com.socies.voto.services.ProvinciaService;
+import java.util.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class ProvinciaServiceTests {
 
-    @InjectMocks
-    private ProvinciaService provinciaService;
+    @InjectMocks private ProvinciaService provinciaService;
 
-    @Mock
-    private ProvinciaRepository provinciaRepository;
+    @Mock private ProvinciaRepository provinciaRepository;
 
     @BeforeEach
     void setUp() {
@@ -92,8 +90,7 @@ class ProvinciaServiceTests {
         dto.setNombre("Beni");
         dto.setDepartamento(new Departamento());
 
-        when(provinciaRepository.findByNombre("Beni"))
-                .thenReturn(Optional.of(new Provincia()));
+        when(provinciaRepository.findByNombre("Beni")).thenReturn(Optional.of(new Provincia()));
 
         assertThrows(ResourceNotFoundException.class, () -> provinciaService.create(dto));
         verify(provinciaRepository, never()).save(any());
