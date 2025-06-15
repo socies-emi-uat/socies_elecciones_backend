@@ -1,9 +1,6 @@
 package com.socies.voto.dtos.Candidatura;
 
 import com.socies.voto.models.*;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

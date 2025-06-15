@@ -1,5 +1,8 @@
 package com.socies.voto;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import com.socies.voto.dtos.Partido.PartidoCreateDTO;
 import com.socies.voto.dtos.Partido.PartidoUpdateDTO;
 import com.socies.voto.exceptions.ResourceAlreadyExistsException;
@@ -7,25 +10,18 @@ import com.socies.voto.exceptions.ResourceNotFoundException;
 import com.socies.voto.models.Partido;
 import com.socies.voto.repositories.PartidoRepository;
 import com.socies.voto.services.PartidoService;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 class PartidoServiceTests {
 
-    @Mock
-    private PartidoRepository partidoRepository;
+    @Mock private PartidoRepository partidoRepository;
 
-    @InjectMocks
-    private PartidoService partidoService;
+    @InjectMocks private PartidoService partidoService;
 
     @BeforeEach
     void setUp() {

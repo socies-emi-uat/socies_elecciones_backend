@@ -6,24 +6,26 @@ import com.socies.voto.dtos.Candidatura.CandidaturaUpdateDTO;
 import com.socies.voto.exceptions.ResourceNotFoundException;
 import com.socies.voto.models.Candidatura;
 import com.socies.voto.repositories.CandidaturaRepository;
-import org.hibernate.ObjectNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 public class CandidaturaService {
-    @Autowired
-    private CandidaturaRepository candidaturaRepository;
+    @Autowired private CandidaturaRepository candidaturaRepository;
 
     public List<CandidaturaDTO> findAll() {
-        return candidaturaRepository.findAll().stream().map(CandidaturaDTO::new).collect(Collectors.toList());
+        return candidaturaRepository.findAll().stream()
+                .map(CandidaturaDTO::new)
+                .collect(Collectors.toList());
     }
 
     public CandidaturaDTO obtenerPorId(Long id) {
-        return candidaturaRepository.findById(id).map(CandidaturaDTO::new).orElseThrow(() -> new ResourceNotFoundException("Candidatura no existe."));
+        return candidaturaRepository
+                .findById(id)
+                .map(CandidaturaDTO::new)
+                .orElseThrow(() -> new ResourceNotFoundException("Candidatura no existe."));
     }
 
     public CandidaturaDTO create(CandidaturaCreateDTO dto) {
@@ -34,8 +36,13 @@ public class CandidaturaService {
     }
 
     public CandidaturaDTO update(Long id, CandidaturaUpdateDTO dto) {
-        Candidatura candidatura = candidaturaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Candidatura no encontrada con ID: " + id));
+        Candidatura candidatura =
+                candidaturaRepository
+                        .findById(id)
+                        .orElseThrow(
+                                () ->
+                                        new ResourceNotFoundException(
+                                                "Candidatura no encontrada con ID: " + id));
         mapUpdateDtoToEntity(dto, candidatura);
         return new CandidaturaDTO(candidaturaRepository.save(candidatura));
     }
@@ -47,7 +54,6 @@ public class CandidaturaService {
         entity.setPartido(dto.getPartido());
         entity.setProcesoElectoral(dto.getProcesoElectoral());
     }
-
 
     private void mapUpdateDtoToEntity(CandidaturaUpdateDTO dto, Candidatura entity) {
         if (dto.getNombreCandidatura() != null) {
@@ -62,6 +68,5 @@ public class CandidaturaService {
         if (dto.getPartido() != null) {
             entity.setPartido(dto.getPartido());
         }
-
     }
 }

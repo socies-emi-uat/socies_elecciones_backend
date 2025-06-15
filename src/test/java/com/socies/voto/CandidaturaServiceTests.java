@@ -1,5 +1,8 @@
 package com.socies.voto;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import com.socies.voto.dtos.Candidatura.CandidaturaCreateDTO;
 import com.socies.voto.dtos.Candidatura.CandidaturaDTO;
 import com.socies.voto.dtos.Candidatura.CandidaturaUpdateDTO;
@@ -7,22 +10,16 @@ import com.socies.voto.exceptions.ResourceNotFoundException;
 import com.socies.voto.models.*;
 import com.socies.voto.repositories.CandidaturaRepository;
 import com.socies.voto.services.CandidaturaService;
+import java.util.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 class CandidaturaServiceTests {
 
-    @InjectMocks
-    private CandidaturaService candidaturaService;
+    @InjectMocks private CandidaturaService candidaturaService;
 
-    @Mock
-    private CandidaturaRepository candidaturaRepository;
+    @Mock private CandidaturaRepository candidaturaRepository;
 
     private Candidato candidato;
     private Partido partido;
@@ -147,9 +144,11 @@ class CandidaturaServiceTests {
         CandidaturaUpdateDTO dto = new CandidaturaUpdateDTO();
         when(candidaturaRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> {
-            candidaturaService.update(id, dto);
-        });
+        assertThrows(
+                ResourceNotFoundException.class,
+                () -> {
+                    candidaturaService.update(id, dto);
+                });
 
         verify(candidaturaRepository, never()).save(any());
     }

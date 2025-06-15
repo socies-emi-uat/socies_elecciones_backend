@@ -2,7 +2,6 @@ package com.socies.voto.dtos.Candidatura;
 
 import com.socies.voto.models.Candidato;
 import com.socies.voto.models.Candidatura;
-import com.socies.voto.models.EstadoCandidatura;
 import com.socies.voto.models.Partido;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
