@@ -1,6 +1,7 @@
 package com.socies.voto.dtos.Provincia;
 
 import com.socies.voto.models.Departamento;
+import com.socies.voto.models.Provincia;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,8 +13,8 @@ public class ProvinciaDTO {
     private Long id;
     private String nombre;
 
-    public ProvinciaDTO(Departamento departamento) {
-        this.id = departamento.getId();
-        this.nombre = departamento.getNombre();
+    public ProvinciaDTO(Provincia provincia) {
+        this.id = provincia.getId();
+        this.nombre = provincia.getNombre();
     }
 }
