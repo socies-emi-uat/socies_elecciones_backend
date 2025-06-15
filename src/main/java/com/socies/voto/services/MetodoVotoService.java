@@ -84,7 +84,7 @@ public class MetodoVotoService {
                         .orElseThrow(
                                 () ->
                                         new MetodoVotoNotFoundException(
-                                                "Método de voto no encontrado."));
+                                                "Método de voto ID no encontrado."));
         metodoVotoRepository.delete(metodoVoto);
     }
 }
