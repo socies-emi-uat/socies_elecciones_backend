@@ -146,6 +146,9 @@ public class CandidatoService {
     }
 
     public void eliminarCandidato(Long id) {
+        if (!candidatoRepository.existsById(id)) {
+            throw new CandidatoNotFoundException("Candidato no encontrado con id " + id);
+        }
         candidatoRepository.deleteById(id);
     }
 }

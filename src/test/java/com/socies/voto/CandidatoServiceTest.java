@@ -251,23 +251,15 @@ class CandidatoServiceTest {
     @Test
     void eliminarCandidato_IdValido_EliminaCorrectamente() {
         when(candidatoRepository.existsById(1L)).thenReturn(true);
-
-        assertDoesNotThrow(
-                () -> {
-                    candidatoService.eliminarCandidato(1L);
-                });
+        assertDoesNotThrow(() -> candidatoService.eliminarCandidato(1L));
         verify(candidatoRepository).deleteById(1L);
     }
 
     @Test
     void eliminarCandidato_CandidatoNoExiste_LanzaExcepcion() {
         when(candidatoRepository.existsById(1L)).thenReturn(false);
-
         assertThrows(
-                CandidatoNotFoundException.class,
-                () -> {
-                    candidatoService.eliminarCandidato(1L);
-                });
+                CandidatoNotFoundException.class, () -> candidatoService.eliminarCandidato(1L));
         verify(candidatoRepository, never()).deleteById(any());
     }
 }
