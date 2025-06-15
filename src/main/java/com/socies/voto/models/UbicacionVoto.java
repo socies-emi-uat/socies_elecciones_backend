@@ -24,6 +24,8 @@ public class UbicacionVoto extends BaseEntity {
     @Column(nullable = false)
     String direccion;
 
+    boolean estado = false;
+
     public UbicacionVoto(
             String nombreUbicacion,
             String descripcionUbicacion,
@@ -35,6 +37,7 @@ public class UbicacionVoto extends BaseEntity {
         this.latitude = latitude;
         this.longitude = longitude;
         this.direccion = direccion;
+
     }
 
     public UbicacionVoto(String nombreUbicacion, String descripcionUbicacion, String direccion) {
