@@ -104,7 +104,7 @@ public class GlobalExceptionHandler {
         ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
-      
+
     @ExceptionHandler(ProcesoElectoralNotFoundException.class)
     public ResponseEntity<ResponseWrapper<Void>> handleProcesoElectoralAlreadyNotFound(
             ProcesoElectoralNotFoundException ex) {
@@ -118,8 +118,8 @@ public class GlobalExceptionHandler {
         ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
-  
-     @ExceptionHandler(CandidatoNotFoundException.class)
+
+    @ExceptionHandler(CandidatoNotFoundException.class)
     public ResponseEntity<ResponseWrapper<Void>> handleCandidatoNotFound(
             CandidatoNotFoundException ex) {
         ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
