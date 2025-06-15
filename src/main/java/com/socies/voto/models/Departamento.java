@@ -10,19 +10,19 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class EstadoProceso extends BaseEntity {
+public class Departamento extends BaseEntity {
 
-    @Column(name = "estado_proceso", nullable = false, length = 20)
-    String estadoProceso;
+    @Column(nullable = false, unique = true)
+    private String nombre;
 
-    public EstadoProceso(String estado) {
-        this.estadoProceso = estado;
+    public Departamento(Departamento departamento) {
+        this.nombre = departamento.getNombre();
     }
 
     @OneToMany(
-            mappedBy = "estadoProceso",
+            mappedBy = "departamento",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
-    private List<ProcesoElectoral> procesoElectorals;
+    List<Provincia> provincias;
 }

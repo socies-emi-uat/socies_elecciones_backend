@@ -1,6 +1,8 @@
 package com.socies.voto;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.socies.voto.dtos.Cargo.CargoCreateDTO;
 import com.socies.voto.dtos.Cargo.CargoDTO;
@@ -93,6 +95,18 @@ public class CargoServiceTests {
         CargoCreateDTO dto = new CargoCreateDTO(1L, "Presidente", "Intento duplicado");
 
         assertThrows(CargoAlreadyExistsException.class, () -> cargoService.CrearCargo(dto));
+    }
+
+    @Test
+    void testBuscarCargosSinFiltros() {
+        List<Cargo> cargos =
+                List.of(new Cargo("Cargo 1", "Desc 1"), new Cargo("Cargo 2", "Desc 2"));
+
+        Mockito.when(cargoRepository.findAll()).thenReturn(cargos);
+
+        List<CargoDTO> resultado = cargoService.buscarCargosFiltrados(null, null);
+
+        assertEquals(2, resultado.size());
     }
 
     @Test

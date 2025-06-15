@@ -10,21 +10,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Cargo extends BaseEntity {
+public class EstadoCandidato extends BaseEntity {
 
-    @Column(nullable = false, length = 20, unique = true)
-    String nombre;
+    @Column(nullable = false, length = 20)
+    private String estadoCandidato;
 
-    String descripcion;
-
-    public Cargo(String nombre_cargo, String descripcion) {
-
-        this.nombre = nombre_cargo;
-        this.descripcion = descripcion;
+    public EstadoCandidato(String estadoCandidato) {
+        this.estadoCandidato = estadoCandidato;
     }
 
     @OneToMany(
-            mappedBy = "cargo",
+            mappedBy = "estadoCandidato",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
