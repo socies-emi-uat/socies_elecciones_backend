@@ -24,6 +24,8 @@ public class UbicacionVoto extends BaseEntity {
     @Column(nullable = false)
     String direccion;
 
+    boolean estado = false;
+
     public UbicacionVoto(
             String nombreUbicacion,
             String descripcionUbicacion,
