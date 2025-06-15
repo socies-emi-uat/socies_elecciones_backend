@@ -22,7 +22,7 @@ public class CandidaturaService {
         return candidaturaRepository.findAll().stream().map(CandidaturaDTO::new).collect(Collectors.toList());
     }
 
-    private CandidaturaDTO findById(Long id) {
+    public CandidaturaDTO obtenerPorId(Long id) {
         return candidaturaRepository.findById(id).map(CandidaturaDTO::new).orElseThrow(() -> new ResourceNotFoundException("Candidatura no existe."));
     }
 
@@ -62,8 +62,6 @@ public class CandidaturaService {
         if (dto.getPartido() != null) {
             entity.setPartido(dto.getPartido());
         }
-        if (dto.getEstadoCandidatura() != null) {
-            entity.setEstadoCandidatura(dto.getEstadoCandidatura());
-        }
+
     }
 }

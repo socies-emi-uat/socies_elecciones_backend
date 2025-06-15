@@ -16,13 +16,11 @@ public class CandidaturaUpdateDTO {
     private String lema;
     private Candidato candidato;
     private Partido partido;
-    private EstadoCandidatura estadoCandidatura;
 
     public CandidaturaUpdateDTO(Candidatura candidatura) {
         this.nombreCandidatura = candidatura.getNombreCandidatura();
         this.lema = candidatura.getLema();
         this.candidato = candidatura.getCandidato();
         this.partido = candidatura.getPartido();
-        this.estadoCandidatura = candidatura.getEstadoCandidatura();
     }
 }
