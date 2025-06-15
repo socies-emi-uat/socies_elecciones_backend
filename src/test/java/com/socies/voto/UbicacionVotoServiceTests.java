@@ -1,5 +1,8 @@
 package com.socies.voto;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import com.socies.voto.dtos.UbicacionVoto.UbicacionVotoCreateDTO;
 import com.socies.voto.dtos.UbicacionVoto.UbicacionVotoUpdateDTO;
 import com.socies.voto.exceptions.ResourceNotFoundException;
@@ -7,21 +10,16 @@ import com.socies.voto.models.Municipio;
 import com.socies.voto.models.UbicacionVoto;
 import com.socies.voto.repositories.UbicacionVotoRepository;
 import com.socies.voto.services.UbicacionVotoService;
+import java.util.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 public class UbicacionVotoServiceTests {
 
-    @InjectMocks
-    private UbicacionVotoService ubicacionVotoService;
+    @InjectMocks private UbicacionVotoService ubicacionVotoService;
 
-    @Mock
-    private UbicacionVotoRepository ubicacionVotoRepository;
+    @Mock private UbicacionVotoRepository ubicacionVotoRepository;
 
     @BeforeEach
     public void setUp() {
@@ -51,9 +49,11 @@ public class UbicacionVotoServiceTests {
     void testFindById_NotFound() {
         when(ubicacionVotoRepository.findById(999L)).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> {
-            ubicacionVotoService.findById(999L);
-        });
+        assertThrows(
+                ResourceNotFoundException.class,
+                () -> {
+                    ubicacionVotoService.findById(999L);
+                });
     }
 
     @Test
@@ -66,7 +66,8 @@ public class UbicacionVotoServiceTests {
         dto.setLongitude(-63.2f);
         dto.setMunicipio(new Municipio());
 
-        when(ubicacionVotoRepository.findByNombreUbicacion("Escuela A")).thenReturn(Optional.empty());
+        when(ubicacionVotoRepository.findByNombreUbicacion("Escuela A"))
+                .thenReturn(Optional.empty());
 
         var result = ubicacionVotoService.create(dto);
 
@@ -82,9 +83,11 @@ public class UbicacionVotoServiceTests {
         when(ubicacionVotoRepository.findByNombreUbicacion("Existente"))
                 .thenReturn(Optional.of(new UbicacionVoto()));
 
-        assertThrows(ResourceNotFoundException.class, () -> {
-            ubicacionVotoService.create(dto);
-        });
+        assertThrows(
+                ResourceNotFoundException.class,
+                () -> {
+                    ubicacionVotoService.create(dto);
+                });
 
         verify(ubicacionVotoRepository, never()).save(any());
     }
@@ -118,9 +121,10 @@ public class UbicacionVotoServiceTests {
 
         when(ubicacionVotoRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> {
-            ubicacionVotoService.update(1L, dto);
-        });
+        assertThrows(
+                ResourceNotFoundException.class,
+                () -> {
+                    ubicacionVotoService.update(1L, dto);
+                });
     }
 }
-

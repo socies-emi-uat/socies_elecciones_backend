@@ -6,19 +6,17 @@ import com.socies.voto.dtos.Municipio.MunicipioUpdateDTO;
 import com.socies.voto.services.MunicipioService;
 import com.socies.voto.utils.ResponseWrapper;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/administrador/municipios")
 public class MunicipioController {
 
-    @Autowired
-    private MunicipioService municipioService;
+    @Autowired private MunicipioService municipioService;
 
     @GetMapping
     public ResponseEntity<ResponseWrapper<List<MunicipioDTO>>> findAll() {

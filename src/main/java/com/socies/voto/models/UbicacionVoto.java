@@ -37,7 +37,6 @@ public class UbicacionVoto extends BaseEntity {
         this.latitude = latitude;
         this.longitude = longitude;
         this.direccion = direccion;
-
     }
 
     public UbicacionVoto(String nombreUbicacion, String descripcionUbicacion, String direccion) {

@@ -11,14 +11,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UbicacionVotoUpdateDTO {
-    @NotBlank
-    String nombreUbicacion;
-    @NotBlank
-    String descripcionUbicacion;
+    @NotBlank String nombreUbicacion;
+    @NotBlank String descripcionUbicacion;
     float latitude;
     float longitude;
-    @NotBlank
-    String direccion;
+    @NotBlank String direccion;
     Municipio municipio;
 
     public UbicacionVotoUpdateDTO(UbicacionVoto ubicacionVoto) {

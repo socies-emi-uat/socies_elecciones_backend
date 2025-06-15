@@ -1,8 +1,6 @@
 package com.socies.voto.dtos.UbicacionVoto;
 
 import com.socies.voto.models.UbicacionVoto;
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

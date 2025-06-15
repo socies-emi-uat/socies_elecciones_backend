@@ -6,17 +6,15 @@ import com.socies.voto.dtos.Municipio.MunicipioUpdateDTO;
 import com.socies.voto.exceptions.ResourceNotFoundException;
 import com.socies.voto.models.Municipio;
 import com.socies.voto.repositories.MunicipioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class MunicipioService {
 
-    @Autowired
-    private MunicipioRepository municipioRepository;
+    @Autowired private MunicipioRepository municipioRepository;
 
     public List<MunicipioDTO> findAll() {
         return municipioRepository.findAll().stream()
@@ -25,16 +23,21 @@ public class MunicipioService {
     }
 
     public MunicipioDTO findById(Long id) {
-        Municipio municipio = municipioRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Municipio no encontrado"));
+        Municipio municipio =
+                municipioRepository
+                        .findById(id)
+                        .orElseThrow(
+                                () -> new ResourceNotFoundException("Municipio no encontrado"));
         return new MunicipioDTO(municipio);
     }
 
     public MunicipioDTO create(MunicipioCreateDTO dto) {
-        municipioRepository.findByNombre(dto.getNombre())
-                .ifPresent(m -> {
-                    throw new ResourceNotFoundException("Municipio ya existente");
-                });
+        municipioRepository
+                .findByNombre(dto.getNombre())
+                .ifPresent(
+                        m -> {
+                            throw new ResourceNotFoundException("Municipio ya existente");
+                        });
 
         Municipio municipio = new Municipio();
         municipio.setNombre(dto.getNombre());
@@ -46,13 +49,18 @@ public class MunicipioService {
     }
 
     public MunicipioDTO update(Long id, MunicipioUpdateDTO dto) {
-        municipioRepository.findByNombre(dto.getNombre())
-                .ifPresent(m -> {
-                    throw new ResourceNotFoundException("Municipio ya existente");
-                });
+        municipioRepository
+                .findByNombre(dto.getNombre())
+                .ifPresent(
+                        m -> {
+                            throw new ResourceNotFoundException("Municipio ya existente");
+                        });
 
-        Municipio municipio = municipioRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Municipio no encontrado"));
+        Municipio municipio =
+                municipioRepository
+                        .findById(id)
+                        .orElseThrow(
+                                () -> new ResourceNotFoundException("Municipio no encontrado"));
 
         municipio.setNombre(dto.getNombre());
         municipio.setProvincia(dto.getProvincia());

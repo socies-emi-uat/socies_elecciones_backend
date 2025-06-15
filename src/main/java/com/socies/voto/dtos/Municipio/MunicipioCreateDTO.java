@@ -1,6 +1,5 @@
 package com.socies.voto.dtos.Municipio;
 
-import com.socies.voto.models.Departamento;
 import com.socies.voto.models.Municipio;
 import com.socies.voto.models.Provincia;
 import jakarta.validation.constraints.NotBlank;

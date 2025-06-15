@@ -1,5 +1,8 @@
 package com.socies.voto;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import com.socies.voto.dtos.Municipio.MunicipioCreateDTO;
 import com.socies.voto.dtos.Municipio.MunicipioDTO;
 import com.socies.voto.dtos.Municipio.MunicipioUpdateDTO;
@@ -8,24 +11,18 @@ import com.socies.voto.models.Municipio;
 import com.socies.voto.models.Provincia;
 import com.socies.voto.repositories.MunicipioRepository;
 import com.socies.voto.services.MunicipioService;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 class MunicipioServiceTests {
 
-    @InjectMocks
-    private MunicipioService municipioService;
+    @InjectMocks private MunicipioService municipioService;
 
-    @Mock
-    private MunicipioRepository municipioRepository;
+    @Mock private MunicipioRepository municipioRepository;
 
     private AutoCloseable closeable;
 
@@ -106,7 +103,8 @@ class MunicipioServiceTests {
         dto.setNombre("Municipio Actualizado");
         dto.setProvincia(provincia);
 
-        when(municipioRepository.findByNombre("Municipio Actualizado")).thenReturn(Optional.empty());
+        when(municipioRepository.findByNombre("Municipio Actualizado"))
+                .thenReturn(Optional.empty());
         when(municipioRepository.findById(1L)).thenReturn(Optional.of(municipio));
 
         MunicipioDTO result = municipioService.update(1L, dto);
@@ -121,7 +119,8 @@ class MunicipioServiceTests {
         dto.setNombre("Municipio Actualizado");
         dto.setProvincia(provincia);
 
-        when(municipioRepository.findByNombre("Municipio Actualizado")).thenReturn(Optional.empty());
+        when(municipioRepository.findByNombre("Municipio Actualizado"))
+                .thenReturn(Optional.empty());
         when(municipioRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> municipioService.update(1L, dto));
