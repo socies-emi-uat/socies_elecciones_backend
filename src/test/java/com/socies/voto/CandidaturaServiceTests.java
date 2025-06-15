@@ -126,7 +126,6 @@ class CandidaturaServiceTests {
         dto.setLema("Cambio real");
         dto.setCandidato(candidato);
         dto.setPartido(partido);
-        dto.setEstadoCandidatura(estado);
 
         when(candidaturaRepository.findById(id)).thenReturn(Optional.of(existing));
         when(candidaturaRepository.save(any(Candidatura.class))).thenAnswer(i -> i.getArgument(0));
