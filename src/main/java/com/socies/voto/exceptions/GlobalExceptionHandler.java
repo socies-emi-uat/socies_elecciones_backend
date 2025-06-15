@@ -64,6 +64,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<ResponseWrapper<Void>> handleResourceAlreadyExistsException(
+            ResourceAlreadyExistsException ex) {
+        ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(CargoNotFoundException.class)
     public ResponseEntity<ResponseWrapper<Void>> handleCargoNotFound(CargoNotFoundException ex) {
         ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);

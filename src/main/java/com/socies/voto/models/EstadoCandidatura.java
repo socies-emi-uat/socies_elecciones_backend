@@ -19,6 +19,11 @@ public class EstadoCandidatura extends BaseEntity {
         this.estadoCandidatura = estado;
     }
 
+    public EstadoCandidatura(Long id, String estado) {
+        this.setId(id);
+        this.estadoCandidatura = estado;
+    }
+
     @OneToMany(
             mappedBy = "estadoCandidatura",
             cascade = CascadeType.ALL,
