@@ -9,8 +9,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class DepartamentoCreateDTO {
-    @NotBlank
-    private String nombre;
+    @NotBlank private String nombre;
 
     public DepartamentoCreateDTO(@NotBlank String nombre) {
         this.nombre = nombre;
