@@ -11,6 +11,8 @@ import com.socies.voto.exceptions.EstadoCandidato.EstadoCandidatoAlreadyExistsEx
 import com.socies.voto.exceptions.EstadoCandidato.EstadoCandidatoNotFoundException;
 import com.socies.voto.exceptions.EstadoProceso.EstadoProcesoAlreadyExistsException;
 import com.socies.voto.exceptions.EstadoProceso.EstadoProcesoNotFoundException;
+import com.socies.voto.exceptions.ProcesoElectoral.ProcesoElectoralAlreadyExistsException;
+import com.socies.voto.exceptions.ProcesoElectoral.ProcesoElectoralNotFoundException;
 import com.socies.voto.exceptions.Usuario.EmailAlreadyExistsException;
 import com.socies.voto.exceptions.Usuario.UsuarioInvalidOldPasswordFoundException;
 import com.socies.voto.exceptions.Usuario.UsuarioNotFoundException;
@@ -102,8 +104,22 @@ public class GlobalExceptionHandler {
         ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
+      
+    @ExceptionHandler(ProcesoElectoralNotFoundException.class)
+    public ResponseEntity<ResponseWrapper<Void>> handleProcesoElectoralAlreadyNotFound(
+            ProcesoElectoralNotFoundException ex) {
+        ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 
-    @ExceptionHandler(CandidatoNotFoundException.class)
+    @ExceptionHandler(ProcesoElectoralAlreadyExistsException.class)
+    public ResponseEntity<ResponseWrapper<Void>> handlePrcesoElectoralAlreadyExists(
+            ProcesoElectoralAlreadyExistsException ex) {
+        ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+  
+     @ExceptionHandler(CandidatoNotFoundException.class)
     public ResponseEntity<ResponseWrapper<Void>> handleCandidatoNotFound(
             CandidatoNotFoundException ex) {
         ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
@@ -116,6 +132,5 @@ public class GlobalExceptionHandler {
         ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
-
     // Otros controladores de excepciones pueden ir aquí
 }
