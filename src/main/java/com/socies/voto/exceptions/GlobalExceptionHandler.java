@@ -1,10 +1,5 @@
 package com.socies.voto.exceptions;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import com.socies.voto.dtos.AuthDTO.LoginAuthResponseDTO;
 import com.socies.voto.dtos.usuario.UsuarioDTO;
 import com.socies.voto.exceptions.Auth.AuthFailedException;
@@ -20,6 +15,10 @@ import com.socies.voto.exceptions.Usuario.EmailAlreadyExistsException;
 import com.socies.voto.exceptions.Usuario.UsuarioInvalidOldPasswordFoundException;
 import com.socies.voto.exceptions.Usuario.UsuarioNotFoundException;
 import com.socies.voto.utils.ResponseWrapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

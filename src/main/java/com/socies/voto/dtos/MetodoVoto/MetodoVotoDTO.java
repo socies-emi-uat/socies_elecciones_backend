@@ -1,8 +1,6 @@
-
 package com.socies.voto.dtos.MetodoVoto;
 
 import com.socies.voto.models.MetodoVoto;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

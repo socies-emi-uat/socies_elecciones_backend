@@ -1,10 +1,8 @@
 package com.socies.voto.dtos.MetodoVoto;
 
-import java.util.List;
-
 import com.socies.voto.models.MetodoVoto;
 import com.socies.voto.models.Voto;
-
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 

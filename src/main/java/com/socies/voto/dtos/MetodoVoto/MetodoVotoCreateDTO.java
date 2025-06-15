@@ -13,4 +13,3 @@ public class MetodoVotoCreateDTO {
         this.nombre = nombre;
     }
 }
-
