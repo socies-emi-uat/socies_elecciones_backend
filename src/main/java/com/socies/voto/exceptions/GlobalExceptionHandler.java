@@ -3,12 +3,16 @@ package com.socies.voto.exceptions;
 import com.socies.voto.dtos.AuthDTO.LoginAuthResponseDTO;
 import com.socies.voto.dtos.usuario.UsuarioDTO;
 import com.socies.voto.exceptions.Auth.AuthFailedException;
+import com.socies.voto.exceptions.Candidato.CandidatoAlreadyExistsException;
+import com.socies.voto.exceptions.Candidato.CandidatoNotFoundException;
 import com.socies.voto.exceptions.Cargo.CargoAlreadyExistsException;
 import com.socies.voto.exceptions.Cargo.CargoNotFoundException;
 import com.socies.voto.exceptions.EstadoCandidato.EstadoCandidatoAlreadyExistsException;
 import com.socies.voto.exceptions.EstadoCandidato.EstadoCandidatoNotFoundException;
 import com.socies.voto.exceptions.EstadoProceso.EstadoProcesoAlreadyExistsException;
 import com.socies.voto.exceptions.EstadoProceso.EstadoProcesoNotFoundException;
+import com.socies.voto.exceptions.ProcesoElectoral.ProcesoElectoralAlreadyExistsException;
+import com.socies.voto.exceptions.ProcesoElectoral.ProcesoElectoralNotFoundException;
 import com.socies.voto.exceptions.MetodoVoto.MetodoVotoAlreadyExistsException;
 import com.socies.voto.exceptions.MetodoVoto.MetodoVotoNotFoundException;
 import com.socies.voto.exceptions.Usuario.EmailAlreadyExistsException;
@@ -113,6 +117,34 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MetodoVotoAlreadyExistsException.class)
     public ResponseEntity<ResponseWrapper<Void>> handleMetodoVotoAlreadyExists(
             MetodoVotoAlreadyExistsException ex) {
+        ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ProcesoElectoralNotFoundException.class)
+    public ResponseEntity<ResponseWrapper<Void>> handleProcesoElectoralAlreadyNotFound(
+            ProcesoElectoralNotFoundException ex) {
+        ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProcesoElectoralAlreadyExistsException.class)
+    public ResponseEntity<ResponseWrapper<Void>> handlePrcesoElectoralAlreadyExists(
+            ProcesoElectoralAlreadyExistsException ex) {
+        ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(CandidatoNotFoundException.class)
+    public ResponseEntity<ResponseWrapper<Void>> handleCandidatoNotFound(
+            CandidatoNotFoundException ex) {
+        ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CandidatoAlreadyExistsException.class)
+    public ResponseEntity<ResponseWrapper<Void>> handleCandidatoAlreadyExists(
+            CandidatoAlreadyExistsException ex) {
         ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
