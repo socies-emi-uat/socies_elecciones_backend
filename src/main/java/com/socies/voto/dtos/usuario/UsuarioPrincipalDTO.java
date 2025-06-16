@@ -45,7 +45,6 @@ public class UsuarioPrincipalDTO implements UserDetails {
         return usuario.isEstado(); // es falso, no puede votar - true si.
     }
 
-
     @Override
     public String getPassword() {
         return usuario.getContrasenaHash();

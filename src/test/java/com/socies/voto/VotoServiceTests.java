@@ -1,6 +1,8 @@
 package com.socies.voto;
 
-import com.socies.voto.dtos.Voto.AVotoDTO;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import com.socies.voto.dtos.Voto.UVotoCreateDTO;
 import com.socies.voto.dtos.Voto.UVotoDTO;
 import com.socies.voto.dtos.usuario.UsuarioPrincipalDTO;
@@ -11,6 +13,7 @@ import com.socies.voto.repositories.UbicacionVotoRepository;
 import com.socies.voto.repositories.UsuarioRepository;
 import com.socies.voto.repositories.VotoRepository;
 import com.socies.voto.services.VotoService;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,34 +23,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 class VotoServiceTests {
 
-    @Mock
-    private VotoRepository votoRepository;
+    @Mock private VotoRepository votoRepository;
 
-    @Mock
-    private UsuarioRepository usuarioRepository;
+    @Mock private UsuarioRepository usuarioRepository;
 
-    @Mock
-    private MetodoVotoRepository metodoVotoRepository;
+    @Mock private MetodoVotoRepository metodoVotoRepository;
 
-    @Mock
-    private UbicacionVotoRepository ubicacionVotoRepository;
+    @Mock private UbicacionVotoRepository ubicacionVotoRepository;
 
-    @Mock
-    private SecurityContext securityContext;
+    @Mock private SecurityContext securityContext;
 
-    @Mock
-    private Authentication authentication;
+    @Mock private Authentication authentication;
 
-    @InjectMocks
-    private VotoService votoService;
+    @InjectMocks private VotoService votoService;
 
     private Usuario usuario;
     private ProcesoElectoral procesoElectoral;
@@ -107,7 +97,6 @@ class VotoServiceTests {
         candidato.setEstadoCandidato(estadoCandidato);
         candidato.setCargo(cargo);
 
-
         partido = new Partido();
         partido.setId(1L);
 
@@ -136,7 +125,6 @@ class VotoServiceTests {
         SecurityContextHolder.setContext(securityContext);
     }
 
-
     @Test
     void testVotoExitoso() {
         when(votoRepository.existsByUsuarioIdAndProcesoElectoralId(1L, 1L)).thenReturn(false);
@@ -156,11 +144,15 @@ class VotoServiceTests {
     void testUsuarioYaVoto() {
         when(votoRepository.existsByUsuarioIdAndProcesoElectoralId(1L, 1L)).thenReturn(true);
 
-        IllegalStateException ex = assertThrows(IllegalStateException.class, () -> {
-            votoService.save(votoDTO);
-        });
+        IllegalStateException ex =
+                assertThrows(
+                        IllegalStateException.class,
+                        () -> {
+                            votoService.save(votoDTO);
+                        });
 
-        assertEquals("El usuario ya ha emitido su voto en este proceso electoral.", ex.getMessage());
+        assertEquals(
+                "El usuario ya ha emitido su voto en este proceso electoral.", ex.getMessage());
         verify(votoRepository, never()).save(any());
     }
 
@@ -168,9 +160,12 @@ class VotoServiceTests {
     void testUsuarioSinPermisoParaVotar() {
         when(usuarioPrincipal.puedeVotar()).thenReturn(false);
 
-        ResourceNotFoundException ex = assertThrows(ResourceNotFoundException.class, () -> {
-            votoService.save(votoDTO);
-        });
+        ResourceNotFoundException ex =
+                assertThrows(
+                        ResourceNotFoundException.class,
+                        () -> {
+                            votoService.save(votoDTO);
+                        });
 
         assertEquals("El usuario no puede votar", ex.getMessage());
         verify(votoRepository, never()).save(any());

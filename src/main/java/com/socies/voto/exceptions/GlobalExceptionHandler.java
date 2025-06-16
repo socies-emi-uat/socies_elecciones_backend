@@ -11,10 +11,10 @@ import com.socies.voto.exceptions.EstadoCandidato.EstadoCandidatoAlreadyExistsEx
 import com.socies.voto.exceptions.EstadoCandidato.EstadoCandidatoNotFoundException;
 import com.socies.voto.exceptions.EstadoProceso.EstadoProcesoAlreadyExistsException;
 import com.socies.voto.exceptions.EstadoProceso.EstadoProcesoNotFoundException;
-import com.socies.voto.exceptions.ProcesoElectoral.ProcesoElectoralAlreadyExistsException;
-import com.socies.voto.exceptions.ProcesoElectoral.ProcesoElectoralNotFoundException;
 import com.socies.voto.exceptions.MetodoVoto.MetodoVotoAlreadyExistsException;
 import com.socies.voto.exceptions.MetodoVoto.MetodoVotoNotFoundException;
+import com.socies.voto.exceptions.ProcesoElectoral.ProcesoElectoralAlreadyExistsException;
+import com.socies.voto.exceptions.ProcesoElectoral.ProcesoElectoralNotFoundException;
 import com.socies.voto.exceptions.Usuario.EmailAlreadyExistsException;
 import com.socies.voto.exceptions.Usuario.UsuarioInvalidOldPasswordFoundException;
 import com.socies.voto.exceptions.Usuario.UsuarioNotFoundException;

@@ -4,7 +4,6 @@ import com.socies.voto.dtos.Candidatura.CandidaturaDTO;
 import com.socies.voto.dtos.MetodoVoto.MetodoVotoDTO;
 import com.socies.voto.dtos.ProceoElectoral.ProcesoElectoralDTO;
 import com.socies.voto.dtos.UbicacionVoto.UbicacionVotoDTO;
-import com.socies.voto.dtos.usuario.UsuarioDTO;
 import com.socies.voto.models.Voto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +26,6 @@ public class UVotoDTO {
         this.procesoElectoral = new ProcesoElectoralDTO(voto.getProcesoElectoral());
         this.candidatura = new CandidaturaDTO(voto.getCandidatura());
         this.metodoVoto = new MetodoVotoDTO(voto.getMetodoVoto());
-        this.ubicacionVoto  = new UbicacionVotoDTO(voto.getUbicacionVoto());
+        this.ubicacionVoto = new UbicacionVotoDTO(voto.getUbicacionVoto());
     }
 }
