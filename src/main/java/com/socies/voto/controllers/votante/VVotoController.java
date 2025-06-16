@@ -23,7 +23,7 @@ public class VVotoController {
         return new ResponseEntity<>(votos, HttpStatus.OK);
     }
 
-    @GetMapping("/id_voto}")
+    @GetMapping("/{id_voto}")
     public ResponseEntity<ResponseWrapper<UVotoDTO>> findById(@PathVariable Long id_voto) {
         UVotoDTO votoDTO = votoService.findByIdVotante(id_voto);
         ResponseWrapper<UVotoDTO> voto = new ResponseWrapper<>(true, "Voto encontrado", votoDTO);
