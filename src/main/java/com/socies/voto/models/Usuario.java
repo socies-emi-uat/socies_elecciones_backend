@@ -36,7 +36,7 @@ public class Usuario extends BaseEntity {
     private boolean is_deleted = false; // usado para solft delete no borrar.
 
     @Column(nullable = false)
-    private boolean estado = false;
+    private boolean estado = false; // puede votar o no.
 
     @Column(nullable = false)
     private String contrasenaHash;
