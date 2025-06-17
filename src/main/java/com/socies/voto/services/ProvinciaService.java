@@ -60,6 +60,7 @@ public class ProvinciaService {
                                 () -> new ResourceNotFoundException("Provincia no encontrado"));
         provincia.setNombre(provinciaUpdateDTO.getNombre());
         provincia.setDepartamento(provinciaUpdateDTO.getDepartamento());
+        provinciaRepository.save(provincia);
 
         return new ProvinciaDTO(provincia);
     }
