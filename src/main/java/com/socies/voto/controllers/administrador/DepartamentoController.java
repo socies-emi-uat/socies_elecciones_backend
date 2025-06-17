@@ -26,7 +26,8 @@ public class DepartamentoController {
     }
 
     @GetMapping("/{id_departamento}")
-    public ResponseEntity<ResponseWrapper<DepartamentoDTO>> findById(@PathVariable Long id_departamento) {
+    public ResponseEntity<ResponseWrapper<DepartamentoDTO>> findById(
+            @PathVariable Long id_departamento) {
         DepartamentoDTO departamentoDTO = departamentoService.findById(id_departamento);
         ResponseWrapper<DepartamentoDTO> departamento =
                 new ResponseWrapper<>(true, "Departamento encontrado.", departamentoDTO);
@@ -44,9 +45,10 @@ public class DepartamentoController {
 
     @PutMapping("/{id_departamento}")
     public ResponseEntity<ResponseWrapper<DepartamentoDTO>> actualizar(
-            @PathVariable Long id,
+            @PathVariable Long id_departamento,
             @Valid @RequestBody DepartamentoUpdateDTO departamentoUpdateDTO) {
-        DepartamentoDTO departamentoDTO = departamentoService.update(departamentoUpdateDTO, id);
+        DepartamentoDTO departamentoDTO =
+                departamentoService.update(departamentoUpdateDTO, id_departamento);
         ResponseWrapper<DepartamentoDTO> departamento =
                 new ResponseWrapper<>(true, "Departamento encontrado.", departamentoDTO);
 
