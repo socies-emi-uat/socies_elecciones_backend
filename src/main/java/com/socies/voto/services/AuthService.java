@@ -21,10 +21,10 @@ public class AuthService {
     public LoginAuthResponseDTO verify(LoginAuthDTO loginAuthDTO) {
         Authentication authentication;
         try {
-            authentication = authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginAuthDTO.getEmail(),
-                            loginAuthDTO.getPassword()));
+            authentication =
+                    authManager.authenticate(
+                            new UsernamePasswordAuthenticationToken(
+                                    loginAuthDTO.getEmail(), loginAuthDTO.getPassword()));
         } catch (BadCredentialsException e) {
             throw new AuthFailedException("Usuario o contraseña incorrecta");
         } catch (DisabledException e) {
@@ -43,5 +43,4 @@ public class AuthService {
             throw new AuthFailedException("Autenticación fallida");
         }
     }
-
 }
