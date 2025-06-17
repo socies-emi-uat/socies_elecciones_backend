@@ -78,6 +78,6 @@ public class UsuarioPrincipalDTO implements UserDetails {
     @Override
     public boolean isEnabled() {
         // Ejemplo usando el campo estado para habilitar la cuenta
-        return usuario.isEstado();
+        return usuario.is_deleted();
     }
 }
