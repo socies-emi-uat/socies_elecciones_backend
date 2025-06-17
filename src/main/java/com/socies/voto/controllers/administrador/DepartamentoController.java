@@ -26,8 +26,8 @@ public class DepartamentoController {
     }
 
     @GetMapping("/{id_departamento}")
-    public ResponseEntity<ResponseWrapper<DepartamentoDTO>> findById(@PathVariable Long id) {
-        DepartamentoDTO departamentoDTO = departamentoService.findById(id);
+    public ResponseEntity<ResponseWrapper<DepartamentoDTO>> findById(@PathVariable Long id_departamento) {
+        DepartamentoDTO departamentoDTO = departamentoService.findById(id_departamento);
         ResponseWrapper<DepartamentoDTO> departamento =
                 new ResponseWrapper<>(true, "Departamento encontrado.", departamentoDTO);
         return new ResponseEntity<>(departamento, HttpStatus.OK);
