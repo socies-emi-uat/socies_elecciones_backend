@@ -65,6 +65,6 @@ public class CandidatoController {
         candidatoService.eliminarCandidato(id);
         ResponseWrapper<Void> response =
                 new ResponseWrapper<>(true, "Candidato eliminado correctamente.", null);
-        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -64,7 +64,7 @@ public class CargoController {
         cargoService.eliminarCargo(id);
         ResponseWrapper<Void> response =
                 new ResponseWrapper<>(true, "Cargo eliminado correctamente.", null);
-        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/buscar")
