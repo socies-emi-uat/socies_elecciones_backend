@@ -2,7 +2,6 @@ package com.socies.voto.dtos.Municipio;
 
 import com.socies.voto.dtos.Provincia.ProvinciaDTO;
 import com.socies.voto.models.Municipio;
-import com.socies.voto.models.Provincia;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -30,7 +30,8 @@ public class ProcesoElectoralController {
     }
 
     @GetMapping("/{id_proceso}")
-    public ResponseEntity<ResponseWrapper<ProcesoElectoralDTO>> getById(@PathVariable Long id_proceso) {
+    public ResponseEntity<ResponseWrapper<ProcesoElectoralDTO>> getById(
+            @PathVariable Long id_proceso) {
         ProcesoElectoralDTO procesoElectoralDTO = procesoElectoralService.findById(id_proceso);
         ResponseWrapper<ProcesoElectoralDTO> procesos =
                 new ResponseWrapper<>(true, "Prceso electoral obtenido.", procesoElectoralDTO);
@@ -52,7 +53,8 @@ public class ProcesoElectoralController {
     public ResponseEntity<ResponseWrapper<ProcesoElectoralDTO>> actualizarProcesoElectoral(
             @Valid @RequestBody ProcesoElectoralUpdateDTO procesoElectoralDTO,
             @PathVariable Long id_prceso) {
-        ProcesoElectoralDTO proceso = procesoElectoralService.actualizar(procesoElectoralDTO, id_prceso);
+        ProcesoElectoralDTO proceso =
+                procesoElectoralService.actualizar(procesoElectoralDTO, id_prceso);
         ResponseWrapper<ProcesoElectoralDTO> proceso_actualizado =
                 new ResponseWrapper<>(true, "Proceso electoral creada.", proceso);
 
