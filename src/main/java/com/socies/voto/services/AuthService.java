@@ -1,7 +1,12 @@
 package com.socies.voto.services;
 
+import com.socies.voto.dtos.AuthDTO.LoginAuthDTO;
+import com.socies.voto.dtos.AuthDTO.LoginAuthResponseDTO;
+import com.socies.voto.dtos.usuario.UsuarioPrincipalDTO;
+import com.socies.voto.exceptions.Auth.AuthFailedException;
+import com.socies.voto.models.Usuario;
+import com.socies.voto.repositories.UsuarioRepository;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,24 +15,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.socies.voto.dtos.AuthDTO.LoginAuthDTO;
-import com.socies.voto.dtos.AuthDTO.LoginAuthResponseDTO;
-import com.socies.voto.dtos.usuario.UsuarioPrincipalDTO;
-import com.socies.voto.exceptions.Auth.AuthFailedException;
-import com.socies.voto.models.Usuario;
-import com.socies.voto.repositories.UsuarioRepository;
-
 @Service
 public class AuthService {
 
-    @Autowired
-    private JWTService jwtService;
+    @Autowired private JWTService jwtService;
 
-    @Autowired
-    private AuthenticationManager authManager;
+    @Autowired private AuthenticationManager authManager;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    @Autowired private UsuarioRepository usuarioRepository;
 
     public LoginAuthResponseDTO verify(LoginAuthDTO loginAuthDTO) {
         String login = loginAuthDTO.getLogin();
@@ -48,8 +43,9 @@ public class AuthService {
 
         Authentication authentication;
         try {
-            authentication = authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(correoAutenticacion, password));
+            authentication =
+                    authManager.authenticate(
+                            new UsernamePasswordAuthenticationToken(correoAutenticacion, password));
         } catch (BadCredentialsException e) {
             throw new AuthFailedException("Usuario o contraseña incorrecta");
         } catch (DisabledException e) {

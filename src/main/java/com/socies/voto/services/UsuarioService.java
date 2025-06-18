@@ -1,6 +1,7 @@
 package com.socies.voto.services;
 
-import com.socies.voto.dtos.usuario.*;
+import com.socies.voto.dtos.usuario.UsuarioCreateDTO;
+import com.socies.voto.dtos.usuario.UsuarioDTO;
 import com.socies.voto.exceptions.Rol.RolNotFoundException;
 import com.socies.voto.exceptions.Usuario.EmailAlreadyExistsException;
 import com.socies.voto.exceptions.Usuario.UsuarioNotFoundException;
@@ -40,12 +41,23 @@ public class UsuarioService {
     }
 
     public UsuarioDTO createUsuario(UsuarioCreateDTO usuarioCreateVotanteDTO) {
-        // Verificar si el correo ya existe
+        String correo = usuarioCreateVotanteDTO.getCorreo();
+        String cedula = usuarioCreateVotanteDTO.getCedulaIdentidad();
 
-        if (usuarioRepository.existsByCorreo(
-                usuarioCreateVotanteDTO
-                        .getCorreo())) { // si devuelve true entonces el usuario e email ya
+        // Validar formato de correo
+        if (correo != null
+                && !correo.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")) {
+            throw new IllegalArgumentException("El correo no tiene un formato válido.");
+        }
+
+        // Validar duplicado por correo
+        if (usuarioRepository.existsByCorreo(correo)) {
             throw new EmailAlreadyExistsException("El correo electrónico ya está registrado.");
+        }
+
+        // ✅ Validar duplicado por cédula de identidad
+        if (usuarioRepository.existsByCedulaIdentidad(cedula)) {
+            throw new IllegalArgumentException("La cédula de identidad ya está registrada.");
         }
 
         Rol rol_usuario =
@@ -53,15 +65,14 @@ public class UsuarioService {
                         .findById(usuarioCreateVotanteDTO.getRol_id())
                         .orElseThrow(() -> new RolNotFoundException("Rol no encontrado."));
 
-        // Crear un nuevo usuario
         Usuario usuario =
                 new Usuario(
                         usuarioCreateVotanteDTO,
                         encoder.encode(usuarioCreateVotanteDTO.getPassword()),
                         rol_usuario);
+
         usuario = usuarioRepository.save(usuario);
 
-        // Guardar en la base de datos
         return new UsuarioDTO(usuario);
     }
 
@@ -73,10 +84,11 @@ public class UsuarioService {
                                 () ->
                                         new UsuarioNotFoundException(
                                                 "Usuario no encontrado con ID: " + id));
-        String estado_nuevo = null;
+
+        String estado_nuevo;
         if (usuario.is_deleted()) {
             usuario.set_deleted(false);
-            estado_nuevo = "Desabilitado";
+            estado_nuevo = "Deshabilitado";
         } else {
             usuario.set_deleted(true);
             estado_nuevo = "Habilitado";
