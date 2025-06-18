@@ -43,13 +43,13 @@ public class ProvinciaController {
         return new ResponseEntity<>(provinciaDTOResponseWrapper, HttpStatus.CREATED);
     }
 
-    @PutMapping("/id_provincia")
+    @PutMapping("/{id_provincia}")
     public ResponseEntity<ResponseWrapper<ProvinciaDTO>> update(
             @Valid @RequestBody ProvinciaUpdateDTO provinciaUpdateDTO,
             @PathVariable Long id_provincia) {
         ProvinciaDTO provinciaDTO = provinciaService.update(id_provincia, provinciaUpdateDTO);
         ResponseWrapper<ProvinciaDTO> provinciaDTOResponseWrapper =
-                new ResponseWrapper<>(true, "Provincia creado con exito.", provinciaDTO);
+                new ResponseWrapper<>(true, "Provincia actualizado con exito.", provinciaDTO);
         return new ResponseEntity<>(provinciaDTOResponseWrapper, HttpStatus.OK);
     }
 }

@@ -7,6 +7,7 @@ import com.socies.voto.exceptions.Auth.AuthFailedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,10 @@ public class AuthService {
                     authManager.authenticate(
                             new UsernamePasswordAuthenticationToken(
                                     loginAuthDTO.getEmail(), loginAuthDTO.getPassword()));
-        } catch (BadCredentialsException es) {
+        } catch (BadCredentialsException e) {
             throw new AuthFailedException("Usuario o contraseña incorrecta");
+        } catch (DisabledException e) {
+            throw new AuthFailedException("Cuenta deshabilitada, contacta con el administrador.");
         }
 
         if (authentication.isAuthenticated()) {
@@ -37,7 +40,7 @@ public class AuthService {
                     usuario.getCorreo(),
                     jwtService.generateToken(usuario.getId(), usuario.getCorreo()));
         } else {
-            throw new AuthFailedException("Invalid email or password");
+            throw new AuthFailedException("Autenticación fallida");
         }
     }
 }

@@ -87,6 +87,8 @@ public class ProcesoElectoralService {
         procesoElectoral.setFechaFin(dto.getFechaFin());
         procesoElectoral.setFechaInicio(dto.getFechaInicio());
 
+        procesoElectoralRepository.save(procesoElectoral);
+
         return new ProcesoElectoralDTO(procesoElectoral);
     }
 }

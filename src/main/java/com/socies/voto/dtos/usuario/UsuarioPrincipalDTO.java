@@ -41,6 +41,10 @@ public class UsuarioPrincipalDTO implements UserDetails {
         return usuario.getRol().getTipo_rol();
     }
 
+    public boolean puedeVotar() {
+        return usuario.isEstado(); // es falso, no puede votar - true si.
+    }
+
     @Override
     public String getPassword() {
         return usuario.getContrasenaHash();
@@ -50,6 +54,10 @@ public class UsuarioPrincipalDTO implements UserDetails {
     public String getUsername() {
         // Puedes decidir si usar cedulaIdentidad o correo como nombre de usuario
         return usuario.getCedulaIdentidad();
+    }
+
+    public boolean isAdmin() {
+        return "Administrador".equals(usuario.getRol().getTipo_rol());
     }
 
     @Override
@@ -70,6 +78,6 @@ public class UsuarioPrincipalDTO implements UserDetails {
     @Override
     public boolean isEnabled() {
         // Ejemplo usando el campo estado para habilitar la cuenta
-        return usuario.isEstado();
+        return usuario.is_deleted();
     }
 }

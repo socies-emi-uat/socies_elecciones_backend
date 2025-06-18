@@ -22,7 +22,7 @@ public class Candidatura extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "partido_id", referencedColumnName = "id", nullable = false)
-    private Partido partido;
+    public Partido partido;
 
     @ManyToOne
     @JoinColumn(name = "estado_candidatura_id", referencedColumnName = "id", nullable = false)

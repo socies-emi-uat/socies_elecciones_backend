@@ -1,28 +1,38 @@
 package com.socies.voto.dtos.Candidatura;
 
-import com.socies.voto.models.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 public class CandidaturaCreateDTO {
 
     private String nombreCandidatura;
-    private String lema;
-    private Candidato candidato;
-    private Partido partido;
-    private EstadoCandidatura estadoCandidatura;
-    private ProcesoElectoral procesoElectoral;
 
-    public CandidaturaCreateDTO(Candidatura candidatura) {
-        this.nombreCandidatura = candidatura.getNombreCandidatura();
-        this.lema = candidatura.getLema();
-        this.candidato = candidatura.getCandidato();
-        this.partido = candidatura.getPartido();
-        this.estadoCandidatura = candidatura.getEstadoCandidatura();
-        this.procesoElectoral = candidatura.getProcesoElectoral();
+    private String lema;
+
+    private Long candidatoId;
+
+    private Long partidoId;
+
+    private Long estadoCandidaturaId;
+
+    private Long procesoElectoralId;
+
+    public CandidaturaCreateDTO(
+            String nombreCandidatura,
+            String lema,
+            Long candidatoId,
+            Long partidoId,
+            Long estadoCandidaturaId,
+            Long procesoElectoralId) {
+        this.nombreCandidatura = nombreCandidatura;
+        this.lema = lema;
+        this.candidatoId = candidatoId;
+        this.partidoId = partidoId;
+        this.estadoCandidaturaId = estadoCandidaturaId;
+        this.procesoElectoralId = procesoElectoralId;
     }
 }
