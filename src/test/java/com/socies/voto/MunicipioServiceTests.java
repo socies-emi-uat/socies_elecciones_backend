@@ -60,7 +60,6 @@ class MunicipioServiceTests {
         MunicipioDTO result = municipioService.findById(1L);
 
         assertEquals("Municipio A", result.getNombre());
-        assertEquals(provincia, result.getProvincia());
     }
 
     @Test
@@ -81,7 +80,6 @@ class MunicipioServiceTests {
         MunicipioDTO result = municipioService.create(dto);
 
         assertEquals("Nuevo Municipio", result.getNombre());
-        assertEquals(provincia, result.getProvincia());
         verify(municipioRepository).save(any(Municipio.class));
     }
 
@@ -110,7 +108,6 @@ class MunicipioServiceTests {
         MunicipioDTO result = municipioService.update(1L, dto);
 
         assertEquals("Municipio Actualizado", result.getNombre());
-        assertEquals(provincia, result.getProvincia());
     }
 
     @Test

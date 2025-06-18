@@ -69,6 +69,6 @@ public class EstadoCandidatoController {
         estadoCandidatoServices.deleteEstadoCandidato(id);
         ResponseWrapper<Void> response =
                 new ResponseWrapper<>(true, "Estado de candidato eliminado correctamente.", null);
-        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
