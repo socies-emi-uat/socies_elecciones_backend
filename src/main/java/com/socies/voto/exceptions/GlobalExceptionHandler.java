@@ -5,6 +5,8 @@ import com.socies.voto.dtos.usuario.UsuarioDTO;
 import com.socies.voto.exceptions.Auth.AuthFailedException;
 import com.socies.voto.exceptions.Candidato.CandidatoAlreadyExistsException;
 import com.socies.voto.exceptions.Candidato.CandidatoNotFoundException;
+import com.socies.voto.exceptions.Candidatura.CandidaturaAlreadyExistsException;
+import com.socies.voto.exceptions.Candidatura.CandidaturaNotFoundException;
 import com.socies.voto.exceptions.Cargo.CargoAlreadyExistsException;
 import com.socies.voto.exceptions.Cargo.CargoNotFoundException;
 import com.socies.voto.exceptions.EstadoCandidato.EstadoCandidatoAlreadyExistsException;
@@ -154,6 +156,20 @@ public class GlobalExceptionHandler {
             CandidatoAlreadyExistsException ex) {
         ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(CandidaturaAlreadyExistsException.class)
+    public ResponseEntity<ResponseWrapper<Void>> handleCandidaturaAlreadyExists(
+            CandidaturaAlreadyExistsException ex) {
+        ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(CandidaturaNotFoundException.class)
+    public ResponseEntity<ResponseWrapper<Void>> handleCandidaturaNotFound(
+            CandidaturaNotFoundException ex) {
+        ResponseWrapper<Void> response = new ResponseWrapper<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
     // Otros controladores de excepciones pueden ir aquí
 }

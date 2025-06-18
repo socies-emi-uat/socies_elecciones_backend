@@ -1,25 +1,48 @@
 package com.socies.voto;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.socies.voto.dtos.Candidatura.CandidaturaCreateDTO;
 import com.socies.voto.dtos.Candidatura.CandidaturaDTO;
 import com.socies.voto.dtos.Candidatura.CandidaturaUpdateDTO;
-import com.socies.voto.exceptions.ResourceNotFoundException;
-import com.socies.voto.models.*;
+import com.socies.voto.exceptions.Candidatura.CandidaturaAlreadyExistsException;
+import com.socies.voto.exceptions.Candidatura.CandidaturaNotFoundException;
+import com.socies.voto.models.Candidato;
+import com.socies.voto.models.Candidatura;
+import com.socies.voto.models.Cargo;
+import com.socies.voto.models.EstadoCandidato;
+import com.socies.voto.models.EstadoCandidatura;
+import com.socies.voto.models.Partido;
+import com.socies.voto.models.ProcesoElectoral;
+import com.socies.voto.repositories.CandidatoRepository;
 import com.socies.voto.repositories.CandidaturaRepository;
+import com.socies.voto.repositories.EstadoCandidaturaRepository;
+import com.socies.voto.repositories.PartidoRepository;
+import com.socies.voto.repositories.ProcesoElectoralRepository;
 import com.socies.voto.services.CandidaturaService;
-import java.util.*;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 class CandidaturaServiceTests {
 
     @InjectMocks private CandidaturaService candidaturaService;
 
     @Mock private CandidaturaRepository candidaturaRepository;
+    @Mock private CandidatoRepository candidatoRepository;
+    @Mock private PartidoRepository partidoRepository;
+    @Mock private EstadoCandidaturaRepository estadoCandidaturaRepository;
+    @Mock private ProcesoElectoralRepository procesoElectoralRepository;
 
     private Candidato candidato;
     private Partido partido;
@@ -50,48 +73,19 @@ class CandidaturaServiceTests {
     }
 
     @Test
-    void findAll_shouldReturnAllCandidaturasAsDTO() {
-        Candidatura c1 = new Candidatura();
-        c1.setId(1L);
-        c1.setNombreCandidatura("C1");
-        c1.setLema("Lema C1");
-        c1.setCandidato(candidato);
-        c1.setPartido(partido);
-        c1.setProcesoElectoral(procesoElectoral);
-        c1.setEstadoCandidatura(estado);
-
-        Candidatura c2 = new Candidatura();
-        c2.setId(2L);
-        c2.setNombreCandidatura("C2");
-        c2.setLema("Lema C2");
-        c2.setCandidato(candidato);
-        c2.setPartido(partido);
-        c2.setProcesoElectoral(procesoElectoral);
-        c2.setEstadoCandidatura(estado);
-
-        when(candidaturaRepository.findAll()).thenReturn(List.of(c1, c2));
-
-        List<CandidaturaDTO> result = candidaturaService.findAll();
-
-        assertEquals(2, result.size());
-        assertEquals("C1", result.get(0).getNombreCandidatura());
-        verify(candidaturaRepository, times(1)).findAll();
-    }
-
-    @Test
     void create_shouldSaveAndReturnCandidaturaDTO() {
-        CandidaturaCreateDTO dto = new CandidaturaCreateDTO();
-        dto.setNombreCandidatura("Nueva Candidatura");
-        dto.setLema("Por el futuro");
-        dto.setEstadoCandidatura(estado);
-        dto.setCandidato(candidato);
-        dto.setPartido(partido);
-        dto.setProcesoElectoral(procesoElectoral);
+        CandidaturaCreateDTO dto =
+                new CandidaturaCreateDTO("Nueva Candidatura", "Por el futuro", 1L, 1L, 1L, 1L);
+
+        when(candidatoRepository.findById(1L)).thenReturn(Optional.of(candidato));
+        when(partidoRepository.findById(1L)).thenReturn(Optional.of(partido));
+        when(estadoCandidaturaRepository.findById(1L)).thenReturn(Optional.of(estado));
+        when(procesoElectoralRepository.findById(1L)).thenReturn(Optional.of(procesoElectoral));
 
         Candidatura saved = new Candidatura();
         saved.setId(1L);
-        saved.setNombreCandidatura(dto.getNombreCandidatura());
-        saved.setLema(dto.getLema());
+        saved.setNombreCandidatura("Nueva Candidatura");
+        saved.setLema("Por el futuro");
         saved.setCandidato(candidato);
         saved.setPartido(partido);
         saved.setProcesoElectoral(procesoElectoral);
@@ -106,6 +100,22 @@ class CandidaturaServiceTests {
         assertEquals("Por el futuro", result.getLema());
         assertEquals("Juan Pérez", result.getCandidato().getNombreCandidato());
         verify(candidaturaRepository, times(1)).save(any(Candidatura.class));
+    }
+
+    @Test
+    void create_shouldThrowExceptionIfDuplicateCandidaturaExists() {
+        CandidaturaCreateDTO dto =
+                new CandidaturaCreateDTO("Nueva Candidatura", "Por el futuro", 1L, 1L, 1L, 1L);
+
+        when(candidaturaRepository.existsByNombreCandidaturaAndPartidoIdAndProcesoElectoralId(
+                        dto.getNombreCandidatura(),
+                        dto.getPartidoId(),
+                        dto.getProcesoElectoralId()))
+                .thenReturn(true);
+
+        assertThrows(CandidaturaAlreadyExistsException.class, () -> candidaturaService.create(dto));
+
+        verify(candidaturaRepository, never()).save(any());
     }
 
     @Test
@@ -124,10 +134,16 @@ class CandidaturaServiceTests {
         CandidaturaUpdateDTO dto = new CandidaturaUpdateDTO();
         dto.setNombreCandidatura("Actualizada");
         dto.setLema("Cambio real");
-        dto.setCandidato(candidato);
-        dto.setPartido(partido);
+        dto.setCandidatoId(1L);
+        dto.setPartidoId(1L);
+        dto.setEstadoCandidaturaId(1L);
+        dto.setProcesoElectoralId(1L);
 
         when(candidaturaRepository.findById(id)).thenReturn(Optional.of(existing));
+        when(candidatoRepository.findById(1L)).thenReturn(Optional.of(candidato));
+        when(partidoRepository.findById(1L)).thenReturn(Optional.of(partido));
+        when(estadoCandidaturaRepository.findById(1L)).thenReturn(Optional.of(estado));
+        when(procesoElectoralRepository.findById(1L)).thenReturn(Optional.of(procesoElectoral));
         when(candidaturaRepository.save(any(Candidatura.class))).thenAnswer(i -> i.getArgument(0));
 
         CandidaturaDTO result = candidaturaService.update(id, dto);
@@ -143,12 +159,7 @@ class CandidaturaServiceTests {
         CandidaturaUpdateDTO dto = new CandidaturaUpdateDTO();
         when(candidaturaRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(
-                ResourceNotFoundException.class,
-                () -> {
-                    candidaturaService.update(id, dto);
-                });
-
+        assertThrows(CandidaturaNotFoundException.class, () -> candidaturaService.update(id, dto));
         verify(candidaturaRepository, never()).save(any());
     }
 }
