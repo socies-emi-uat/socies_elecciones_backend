@@ -28,7 +28,6 @@ public class PartidoUpdateDTO {
     private String telefonoContacto;
     private String correoContacto;
     private LocalDateTime fechaFundacion;
-    private boolean estado;
 
     public PartidoUpdateDTO(Partido partido) {
         this.nombrePartido = partido.getNombrePartido();
@@ -43,6 +42,5 @@ public class PartidoUpdateDTO {
         this.telefonoContacto = partido.getTelefonoContacto();
         this.correoContacto = partido.getCorreoContacto();
         this.fechaFundacion = partido.getFechaFundacion();
-        this.estado = partido.isEstado();
     }
 }
