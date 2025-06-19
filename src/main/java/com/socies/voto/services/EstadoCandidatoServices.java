@@ -79,7 +79,12 @@ public class EstadoCandidatoServices {
                         .orElseThrow(
                                 () ->
                                         new EstadoCandidatoNotFoundException(
-                                                "El estado de candidato no fue encontrado"));
+                                                "Estado de candidato no encontrado"));
+        // Verificar si el estado está asociado a algún candidato
+        if (estado.getCandidatos() != null && !estado.getCandidatos().isEmpty()) {
+            throw new IllegalStateException(
+                    "No se puede eliminar el estado porque está asociado a candidatos");
+        }
 
         estadoCandidatoRepository.delete(estado);
     }
