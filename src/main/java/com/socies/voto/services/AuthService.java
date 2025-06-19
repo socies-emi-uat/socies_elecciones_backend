@@ -4,6 +4,9 @@ import com.socies.voto.dtos.AuthDTO.LoginAuthDTO;
 import com.socies.voto.dtos.AuthDTO.LoginAuthResponseDTO;
 import com.socies.voto.dtos.usuario.UsuarioPrincipalDTO;
 import com.socies.voto.exceptions.Auth.AuthFailedException;
+import com.socies.voto.models.Usuario;
+import com.socies.voto.repositories.UsuarioRepository;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,17 +17,35 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
+
     @Autowired private JWTService jwtService;
 
-    @Autowired AuthenticationManager authManager;
+    @Autowired private AuthenticationManager authManager;
+
+    @Autowired private UsuarioRepository usuarioRepository;
 
     public LoginAuthResponseDTO verify(LoginAuthDTO loginAuthDTO) {
+        String login = loginAuthDTO.getLogin();
+        String password = loginAuthDTO.getPassword();
+
+        String correoAutenticacion;
+
+        if (esCorreoValido(login)) {
+            correoAutenticacion = login;
+        } else {
+            Optional<Usuario> optionalUsuario =
+                    usuarioRepository.getUsuarioByCedulaIdentidad(login);
+            if (optionalUsuario.isEmpty()) {
+                throw new AuthFailedException("Usuario o contraseña incorrecta");
+            }
+            correoAutenticacion = optionalUsuario.get().getCorreo();
+        }
+
         Authentication authentication;
         try {
             authentication =
                     authManager.authenticate(
-                            new UsernamePasswordAuthenticationToken(
-                                    loginAuthDTO.getEmail(), loginAuthDTO.getPassword()));
+                            new UsernamePasswordAuthenticationToken(correoAutenticacion, password));
         } catch (BadCredentialsException e) {
             throw new AuthFailedException("Usuario o contraseña incorrecta");
         } catch (DisabledException e) {
@@ -42,5 +63,9 @@ public class AuthService {
         } else {
             throw new AuthFailedException("Autenticación fallida");
         }
+    }
+
+    private boolean esCorreoValido(String login) {
+        return login != null && login.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
     }
 }

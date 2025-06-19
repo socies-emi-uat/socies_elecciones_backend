@@ -52,8 +52,7 @@ public class UsuarioPrincipalDTO implements UserDetails {
 
     @Override
     public String getUsername() {
-        // Puedes decidir si usar cedulaIdentidad o correo como nombre de usuario
-        return usuario.getCedulaIdentidad();
+        return usuario.getCorreo(); // ← Este es el identificador que se espera en la autenticación
     }
 
     public boolean isAdmin() {
