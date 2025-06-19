@@ -73,6 +73,14 @@ public class EstadoCandidatoServices {
     }
 
     public void deleteEstadoCandidato(Long id) {
-        estadoCandidatoRepository.deleteById(id);
+        EstadoCandidato estado =
+                estadoCandidatoRepository
+                        .findById(id)
+                        .orElseThrow(
+                                () ->
+                                        new EstadoCandidatoNotFoundException(
+                                                "El estado de candidato no fue encontrado"));
+
+        estadoCandidatoRepository.delete(estado);
     }
 }
