@@ -64,6 +64,7 @@ public class PartidoService {
                 dto.getTelefonoContacto() != null ? dto.getTelefonoContacto().trim() : null);
         partido.setCorreoContacto(
                 dto.getCorreoContacto() != null ? dto.getCorreoContacto().trim() : null);
+        partido.setFechaFundacion(dto.getFechaFundacion() != null ? dto.getFechaFundacion() : null);
 
         partido.setEstado(true);
         partido.setPais("Bolivia");
@@ -113,7 +114,6 @@ public class PartidoService {
                 dto.getTelefonoContacto() != null ? dto.getTelefonoContacto().trim() : null);
         partido.setCorreoContacto(
                 dto.getCorreoContacto() != null ? dto.getCorreoContacto().trim() : null);
-        partido.setEstado(dto.isEstado());
         partido.setFechaFundacion(dto.getFechaFundacion() != null ? dto.getFechaFundacion() : null);
 
         partidoRepository.save(partido);

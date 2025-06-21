@@ -48,7 +48,18 @@ public class CargoService {
     }
 
     public void eliminarCargo(Long id) {
-        cargoRepository.deleteById(id);
+        Cargo cargo =
+                cargoRepository
+                        .findById(id)
+                        .orElseThrow(() -> new CargoNotFoundException("Cargo no encontrado"));
+
+        // Verificar si el cargo está asociado a algún candidato
+        if (!cargo.getCandidatos().isEmpty()) {
+            throw new IllegalStateException(
+                    "No se puede eliminar el cargo porque está asociado a candidatos");
+        }
+
+        cargoRepository.delete(cargo);
     }
 
     public CargoDTO actualizarCargo(Long id, CargoCreateDTO dto) {

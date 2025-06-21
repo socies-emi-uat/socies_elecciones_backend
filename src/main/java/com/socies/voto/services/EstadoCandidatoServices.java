@@ -73,6 +73,19 @@ public class EstadoCandidatoServices {
     }
 
     public void deleteEstadoCandidato(Long id) {
-        estadoCandidatoRepository.deleteById(id);
+        EstadoCandidato estado =
+                estadoCandidatoRepository
+                        .findById(id)
+                        .orElseThrow(
+                                () ->
+                                        new EstadoCandidatoNotFoundException(
+                                                "Estado de candidato no encontrado"));
+        // Verificar si el estado está asociado a algún candidato
+        if (estado.getCandidatos() != null && !estado.getCandidatos().isEmpty()) {
+            throw new IllegalStateException(
+                    "No se puede eliminar el estado porque está asociado a candidatos");
+        }
+
+        estadoCandidatoRepository.delete(estado);
     }
 }
