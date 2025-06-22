@@ -88,10 +88,10 @@ public class UsuarioService {
         String estado_nuevo;
         if (usuario.is_deleted()) {
             usuario.set_deleted(false);
-            estado_nuevo = "Deshabilitado";
+            estado_nuevo = "Habilitado";
         } else {
             usuario.set_deleted(true);
-            estado_nuevo = "Habilitado";
+            estado_nuevo = "Desabilitado";
         }
 
         usuarioRepository.save(usuario);
