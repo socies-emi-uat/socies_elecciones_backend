@@ -36,7 +36,8 @@ public class SecurityJWTConfig {
                                 request.requestMatchers(
                                                 "/api/login", // metodo para iniciar sesion
                                                 "/api/register", // metodo para registrarse
-                                                "/api/data/**")
+                                                "/api/data/**",
+                                                "/api/public/**") // <-- línea añadida
                                         .permitAll()
                                         .requestMatchers("/api/administrador/**")
                                         .hasRole("Administrador") // Solo ADMIN accede
