@@ -28,7 +28,8 @@ import lombok.Setter;
     "correoContacto",
     "fechaFundacion",
     "estado",
-    "candidaturas"
+    "candidaturas",
+    "foto"
 })
 public class PartidoPublicDTO {
     private Long id;
@@ -47,8 +48,9 @@ public class PartidoPublicDTO {
     private LocalDateTime fechaFundacion;
     private boolean estado;
     private List<CandidaturaPublicDTO> candidaturas;
+    private String foto;
 
-    public PartidoPublicDTO(Partido p, List<CandidaturaPublicDTO> candidaturas) {
+    public PartidoPublicDTO(Partido p, List<CandidaturaPublicDTO> candidaturas, String foto) {
         this.id = p.getId();
         this.nombrePartido = p.getNombrePartido();
         this.sigla = p.getSigla();
@@ -65,5 +67,6 @@ public class PartidoPublicDTO {
         this.fechaFundacion = p.getFechaFundacion();
         this.estado = p.isEstado();
         this.candidaturas = candidaturas;
+        this.foto = foto;
     }
 }

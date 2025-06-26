@@ -10,9 +10,9 @@ public class CandidaturaPublicDTO {
     private String lema;
     private CandidatoPublicDTO candidato;
 
-    public CandidaturaPublicDTO(Candidatura c) {
+    public CandidaturaPublicDTO(Candidatura c, String foto_candidato) {
         this.nombreCandidatura = c.getNombreCandidatura();
         this.lema = c.getLema();
-        this.candidato = new CandidatoPublicDTO(c.getCandidato());
+        this.candidato = new CandidatoPublicDTO(c.getCandidato(), foto_candidato);
     }
 }

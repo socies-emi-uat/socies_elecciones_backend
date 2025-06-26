@@ -29,6 +29,10 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          BACKBLAZE_KEY_ID: ${{ secrets.BACKBLAZE_KEY_ID }}
+          BACKBLAZE_APPLICATION_KEY: ${{ secrets.BACKBLAZE_APPLICATION_KEY }}
+          BACKBLAZE_BUCKET_NAME: ${{ secrets.BACKBLAZE_BUCKET_NAME }}
+          BACKBLAZE_ENDPOINT: ${{ secrets.BACKBLAZE_ENDPOINT }}
       - name: Ejecutar tests
         run: ./gradlew test
         env:
@@ -36,5 +40,9 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          BACKBLAZE_KEY_ID: ${{ secrets.BACKBLAZE_KEY_ID }}
+          BACKBLAZE_APPLICATION_KEY: ${{ secrets.BACKBLAZE_APPLICATION_KEY }}
+          BACKBLAZE_BUCKET_NAME: ${{ secrets.BACKBLAZE_BUCKET_NAME }}
+          BACKBLAZE_ENDPOINT: ${{ secrets.BACKBLAZE_ENDPOINT }}
       - name: Ejecutar SpotlessCheck
         run: ./gradlew spotlessCheck

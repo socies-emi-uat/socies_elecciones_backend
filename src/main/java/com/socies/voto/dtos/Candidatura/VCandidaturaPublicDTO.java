@@ -15,7 +15,7 @@ public class VCandidaturaPublicDTO {
     public VCandidaturaPublicDTO(Candidatura c) {
         this.nombreCandidatura = c.getNombreCandidatura();
         this.lema = c.getLema();
-        this.partido = new PartidoPublicDTO(c.getPartido(), null); // sin candidaturas
-        this.candidato = new CandidatoPublicDTO(c.getCandidato());
+        this.partido = new PartidoPublicDTO(c.getPartido(), null, null); // sin candidaturas
+        this.candidato = new CandidatoPublicDTO(c.getCandidato(), null);
     }
 }
