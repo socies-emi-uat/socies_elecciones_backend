@@ -13,6 +13,7 @@ import lombok.Setter;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL) // 👈 Oculta campos null como candidaturas
 @JsonPropertyOrder({
+    "id",
     "nombrePartido",
     "sigla",
     "lema",
@@ -30,6 +31,7 @@ import lombok.Setter;
     "candidaturas"
 })
 public class PartidoPublicDTO {
+    private Long id;
     private String nombrePartido;
     private String sigla;
     private String lema;
@@ -47,6 +49,7 @@ public class PartidoPublicDTO {
     private List<CandidaturaPublicDTO> candidaturas;
 
     public PartidoPublicDTO(Partido p, List<CandidaturaPublicDTO> candidaturas) {
+        this.id = p.getId();
         this.nombrePartido = p.getNombrePartido();
         this.sigla = p.getSigla();
         this.lema = p.getLema();
