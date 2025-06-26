@@ -1,11 +1,16 @@
 package com.socies.voto.services;
 
+import com.socies.voto.dtos.Candidatura.CandidaturaPublicDTO;
 import com.socies.voto.dtos.Partido.PartidoCreateDTO;
 import com.socies.voto.dtos.Partido.PartidoDTO;
+import com.socies.voto.dtos.Partido.PartidoPublicDTO;
 import com.socies.voto.dtos.Partido.PartidoUpdateDTO;
 import com.socies.voto.exceptions.ResourceAlreadyExistsException;
 import com.socies.voto.exceptions.ResourceNotFoundException;
+import com.socies.voto.models.Candidatura;
 import com.socies.voto.models.Partido;
+import com.socies.voto.repositories.CandidatoRepository;
+import com.socies.voto.repositories.CandidaturaRepository;
 import com.socies.voto.repositories.PartidoRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +20,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class PartidoService {
     @Autowired private PartidoRepository partidoRepository;
+    @Autowired private CandidatoRepository candidatoRepository;
+    @Autowired private CandidaturaRepository candidaturaRepository;
+    @Autowired private BackBlazeService backBlazeService;
 
     public List<PartidoDTO> findAll() {
         return partidoRepository.findAll().stream()
@@ -137,5 +145,33 @@ public class PartidoService {
         partidoRepository.save(partido);
 
         return mensaje;
+    }
+
+    public List<PartidoPublicDTO> getPublicPartidos() {
+        return partidoRepository.findAllByEstadoTrue().stream()
+                .map(
+                        partido -> {
+                            List<Candidatura> candidaturas =
+                                    candidaturaRepository.findByPartidoId(partido.getId());
+
+                            List<CandidaturaPublicDTO> candidaturaDTOs =
+                                    candidaturas.stream()
+                                            .map(
+                                                    candidatura -> {
+                                                        String foto_candidato =
+                                                                backBlazeService.findFileAsBase64(
+                                                                        candidatura
+                                                                                .getCandidato()
+                                                                                .getFotoUrl());
+                                                        return new CandidaturaPublicDTO(
+                                                                candidatura, foto_candidato);
+                                                    })
+                                            .collect(Collectors.toList());
+
+                            String foto_partido =
+                                    backBlazeService.findFileAsBase64(partido.getLogoUrl());
+                            return new PartidoPublicDTO(partido, candidaturaDTOs, foto_partido);
+                        })
+                .collect(Collectors.toList());
     }
 }

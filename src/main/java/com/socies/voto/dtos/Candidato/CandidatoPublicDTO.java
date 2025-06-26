@@ -15,8 +15,9 @@ public class CandidatoPublicDTO {
     private String propuesta;
     private String cargo;
     private String estado;
+    private String foto;
 
-    public CandidatoPublicDTO(Candidato c) {
+    public CandidatoPublicDTO(Candidato c, String foto) {
         this.id = c.getId();
         this.nombreCandidato = c.getNombreCandidato();
         this.apPaterno = c.getApellidoPaterno();
@@ -29,5 +30,6 @@ public class CandidatoPublicDTO {
                 c.getEstadoCandidato() != null
                         ? c.getEstadoCandidato().getEstadoCandidato()
                         : "Desconocido";
+        this.foto = foto;
     }
 }
