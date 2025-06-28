@@ -1,11 +1,14 @@
 package com.socies.voto.services;
 
+import com.socies.voto.dtos.Candidatura.VCandidaturaPublicDTO;
 import com.socies.voto.dtos.ProceoElectoral.ProcesoElectoralCreateDTO;
 import com.socies.voto.dtos.ProceoElectoral.ProcesoElectoralDTO;
 import com.socies.voto.dtos.ProceoElectoral.ProcesoElectoralUpdateDTO;
+import com.socies.voto.dtos.ProceoElectoral.VProcesoCandidaturasDTO;
 import com.socies.voto.exceptions.ProcesoElectoral.ProcesoElectoralAlreadyExistsException;
 import com.socies.voto.exceptions.ProcesoElectoral.ProcesoElectoralNotFoundException;
 import com.socies.voto.models.ProcesoElectoral;
+import com.socies.voto.repositories.CandidaturaRepository;
 import com.socies.voto.repositories.ProcesoElectoralRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class ProcesoElectoralService {
 
     @Autowired private ProcesoElectoralRepository procesoElectoralRepository;
+    @Autowired private CandidaturaRepository candidaturaRepository;
 
     public List<ProcesoElectoralDTO> findAll() {
         return procesoElectoralRepository.findAll().stream()
@@ -90,5 +94,36 @@ public class ProcesoElectoralService {
         procesoElectoralRepository.save(procesoElectoral);
 
         return new ProcesoElectoralDTO(procesoElectoral);
+    }
+
+    public VProcesoCandidaturasDTO getProcesoElecturalEnCurso() {
+        List<VProcesoCandidaturasDTO> listaDeProcesosEnCurso =
+                procesoElectoralRepository.findAllByEstadoProcesoId(4L).stream()
+                        .map(
+                                proceso -> {
+                                    List<VCandidaturaPublicDTO> candidaturaDTOs =
+                                            candidaturaRepository
+                                                    .findByProcesoElectoralId(proceso.getId())
+                                                    .stream()
+                                                    .map(VCandidaturaPublicDTO::new)
+                                                    .collect(Collectors.toList());
+
+                                    return new VProcesoCandidaturasDTO(
+                                            proceso.getNombreProceso(),
+                                            proceso.getDescripcionProceso(),
+                                            proceso.getFechaInicio(),
+                                            proceso.getFechaFin(),
+                                            candidaturaDTOs);
+                                })
+                        .toList();
+
+        if (listaDeProcesosEnCurso.isEmpty()) {
+            throw new ProcesoElectoralNotFoundException("No hay procesos en curso.");
+        }
+        if (listaDeProcesosEnCurso.size() > 1) {
+            throw new ProcesoElectoralAlreadyExistsException(
+                    "Existen mas de un proceso actual en linea.");
+        }
+        return listaDeProcesosEnCurso.get(0);
     }
 }

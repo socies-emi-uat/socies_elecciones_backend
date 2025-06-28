@@ -3,6 +3,10 @@ package com.socies.voto.services;
 import com.socies.voto.dtos.Voto.AVotoDTO;
 import com.socies.voto.dtos.Voto.UVotoCreateDTO;
 import com.socies.voto.dtos.Voto.UVotoDTO;
+import com.socies.voto.dtos.statistics.BarChartDTO;
+import com.socies.voto.dtos.statistics.GeneralStatsDTO;
+import com.socies.voto.dtos.statistics.LineChartDTO;
+import com.socies.voto.dtos.statistics.PieChartDTO;
 import com.socies.voto.dtos.usuario.UsuarioPrincipalDTO;
 import com.socies.voto.exceptions.ResourceNotFoundException;
 import com.socies.voto.models.MetodoVoto;
@@ -13,6 +17,8 @@ import com.socies.voto.repositories.MetodoVotoRepository;
 import com.socies.voto.repositories.UbicacionVotoRepository;
 import com.socies.voto.repositories.UsuarioRepository;
 import com.socies.voto.repositories.VotoRepository;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +35,8 @@ public class VotoService {
     @Autowired private MetodoVotoRepository metodoVotoRepository;
 
     @Autowired private UbicacionVotoRepository ubicacionVotoRepository;
+
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     // separar en servicio de administracion y servicios de usuario
 
@@ -115,5 +123,129 @@ public class VotoService {
         usuarioRepository.save(usuario);
 
         return new UVotoDTO(voto);
+    }
+
+    public boolean puedeVotar() {
+        UsuarioPrincipalDTO usuarioActuador =
+                (UsuarioPrincipalDTO)
+                        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (!usuarioActuador.puedeVotar()) {
+            throw new ResourceNotFoundException("El usuario no puede votar");
+        }
+        return true;
+    }
+
+    // ESTADISTICIAS GENERALES
+    public GeneralStatsDTO getEstadisticasGenerales(Long procesoId) {
+        Long totalVotos = votoRepository.countVotosByProceso(procesoId);
+        Object[] stats = votoRepository.findEstadisticasGenerales(procesoId);
+        Object[] ganador = votoRepository.findCandidatoGanador(procesoId);
+
+        return new GeneralStatsDTO(
+                totalVotos,
+                (Long) stats[0], // total candidatos
+                (Long) stats[1], // total ubicaciones
+                null, // participación - necesitarías total de electores
+                (LocalDateTime) stats[2], // fecha inicio
+                (LocalDateTime) stats[3], // fecha fin
+                ganador != null ? (String) ganador[0] : null, // candidato ganador
+                ganador != null ? (Long) ganador[1] : null // votos ganador
+                );
+    }
+
+    public PieChartDTO getVotosPorCandidato(Long procesoId) {
+        List<Object[]> resultados = votoRepository.findVotosPorCandidato(procesoId);
+        Long totalVotos = votoRepository.countVotosByProceso(procesoId);
+
+        List<PieChartDTO.Segment> segments =
+                resultados.stream()
+                        .map(
+                                result -> {
+                                    String nombre = (String) result[0];
+                                    Long votos = (Long) result[1];
+                                    Double porcentaje =
+                                            (votos.doubleValue() / totalVotos.doubleValue()) * 100;
+                                    return new PieChartDTO.Segment(nombre, votos, porcentaje, null);
+                                })
+                        .collect(Collectors.toList());
+
+        return new PieChartDTO(
+                "Distribución de Votos por Candidato",
+                "Proceso Electoral ID: " + procesoId,
+                "Porcentaje de votos obtenidos por cada candidato",
+                segments,
+                totalVotos);
+    }
+
+    public BarChartDTO getVotosPorUbicacion(Long procesoId) {
+        List<Object[]> resultados = votoRepository.findVotosPorUbicacion(procesoId);
+
+        List<BarChartDTO.BarData> bars =
+                resultados.stream()
+                        .map(
+                                result ->
+                                        new BarChartDTO.BarData(
+                                                (String) result[0], // ubicación
+                                                (Long) result[1], // votos
+                                                null // color
+                                                ))
+                        .collect(Collectors.toList());
+
+        return new BarChartDTO(
+                "Votos por Ubicación",
+                "Proceso Electoral ID: " + procesoId,
+                "Número de votos emitidos en cada ubicación de votación",
+                bars,
+                "Ubicación",
+                "Número de Votos",
+                false);
+    }
+
+    public BarChartDTO getVotosPorMetodo(Long procesoId) {
+        List<Object[]> resultados = votoRepository.findVotosPorMetodo(procesoId);
+
+        List<BarChartDTO.BarData> bars =
+                resultados.stream()
+                        .map(
+                                result ->
+                                        new BarChartDTO.BarData(
+                                                (String) result[0], // método
+                                                (Long) result[1], // votos
+                                                null))
+                        .collect(Collectors.toList());
+
+        return new BarChartDTO(
+                "Votos por Método de Votación",
+                "Proceso Electoral ID: " + procesoId,
+                "Distribución de votos según el método utilizado",
+                bars,
+                "Método de Votación",
+                "Número de Votos",
+                true // horizontal
+                );
+    }
+
+    public LineChartDTO getEvolucionTemporalVotos(Long procesoId) {
+        List<Object[]> resultados = votoRepository.findEvolucionTemporalVotos(procesoId);
+
+        List<LineChartDTO.DataPoint> dataPoints =
+                resultados.stream()
+                        .map(
+                                result ->
+                                        new LineChartDTO.DataPoint(
+                                                result[0].toString(), // fecha
+                                                (Long) result[1], // votos
+                                                null // categoría
+                                                ))
+                        .collect(Collectors.toList());
+
+        return new LineChartDTO(
+                "Evolución Temporal de Votos",
+                "Proceso Electoral ID: " + procesoId,
+                "Progresión diaria del número de votos emitidos",
+                dataPoints,
+                "Fecha",
+                "Votos Acumulados");
     }
 }

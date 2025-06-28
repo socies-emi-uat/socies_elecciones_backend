@@ -5,6 +5,7 @@ import com.socies.voto.dtos.ProceoElectoral.VProcesoCandidaturasDTO;
 import com.socies.voto.models.ProcesoElectoral;
 import com.socies.voto.repositories.CandidaturaRepository;
 import com.socies.voto.repositories.ProcesoElectoralRepository;
+import com.socies.voto.services.ProcesoElectoralService;
 import com.socies.voto.utils.ResponseWrapper;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class VProcesoElectoralController {
 
     @Autowired private ProcesoElectoralRepository procesoRepository;
+
+    @Autowired private ProcesoElectoralService procesoElectoralService;
 
     @Autowired private CandidaturaRepository candidaturaRepository;
 
@@ -85,5 +88,14 @@ public class VProcesoElectoralController {
         return new ResponseEntity<>(
                 new ResponseWrapper<>(true, "Proceso electoral con candidaturas", dto),
                 HttpStatus.OK);
+    }
+
+    @GetMapping("/activo")
+    public ResponseEntity<ResponseWrapper<VProcesoCandidaturasDTO>> getProcesoElectoralActual() {
+        VProcesoCandidaturasDTO proceso_electoral_actual =
+                procesoElectoralService.getProcesoElecturalEnCurso();
+        ResponseWrapper<VProcesoCandidaturasDTO> proceso_electoral =
+                new ResponseWrapper<>(true, "Proceso electoral actual", proceso_electoral_actual);
+        return new ResponseEntity<>(proceso_electoral, HttpStatus.OK);
     }
 }

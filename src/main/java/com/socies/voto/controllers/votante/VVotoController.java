@@ -38,4 +38,12 @@ public class VVotoController {
                 new ResponseWrapper<>(true, "Voto realizado sin ningun problema.", uVotoDTO);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+    @GetMapping("/estado")
+    public ResponseEntity<ResponseWrapper<UVotoDTO>> verificarEstado() {
+        boolean puedeVotar = votoService.puedeVotar();
+        ResponseWrapper<UVotoDTO> responseWrapper =
+                new ResponseWrapper<>(puedeVotar, "La persona esta habilitado para votar.", null);
+        return new ResponseEntity<>(responseWrapper, HttpStatus.OK);
+    }
 }
