@@ -12,6 +12,13 @@ public class VCandidaturaPublicDTO {
     private PartidoPublicDTO partido;
     private CandidatoPublicDTO candidato;
 
+    public VCandidaturaPublicDTO(Candidatura c, String foto_candidato, String foto_partido) {
+        this.nombreCandidatura = c.getNombreCandidatura();
+        this.lema = c.getLema();
+        this.partido = new PartidoPublicDTO(c.getPartido(), null, foto_partido); // sin candidaturas
+        this.candidato = new CandidatoPublicDTO(c.getCandidato(), foto_candidato);
+    }
+
     public VCandidaturaPublicDTO(Candidatura c) {
         this.nombreCandidatura = c.getNombreCandidatura();
         this.lema = c.getLema();

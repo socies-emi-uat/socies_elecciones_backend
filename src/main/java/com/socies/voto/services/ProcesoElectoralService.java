@@ -20,6 +20,7 @@ public class ProcesoElectoralService {
 
     @Autowired private ProcesoElectoralRepository procesoElectoralRepository;
     @Autowired private CandidaturaRepository candidaturaRepository;
+    @Autowired private BackBlazeService backBlazeService;
 
     public List<ProcesoElectoralDTO> findAll() {
         return procesoElectoralRepository.findAll().stream()
@@ -105,7 +106,26 @@ public class ProcesoElectoralService {
                                             candidaturaRepository
                                                     .findByProcesoElectoralId(proceso.getId())
                                                     .stream()
-                                                    .map(VCandidaturaPublicDTO::new)
+                                                    .map(
+                                                            candidatura -> {
+                                                                String foto_partido =
+                                                                        backBlazeService
+                                                                                .findFileAsBase64(
+                                                                                        candidatura
+                                                                                                .getPartido()
+                                                                                                .getLogoUrl());
+
+                                                                String foto_candidato =
+                                                                        backBlazeService
+                                                                                .findFileAsBase64(
+                                                                                        candidatura
+                                                                                                .getCandidato()
+                                                                                                .getFotoUrl());
+                                                                return new VCandidaturaPublicDTO(
+                                                                        candidatura,
+                                                                        foto_candidato,
+                                                                        foto_partido);
+                                                            })
                                                     .collect(Collectors.toList());
 
                                     return new VProcesoCandidaturasDTO(
