@@ -58,6 +58,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation 'com.itextpdf:itext7-core:7.2.4' // dependencia para generar PDFs
 }
 
 tasks.named('test') {
