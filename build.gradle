@@ -50,7 +50,7 @@ dependencies {
     // Para logging
     implementation 'org.slf4j:slf4j-api:2.0.9'
     // implementation 'ch.qos.logback:logback-classic:1.4.14'
-    
+
     // Para pruebas de carga y estrés
     implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'

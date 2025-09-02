@@ -12,7 +12,7 @@ El sistema SOCIES ahora incluye funcionalidades completas para realizar pruebas 
 - Cálculo de throughput (solicitudes por segundo)
 - Registro de tasa de éxito/fallo
 
-### ✅ Pruebas de Estrés  
+### ✅ Pruebas de Estrés
 - Pruebas más agresivas con mayor carga
 - Identificación de puntos de quiebre del sistema
 - Medición de comportamiento bajo presión extrema

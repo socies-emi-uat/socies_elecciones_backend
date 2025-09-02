@@ -1,17 +1,16 @@
 package com.socies.voto.dtos.loadtesting;
 
+import java.time.LocalDate;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class DailyTestSummaryDTO {
-    
+
     private LocalDate date;
     private String testType;
     private Integer totalTests;
@@ -20,7 +19,7 @@ public class DailyTestSummaryDTO {
     private Integer totalRequests;
     private Double overallSuccessRate;
     private List<LoadTestResultDTO> tests;
-    
+
     // Constructor para resumen diario
     public DailyTestSummaryDTO(LocalDate date, String testType, List<LoadTestResultDTO> tests) {
         this.date = date;
@@ -29,7 +28,7 @@ public class DailyTestSummaryDTO {
         this.totalTests = tests.size();
         calculateAverages();
     }
-    
+
     private void calculateAverages() {
         if (tests == null || tests.isEmpty()) {
             averageResponseTime = 0.0;
@@ -38,23 +37,23 @@ public class DailyTestSummaryDTO {
             overallSuccessRate = 0.0;
             return;
         }
-        
+
         double sumResponseTime = 0.0;
         double sumThroughput = 0.0;
         int sumTotalRequests = 0;
         int sumSuccessfulRequests = 0;
-        
+
         for (LoadTestResultDTO test : tests) {
             sumResponseTime += test.getAverageResponseTime();
             sumThroughput += test.getThroughput();
             sumTotalRequests += test.getTotalRequests();
             sumSuccessfulRequests += test.getSuccessfulRequests();
         }
-        
+
         averageResponseTime = sumResponseTime / tests.size();
         averageThroughput = sumThroughput / tests.size();
         totalRequests = sumTotalRequests;
-        
+
         if (sumTotalRequests > 0) {
             overallSuccessRate = (sumSuccessfulRequests * 100.0) / sumTotalRequests;
         } else {

@@ -1,11 +1,10 @@
 package com.socies.voto.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "load_test_results")
@@ -59,10 +58,19 @@ public class LoadTestResult extends BaseEntity {
     public LoadTestResult() {}
 
     // Constructor para crear resultado de prueba
-    public LoadTestResult(String testType, String endpoint, Integer concurrentUsers, 
-                         Integer totalRequests, Integer successfulRequests, Integer failedRequests,
-                         Double averageResponseTime, Double minResponseTime, Double maxResponseTime,
-                         Double throughput, LocalDateTime testStartTime, LocalDateTime testEndTime) {
+    public LoadTestResult(
+            String testType,
+            String endpoint,
+            Integer concurrentUsers,
+            Integer totalRequests,
+            Integer successfulRequests,
+            Integer failedRequests,
+            Double averageResponseTime,
+            Double minResponseTime,
+            Double maxResponseTime,
+            Double throughput,
+            LocalDateTime testStartTime,
+            LocalDateTime testEndTime) {
         this.testDate = LocalDate.now();
         this.testType = testType;
         this.endpoint = endpoint;

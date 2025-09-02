@@ -1,18 +1,17 @@
 package com.socies.voto.dtos.loadtesting;
 
 import com.socies.voto.models.LoadTestResult;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoadTestResultDTO {
-    
+
     private Long id;
     private LocalDate testDate;
     private String testType;
@@ -29,7 +28,7 @@ public class LoadTestResultDTO {
     private LocalDateTime testEndTime;
     private String notes;
     private Double successRate;
-    
+
     // Constructor desde entidad
     public LoadTestResultDTO(LoadTestResult result) {
         this.id = result.getId();
@@ -49,7 +48,7 @@ public class LoadTestResultDTO {
         this.notes = result.getNotes();
         this.successRate = calculateSuccessRate();
     }
-    
+
     private Double calculateSuccessRate() {
         if (totalRequests == null || totalRequests == 0) {
             return 0.0;
