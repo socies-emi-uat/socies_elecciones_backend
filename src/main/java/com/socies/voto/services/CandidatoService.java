@@ -11,6 +11,9 @@ import com.socies.voto.models.EstadoCandidato;
 import com.socies.voto.repositories.CandidatoRepository;
 import com.socies.voto.repositories.CargoRepository;
 import com.socies.voto.repositories.EstadoCandidatoRepository;
+import com.socies.voto.security.AuditLogService;
+import com.socies.voto.security.DataAccessValidator;
+import com.socies.voto.security.InputSanitizer;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +25,25 @@ public class CandidatoService {
     @Autowired private CandidatoRepository candidatoRepository;
     @Autowired private EstadoCandidatoRepository estadoCandidatoRepository;
     @Autowired private CargoRepository cargoRepository;
+    @Autowired private InputSanitizer inputSanitizer;
+    @Autowired private AuditLogService auditLogService;
+    @Autowired private DataAccessValidator dataAccessValidator;
 
     public List<CandidatoDTO> obtenerTodosLosCandidatos() {
+        // Log data access for audit
+        auditLogService.logDataAccess("LIST_CANDIDATES", "Candidato", "ALL", 
+            "Retrieving all candidates list");
+        
         return candidatoRepository.findAll().stream()
                 .map(CandidatoDTO::new)
                 .collect(Collectors.toList());
     }
 
     public CandidatoDTO obtenerCandidatoPorId(Long id) {
+        // Log data access for audit
+        auditLogService.logDataAccess("GET_CANDIDATE", "Candidato", id.toString(), 
+            "Retrieving candidate by ID");
+        
         return candidatoRepository
                 .findById(id)
                 .map(CandidatoDTO::new)
@@ -38,25 +52,48 @@ public class CandidatoService {
     }
 
     public CandidatoDTO crearCandidato(CandidatoCreateDTO candidatoCreateDTO) {
+        // Validate admin permissions
+        if (!dataAccessValidator.canPerformAdminAction("CREATE_CANDIDATE", "Candidato")) {
+            throw new SecurityException("No tiene permisos para crear candidatos");
+        }
+
+        // Sanitize and validate input data
+        String nombreCandidato = inputSanitizer.validateAndSanitizeText(
+            candidatoCreateDTO.getNombreCandidato(), "Nombre del candidato");
+        String apPaterno = inputSanitizer.validateAndSanitizeText(
+            candidatoCreateDTO.getApPaterno(), "Apellido paterno");
+        String apMaterno = inputSanitizer.validateAndSanitizeText(
+            candidatoCreateDTO.getApMaterno(), "Apellido materno");
+        String ciCandidato = inputSanitizer.validateAndSanitizeCI(
+            candidatoCreateDTO.getCiCandidato(), "Cédula de identidad");
+        String correoCandidato = inputSanitizer.validateAndSanitizeEmail(
+            candidatoCreateDTO.getCorreoCandidato(), "Correo electrónico");
+        String propuesta = inputSanitizer.validateAndSanitizeText(
+            candidatoCreateDTO.getPropuesta(), "Propuesta");
+
         // Verificar si la propuesta es requerida
-        if (candidatoCreateDTO.getPropuesta() == null
-                || candidatoCreateDTO.getPropuesta().isEmpty()) {
+        if (propuesta == null || propuesta.isEmpty()) {
             throw new RuntimeException("La propuesta es requerida");
         }
+        
         // Verificar si ya existe por CI
         candidatoRepository
-                .findByCedulaIdentidad(candidatoCreateDTO.getCiCandidato())
+                .findByCedulaIdentidad(ciCandidato)
                 .ifPresent(
                         c -> {
+                            auditLogService.logSecurityViolation("DUPLICATE_CANDIDATE_CI", 
+                                "Attempt to create candidate with existing CI: " + inputSanitizer.maskSensitiveData(ciCandidato));
                             throw new CandidatoAlreadyExistsException("El candidato ya existe");
                         });
+        
         // Verificar si el correo ya existe
-        if (candidatoCreateDTO.getCorreoCandidato() != null
-                && !candidatoCreateDTO.getCorreoCandidato().isEmpty()) {
+        if (correoCandidato != null && !correoCandidato.isEmpty()) {
             candidatoRepository
-                    .findByCorreo(candidatoCreateDTO.getCorreoCandidato())
+                    .findByCorreo(correoCandidato)
                     .ifPresent(
                             c -> {
+                                auditLogService.logSecurityViolation("DUPLICATE_CANDIDATE_EMAIL", 
+                                    "Attempt to create candidate with existing email: " + inputSanitizer.maskSensitiveData(correoCandidato));
                                 throw new CandidatoAlreadyExistsException(
                                         "El correo electrónico ya está registrado");
                             });
@@ -72,19 +109,25 @@ public class CandidatoService {
                         .findById(candidatoCreateDTO.getCargoId())
                         .orElseThrow(() -> new RuntimeException("Cargo no encontrado"));
 
-        // Crear y guardar nuevo candidato
+        // Crear y guardar nuevo candidato con datos sanitizados
         Candidato nuevoCandidato = new Candidato();
-        nuevoCandidato.setNombreCandidato(candidatoCreateDTO.getNombreCandidato());
-        nuevoCandidato.setApellidoPaterno(candidatoCreateDTO.getApPaterno());
-        nuevoCandidato.setApellidoMaterno(candidatoCreateDTO.getApMaterno());
-        nuevoCandidato.setCedulaIdentidad(candidatoCreateDTO.getCiCandidato());
+        nuevoCandidato.setNombreCandidato(nombreCandidato);
+        nuevoCandidato.setApellidoPaterno(apPaterno);
+        nuevoCandidato.setApellidoMaterno(apMaterno);
+        nuevoCandidato.setCedulaIdentidad(ciCandidato);
         nuevoCandidato.setFechaNacimiento(candidatoCreateDTO.getFechaNacimiento());
         nuevoCandidato.setFotoUrl(candidatoCreateDTO.getFotoUrl());
-        nuevoCandidato.setCorreo(candidatoCreateDTO.getCorreoCandidato());
-        nuevoCandidato.setPropuesta(candidatoCreateDTO.getPropuesta());
+        nuevoCandidato.setCorreo(correoCandidato);
+        nuevoCandidato.setPropuesta(propuesta);
         nuevoCandidato.setEstadoCandidato(estadoCandidato);
         nuevoCandidato.setCargo(cargo);
+        
         Candidato guardado = candidatoRepository.save(nuevoCandidato);
+        
+        // Log successful candidate creation
+        auditLogService.logAdminAction("CREATE_CANDIDATE", "Candidato:" + guardado.getId(),
+            "Candidate created: " + nombreCandidato + " " + apPaterno);
+        
         return new CandidatoDTO(guardado);
     }
 
