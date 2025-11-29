@@ -3,7 +3,7 @@ name: Modulo Padre
 about: Integrar un modulo padre para millestones
 title: "[MODULO] Backend - [Objetivo]"
 labels: enhancement
-assignees: krypton612, CamikCM
+assignees: CamikCM, krypton612
 
 ---
 
