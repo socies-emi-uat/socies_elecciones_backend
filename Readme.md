@@ -117,9 +117,28 @@ jwt.secret=4a436dd4a40284253c8686459bf654c9a7d7781847d112b0b0e14ded33fa10dd
 
 ### 📚 Documentación adicional
 
+- [📖 **Documentación Completa**](docs/) - Manuales detallados de instalación, usuario y administrador
+- [📦 Manual de Instalación](docs/manual-instalacion.md) - Guía completa de instalación y configuración
+- [👤 Manual de Usuario](docs/manual-usuario.md) - Documentación de API REST y ejemplos de uso
+- [⚙️ Manual de Administrador](docs/manual-administrador.md) - Configuración avanzada, deployment y mantenimiento
 - [📦 Colección Postman (en construcción)](https://www.postman.com/)
-- [📘 Wiki del Proyecto](https://github.com/tu-usuario/socies_elecciones_backend/wiki)
+- [📘 Wiki del Proyecto](https://github.com/socies-emi-uat/socies_elecciones_backend/wiki)
 - [🧪 Swagger UI](http://localhost:8080/swagger-ui.html) *(si está activado)*
+
+## 🚀 Inicio Rápido por Rol
+
+### 👨‍💻 Para Desarrolladores
+1. **Instalación**: Sigue el [Manual de Instalación](docs/manual-instalacion.md)
+2. **API Usage**: Consulta el [Manual de Usuario](docs/manual-usuario.md)  
+3. **Swagger**: Accede a `http://localhost:8080/swagger-ui.html`
+
+### 🛠️ Para Administradores
+1. **Setup Inicial**: [Manual de Instalación](docs/manual-instalacion.md)
+2. **Producción**: [Manual de Administrador](docs/manual-administrador.md)
+3. **Monitoreo**: Ver sección de monitoreo en el manual de administrador
+
+### 📱 Para Usuarios Finales
+Los usuarios finales interactúan con aplicaciones frontend que consumen esta API REST.
 
 ---
 
