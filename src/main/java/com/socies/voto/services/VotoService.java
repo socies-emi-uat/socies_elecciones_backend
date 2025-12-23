@@ -17,6 +17,8 @@ import com.socies.voto.repositories.MetodoVotoRepository;
 import com.socies.voto.repositories.UbicacionVotoRepository;
 import com.socies.voto.repositories.UsuarioRepository;
 import com.socies.voto.repositories.VotoRepository;
+import com.socies.voto.security.AuditLogService;
+import com.socies.voto.security.DataAccessValidator;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -29,12 +31,11 @@ import org.springframework.stereotype.Service;
 public class VotoService {
 
     @Autowired private VotoRepository votoRepository;
-
     @Autowired private UsuarioRepository usuarioRepository;
-
     @Autowired private MetodoVotoRepository metodoVotoRepository;
-
     @Autowired private UbicacionVotoRepository ubicacionVotoRepository;
+    @Autowired private AuditLogService auditLogService;
+    @Autowired private DataAccessValidator dataAccessValidator;
 
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -42,16 +43,30 @@ public class VotoService {
 
     // ADMINISTRADOR
     public List<AVotoDTO> findAllAdmin() {
+        // Validate admin permissions
+        if (!dataAccessValidator.canPerformAdminAction("LIST_ALL_VOTES", "Voto")) {
+            throw new SecurityException("No tiene permisos para ver todos los votos");
+        }
+        
+        auditLogService.logAdminAction("LIST_ALL_VOTES", "Voto", "Admin accessing all votes");
         return votoRepository.findAll().stream().map(AVotoDTO::new).collect(Collectors.toList());
     }
 
     // VOTANTES
     public List<UVotoDTO> findAllVotantes() {
+        // Votantes can only see public vote information (without sensitive details)
+        auditLogService.logDataAccess("LIST_PUBLIC_VOTES", "Voto", "ALL", "Voter accessing public vote data");
         return votoRepository.findAll().stream().map(UVotoDTO::new).collect(Collectors.toList());
     }
 
     // ADMINISTRADOR
     public AVotoDTO findByIdAdministrador(Long id) {
+        // Validate admin permissions
+        if (!dataAccessValidator.canPerformAdminAction("VIEW_VOTE_DETAILS", "Voto:" + id)) {
+            throw new SecurityException("No tiene permisos para ver detalles del voto");
+        }
+        
+        auditLogService.logAdminAction("VIEW_VOTE_DETAILS", "Voto:" + id, "Admin accessing vote details");
         return votoRepository.findById(id).map(AVotoDTO::new).orElse(null);
     }
 
